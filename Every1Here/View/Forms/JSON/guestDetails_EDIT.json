@@ -1,0 +1,33 @@
+{
+	"grouped": true,
+	"title": "Guest Details",
+    "controllerName": "GuestDetailsDialogController",
+	"sections": [
+                 { "elements": [
+                 {"type":"QImageElement", "key":"avatar", "title":"Connected via"},
+                                ]},
+                 
+                 { "elements": [
+                      { "type":"QEntryElement","title":"First Name","placeholder":"First Name", "bind":"textValue:firstName", "key":"firstName"},
+                      {  "type":"QEntryElement", "title":"Last Name", "placeholder":"Last Name", "key":"lastName", "bind":"textValue:lastName" },
+                      {  "type":"QLabelElement", "title":"Display Name", "key":"displayName", "bind":"value:displayName", "value":"---"}
+                  ]},
+                 
+                 
+                 { "elements":[
+                               {"type":"QBooleanElement", "key":"attendance", "title":"In Attendance", "onImageName":"imgOn", "offImageName":"imgOff", "boolValue":0}
+                               
+                               ]},
+            
+                 { "elements":[
+                               { "type":"QEntryElement","title":"Primary Email","placeholder":"primary@example.com", "keyboardType":"EmailAddress", "bind":"textValue:primaryEmailAddr", "key":"primaryEmailAddr"}
+                               ]},
+                 
+                 { "elements":[
+                               {"type":"QPickerElement", "title":"Attending with Guest(s)?",  "items":[[0, 1, 2, 3]]}
+                               ]}
+
+                 
+                 
+                 ]
+}

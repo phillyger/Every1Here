@@ -1,0 +1,42 @@
+{
+	"grouped": true,
+	"title": "Member Details",
+    "controllerName": "MemberDetailsDialogController",
+	"sections": [
+                 
+                 { "elements": [
+                                {  "type":"QEntryElement", "title":"Display Name", "placeholder":"Display Name", "key":"displayName", "bind":"textValue:displayName"},
+                                
+                                ]},
+                 
+                 { "elements":[
+                               {"type":"QBooleanElement", "key":"attendance", "title":"In Attendance", "onImageName":"imgOn", "offImageName":"imgOff", "boolValue":0}
+                               
+                               ]},
+                 
+                 { "elements":[
+                               {"type":"QBooleanElement", "key":"isSpeaker", "title":"Speaker", "boolValue":0},
+                               {"type":"QBooleanElement", "key":"isTableTopicsSpeaker", "title":"Table Topics Speaker", "boolValue":0},
+                               {"type":"QBooleanElement", "key":"isToastmaster", "title":"Toastmaster", "boolValue":0},
+                               {"type":"QBooleanElement", "key":"isGeneralEvaluator", "title":"General Evaluator", "boolValue":0},
+                               {"type":"QBooleanElement", "key":"isEvaluator", "title":"Evaluator", "boolValue":0},
+                               {"type":"QBooleanElement", "key":"isTableTopicsMaster", "title":"Table Topics Master", "boolValue":0},
+                               {"type":"QBooleanElement", "key":"isTimer", "title":"Timer", "boolValue":0},
+                               {"type":"QBooleanElement", "key":"isGrammarian", "title":"Grammarian", "boolValue":0},
+                               {"type":"QBooleanElement", "key":"isAhCounter", "title":"Ah-Counter", "boolValue":0},
+                               ]},
+                 
+                 { "elements":[
+                               {"type":"QPickerElement", "title":"Attending with Guest(s)?", "key":"withGuests", "items":[[0, 1, 2, 3]]}
+                               ]},
+                 
+                 { "elements":[
+                               {"type":"QLabelElement","title":"Member Since", "value":"Jan 01, 2012"},
+                               {"type":"QBadgeElement","title":"Club Attendance", "badge":"90%"},
+                               {"type":"QBadgeElement", "title":"# of Speeches Given", "badge":"4"}
+                               
+                               
+                               ]}
+                 
+                 ]
+}

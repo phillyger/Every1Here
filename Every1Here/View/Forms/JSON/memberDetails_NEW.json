@@ -1,0 +1,19 @@
+{
+	"grouped": true,
+	"title": "New Member",
+    "controllerName": "MemberDetailsDialogController",
+	"sections": [
+                 { "elements": [
+                                { "type":"QEntryElement","title":"First Name","placeholder":"First Name", "bind":"textValue:firstName", "key":"firstName"},
+                                {  "type":"QEntryElement", "title":"Last Name", "placeholder":"Last Name", "key":"lastName", "bind":"textValue:lastName" },
+                                {  "type":"QEntryElement", "title":"Display Name", "placeholder":"Display Name", "key":"displayName", "bind":"textValue:displayName"}
+                                ]},
+                 
+                 { "elements":[
+                               { "type":"QEntryElement","title":"Primary Email","placeholder":"primary@example.com", "keyboardType":"EmailAddress", "bind":"textValue:primaryEmailAddr", "key":"primaryEmailAddr"},
+                               
+                               { "type":"QEntryElement","title":"Secondary Email","placeholder":"secondary@example.com", "keyboardType":"EmailAddress", "bind":"textValue:secondaryEmailAddr", "key":"secondaryEmailAddr"},
+                               ]}
+                 
+                 ]
+}
