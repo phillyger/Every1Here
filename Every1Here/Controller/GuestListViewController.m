@@ -1,6 +1,6 @@
 //
 //  GuestPickerViewController.m
-//  Anseo
+//  Every1Here
 //
 //  Created by Ger O'Sullivan on 2/27/13.
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
@@ -11,7 +11,7 @@
 #import "GuestCommunicatorDelegate.h"
 #import "EventMemberGuestTabBarController.h"
 #import "GuestListTableDataSource.h"
-#import "AnseoObjectConfiguration.h"
+#import "E1HObjectConfiguration.h"
 #import "FPPopoverController.h"
 #import "GuestListPopoverTableController.h"
 #import "GuestListViewNavigationItem.h"
@@ -27,7 +27,7 @@
 #import "EventRole.h"
 #import "ParseDotComManager.h"
 #import "MBProgressHUD.h"
-#import <objc/runtime.h>
+
 
 static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
 
@@ -49,7 +49,7 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
 //@property (strong) NSDictionary *guestListFullDict;
 //@property (nonatomic, assign, getter=isAttendee) BOOL attendee;
 
--(IBAction) popover:(id)sender slType:(SocialNetworkType *)slType;
+-(IBAction) popover:(id)sender slType:(SocialNetworkType)slType;
 
 @end
 
@@ -109,7 +109,7 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     self.guestAttendeeListForSlType = [[NSMutableArray alloc] init];
     
 
-    self.objectConfiguration = [[AnseoObjectConfiguration alloc] init];
+    self.objectConfiguration = [[E1HObjectConfiguration alloc] init];
     GuestListTableDataSource *guestListDataSource = [[GuestListTableDataSource alloc] init];
     guestListDataSource.event = selectedEvent;
     
@@ -181,7 +181,7 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
 }
 
 
-- (void)popover:(id)sender slType:(SocialNetworkType *)slType {
+- (void)popover:(id)sender slType:(SocialNetworkType)slType {
     
     popover=nil;
     GuestListPopoverTableController *controller = [[GuestListPopoverTableController alloc] initWithStyle:UITableViewStylePlain];
@@ -289,7 +289,7 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     selectedEvent = nil;
     selectedGuest = nil;
     //    [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

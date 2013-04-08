@@ -7,7 +7,7 @@
 //
 
 #import "UpcomingEventListViewController.h"
-#import "AnseoObjectConfiguration.h"
+#import "E1HObjectConfiguration.h"
 #import "EventListTableDataSource.h"
 #import "MemberListViewController.h"
 #import "MemberListTableDataSource.h"
@@ -45,7 +45,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.objectConfiguration = [[AnseoObjectConfiguration alloc] init];
+    self.objectConfiguration = [[E1HObjectConfiguration alloc] init];
     EventListTableDataSource *eventDataSource = [[EventListTableDataSource alloc] init];
     self.dataSource = eventDataSource;
     self.tableView.delegate = self.dataSource;

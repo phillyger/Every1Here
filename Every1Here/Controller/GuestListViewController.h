@@ -1,6 +1,6 @@
 //
 //  GuestPickerViewController.h
-//  Anseo
+//  Every1Here
 //
 //  Created by Ger O'Sullivan on 2/27/13.
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
@@ -14,6 +14,7 @@
 #import "ParseDotComManagerDelegate.h"
 
 @class ParseDotComManager;
+@class SocialNetworkUtilities;
 
 @interface GuestListViewController : UIViewController <FPPopoverControllerDelegate, GuestListViewManagerDelegate, ParseDotComManagerDelegate>
 {
@@ -28,7 +29,7 @@
 @property (nonatomic, strong) NSMutableArray *guestFullListForSlType;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSObject <UITableViewDataSource, UITableViewDelegate> *dataSource;
-@property (nonatomic, strong) AnseoObjectConfiguration *objectConfiguration;
+@property (nonatomic, strong) E1HObjectConfiguration *objectConfiguration;
 @property (strong) ParseDotComManager *parseDotComMgr;
 
 - (void)didSelectPopoverRow:(NSUInteger)rowNum forSocialNetworkType:(SocialNetworkType)slType;

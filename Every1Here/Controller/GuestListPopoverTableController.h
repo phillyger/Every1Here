@@ -14,7 +14,7 @@
 @class GuestListViewController;
 @class MeetupDotComManager;
 @class TwitterDotComManager;
-@class AnseoObjectConfiguration;
+@class E1HObjectConfiguration;
 @class GuestSelectedCell;
 
 
@@ -24,7 +24,7 @@
 @property (weak) IBOutlet GuestSelectedCell *guestCell;
 @property (strong) MeetupDotComManager *meetupDotComMgr;
 @property (strong) TwitterDotComManager *twitterDotComMgr;
-@property (strong) AnseoObjectConfiguration *objectConfiguration;
+@property (strong) E1HObjectConfiguration *objectConfiguration;
 
 @property(nonatomic,assign) GuestListViewController *delegate;
 @property (nonatomic, readwrite) SocialNetworkType slType;

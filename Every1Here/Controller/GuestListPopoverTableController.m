@@ -11,7 +11,7 @@
 #import "GuestManagerDelegate.h"
 #import "MeetupDotComManager.h"
 #import "TwitterDotComManager.h"
-#import "AnseoObjectConfiguration.h"
+#import "E1HObjectConfiguration.h"
 #import "GuestSelectedCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "Event.h"
@@ -61,7 +61,7 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     [self.tableView registerNib:guestCellNib
          forCellReuseIdentifier:guestCellReuseIdentifier];
     
-    self.objectConfiguration = [[AnseoObjectConfiguration alloc] init];
+    self.objectConfiguration = [[E1HObjectConfiguration alloc] init];
     
 //    guestFullListForSlType = [[NSMutableArray alloc] init];
 
@@ -260,7 +260,7 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     switch (self.slType)
     {
         case Meetup:
-            self.meetupDotComMgr = [objectConfiguration meetupDotComManager];
+            self.meetupDotComMgr = [self.objectConfiguration meetupDotComManager];
             self.meetupDotComMgr.guestDelegate = self;
             //        Event *selectedEvent = (Event *)[(GuestListTableDataSource *)self.dataSource event];
             [self.meetupDotComMgr fetchGuestsForGroupName:@"Panorama-Toastmasters"];
@@ -278,7 +278,7 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
             break;
             
         case Twitter:
-            self.twitterDotComMgr = [objectConfiguration twitterDotComManager];
+            self.twitterDotComMgr = [self.objectConfiguration twitterDotComManager];
             self.twitterDotComMgr.guestDelegate = self;
             [self.twitterDotComMgr fetchGuestsForGroupName:@"panoramatoast"];
             

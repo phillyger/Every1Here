@@ -1,12 +1,12 @@
 //
-//  AnseoObjectConfiguration.m
-//  Anseo
+//  Every1HereObjectConfiguration.m
+//  Every1Here
 //
 //  Created by Ger O'Sullivan on 2/13/13.
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
 //
 
-#import "AnseoObjectConfiguration.h"
+#import "E1HObjectConfiguration.h"
 #import "ParseDotComManager.h"
 #import "ParseDotComCommunicator.h"
 #import "MeetupDotComManager.h"
@@ -18,7 +18,7 @@
 #import "GuestBuilder.h"
 #import "AvatarStore.h"
 
-@implementation AnseoObjectConfiguration
+@implementation E1HObjectConfiguration
 
 - (ParseDotComManager *)parseDotComManager {
     ParseDotComManager *parseDotComMgr = [[ParseDotComManager alloc] init];

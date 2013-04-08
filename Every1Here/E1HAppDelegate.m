@@ -1,6 +1,6 @@
 //
 //  AppDelegate.m
-//  Anseo
+//  Every1Here
 //
 //  Created by Ger O'Sullivan on 1/11/13.
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
@@ -8,12 +8,12 @@
 
 //
 
-#import "AnseoAppDelegate.h"
+#import "E1HAppDelegate.h"
 
 
 #define AccountTwitterSelectedAccountIdentifier @"TwitterAccountSelectedAccountIdentifier"
 
-@implementation AnseoAppDelegate
+@implementation E1HAppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

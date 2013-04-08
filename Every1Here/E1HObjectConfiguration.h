@@ -1,6 +1,6 @@
 //
-//  AnseoObjectConfiguration.h
-//  Anseo
+//  Every1HereObjectConfiguration.h
+//  Every1Here
 //
 //  Created by Ger O'Sullivan on 2/13/13.
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
@@ -13,7 +13,7 @@
 @class TwitterDotComManager;
 @class AvatarStore;
 
-@interface AnseoObjectConfiguration : NSObject
+@interface E1HObjectConfiguration : NSObject
 
 /**
  * A fully configured ParseDotComManager instance.

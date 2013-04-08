@@ -7,7 +7,6 @@
 //
 
 #import "EventListViewController.h"
-#import "AnseoObjectConfiguration.h"
 #import "EventManagerDelegate.h"
 
 @class ParseDotComManager;

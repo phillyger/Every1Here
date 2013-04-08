@@ -8,7 +8,7 @@
 
 #import "PastEventListViewController.h"
 #import "ParseDotComManager.h"
-#import "AnseoObjectConfiguration.h"
+#import "E1HObjectConfiguration.h"
 #import "EventListTableDataSource.h"
 #import <objc/runtime.h>
 /* Temp */

@@ -300,6 +300,61 @@
         <image name="163-glasses-1.png" width="30" height="23"/>
         <image name="17-bar-chart.png" width="29" height="24"/>
     </resources>
+    <classes>
+        <class className="EventCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EventCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="dateLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="dayLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="groupLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="monthLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="starttimeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="EventListViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EventListViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="EventMemberGuestTabBarController" superclassName="UITabBarController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EventMemberGuestTabBarController.h"/>
+        </class>
+        <class className="GuestListViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GuestListViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="popover:slType:"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="GuestListViewNavigationItem" superclassName="UINavigationItem">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GuestListViewNavigationItem.h"/>
+        </class>
+        <class className="MemberListViewController" superclassName="EventListViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MemberListViewController.h"/>
+        </class>
+        <class className="MemberSummaryCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MemberSummaryCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="attendance" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="avatarView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="displayNameLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="rolesView_1" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="rolesView_2" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="rolesView_3" candidateClass="UIImageView"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="PastEventListViewController" superclassName="EventListViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PastEventListViewController.h"/>
+        </class>
+        <class className="UpcomingEventListViewController" superclassName="EventListViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UpcomingEventListViewController.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

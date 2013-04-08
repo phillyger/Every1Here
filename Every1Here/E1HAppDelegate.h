@@ -1,6 +1,6 @@
 //
 //  AppDelegate.h
-//  Anseo
+//  Every1Here
 //
 //  Created by Ger O'Sullivan on 1/11/13.
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
@@ -11,7 +11,7 @@
 #define AccountFacebookAccountAccessGranted @"FacebookAccountAccessGranted"
 #define AccountTwitterAccountAccessGranted @"TwitterAccountAccessGranted"
 
-@interface AnseoAppDelegate : UIResponder <UIApplicationDelegate>
+@interface E1HAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) ACAccountStore *accountStore;

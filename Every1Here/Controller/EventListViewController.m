@@ -1,6 +1,6 @@
 //
-//  AnseoViewController.m
-//  Anseo
+//  Every1HereViewController.m
+//  Every1Here
 //
 //  Created by Ger O'Sullivan on 2/3/13.
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
@@ -9,7 +9,7 @@
 #import "EventListViewController.h"
 #import "EventListTableDataSource.h"
 #import "MemberListTableDataSource.h"
-#import "AnseoObjectConfiguration.h"
+#import "E1HObjectConfiguration.h"
 #import "ParseDotComManager.h"
 #import "MeetupDotComManager.h"
 #import "EventCell.h"
