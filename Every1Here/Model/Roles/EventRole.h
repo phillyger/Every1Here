@@ -34,8 +34,7 @@ typedef NS_OPTIONS(NSUInteger, TMEventRoles) {
 
 @property (nonatomic) TMEventRoles eventRoles;
 @property (nonatomic, getter = isAttending) BOOL attendance;
-@property (nonatomic) NSInteger withMembers;
-@property (nonatomic) NSInteger withGuests;
+@property (nonatomic) NSInteger guestCount;
 
 
 - (NSDictionary *)mapFieldsToIconsMedium;

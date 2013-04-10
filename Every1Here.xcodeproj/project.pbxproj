@@ -32,9 +32,21 @@
 		288DF38A17125A60008598DA /* PastEventListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF38717125A60008598DA /* PastEventListViewController.m */; };
 		288DF38B17125A60008598DA /* UpcomingEventListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF38917125A60008598DA /* UpcomingEventListViewController.m */; };
 		288DF38D171260E4008598DA /* GuestNavIconView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 288DF38C171260E4008598DA /* GuestNavIconView.xib */; };
+		288DF3901713015D008598DA /* User.plist in Resources */ = {isa = PBXBuildFile; fileRef = 288DF38F1713015D008598DA /* User.plist */; };
+		288DF39217130173008598DA /* Member.plist in Resources */ = {isa = PBXBuildFile; fileRef = 288DF39117130173008598DA /* Member.plist */; };
+		288DF39417130184008598DA /* Guest.plist in Resources */ = {isa = PBXBuildFile; fileRef = 288DF39317130184008598DA /* Guest.plist */; };
+		288DF39617130196008598DA /* Attendance.plist in Resources */ = {isa = PBXBuildFile; fileRef = 288DF39517130196008598DA /* Attendance.plist */; };
+		288DF398171306AD008598DA /* Classes.plist in Resources */ = {isa = PBXBuildFile; fileRef = 288DF397171306AD008598DA /* Classes.plist */; };
+		288DF39B17131CB1008598DA /* E1HOperationFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF39A17131CB1008598DA /* E1HOperationFactory.m */; };
+		288DF39E1713685D008598DA /* Attendance.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF39D1713685D008598DA /* Attendance.m */; };
+		288DF3A1171369AC008598DA /* AttendanceBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3A0171369AC008598DA /* AttendanceBuilder.m */; };
+		288DF3A417145278008598DA /* CommonUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3A317145278008598DA /* CommonUtilities.m */; };
+		288DF3A7171463DB008598DA /* E1HRESTApiOperationDelete.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3A6171463DA008598DA /* E1HRESTApiOperationDelete.m */; };
+		288DF3AB1714840C008598DA /* E1HRESTApiOperationUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3AA1714840B008598DA /* E1HRESTApiOperationUpdate.m */; };
+		288DF3AE171488DB008598DA /* Receptionist.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3AD171488DA008598DA /* Receptionist.m */; };
 		28B8E1151710876A0095BB6F /* NSDictionary+RWFlatten.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA25171087560095BB6F /* NSDictionary+RWFlatten.m */; };
 		28B8E1161710876A0095BB6F /* CommandBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA29171087560095BB6F /* CommandBase.m */; };
-		28B8E1171710876A0095BB6F /* EIHRESTApiOperationInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA2C171087560095BB6F /* EIHRESTApiOperationInsert.m */; };
+		28B8E1171710876A0095BB6F /* E1HRESTApiOperationInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA2C171087560095BB6F /* E1HRESTApiOperationInsert.m */; };
 		28B8E1181710876A0095BB6F /* Invoker.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA2E171087560095BB6F /* Invoker.m */; };
 		28B8E1191710876A0095BB6F /* Receiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA30171087560095BB6F /* Receiver.m */; };
 		28B8E11A1710876A0095BB6F /* EventBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA34171087560095BB6F /* EventBuilder.m */; };
@@ -203,14 +215,33 @@
 		288DF38817125A60008598DA /* UpcomingEventListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpcomingEventListViewController.h; sourceTree = "<group>"; };
 		288DF38917125A60008598DA /* UpcomingEventListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpcomingEventListViewController.m; sourceTree = "<group>"; };
 		288DF38C171260E4008598DA /* GuestNavIconView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GuestNavIconView.xib; sourceTree = "<group>"; };
+		288DF38F1713015D008598DA /* User.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = User.plist; path = "Resources/Parse ORM/User.plist"; sourceTree = "<group>"; };
+		288DF39117130173008598DA /* Member.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Member.plist; path = "Resources/Parse ORM/Member.plist"; sourceTree = "<group>"; };
+		288DF39317130184008598DA /* Guest.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Guest.plist; path = "Resources/Parse ORM/Guest.plist"; sourceTree = "<group>"; };
+		288DF39517130196008598DA /* Attendance.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Attendance.plist; path = "Resources/Parse ORM/Attendance.plist"; sourceTree = "<group>"; };
+		288DF397171306AD008598DA /* Classes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Classes.plist; path = "Resources/Parse ORM/Classes.plist"; sourceTree = "<group>"; };
+		288DF39917131CB1008598DA /* E1HOperationFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E1HOperationFactory.h; sourceTree = "<group>"; };
+		288DF39A17131CB1008598DA /* E1HOperationFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E1HOperationFactory.m; sourceTree = "<group>"; };
+		288DF39C1713685C008598DA /* Attendance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Attendance.h; sourceTree = "<group>"; };
+		288DF39D1713685D008598DA /* Attendance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Attendance.m; sourceTree = "<group>"; };
+		288DF39F171369AC008598DA /* AttendanceBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceBuilder.h; sourceTree = "<group>"; };
+		288DF3A0171369AC008598DA /* AttendanceBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceBuilder.m; sourceTree = "<group>"; };
+		288DF3A217145278008598DA /* CommonUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonUtilities.h; sourceTree = "<group>"; };
+		288DF3A317145278008598DA /* CommonUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonUtilities.m; sourceTree = "<group>"; };
+		288DF3A5171463DA008598DA /* E1HRESTApiOperationDelete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E1HRESTApiOperationDelete.h; sourceTree = "<group>"; };
+		288DF3A6171463DA008598DA /* E1HRESTApiOperationDelete.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E1HRESTApiOperationDelete.m; sourceTree = "<group>"; };
+		288DF3A91714840B008598DA /* E1HRESTApiOperationUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E1HRESTApiOperationUpdate.h; sourceTree = "<group>"; };
+		288DF3AA1714840B008598DA /* E1HRESTApiOperationUpdate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E1HRESTApiOperationUpdate.m; sourceTree = "<group>"; };
+		288DF3AC171488D9008598DA /* Receptionist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Receptionist.h; sourceTree = "<group>"; };
+		288DF3AD171488DA008598DA /* Receptionist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Receptionist.m; sourceTree = "<group>"; };
 		28B8BA24171087560095BB6F /* NSDictionary+RWFlatten.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+RWFlatten.h"; sourceTree = "<group>"; };
 		28B8BA25171087560095BB6F /* NSDictionary+RWFlatten.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+RWFlatten.m"; sourceTree = "<group>"; };
 		28B8BA27171087560095BB6F /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
 		28B8BA28171087560095BB6F /* CommandBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandBase.h; sourceTree = "<group>"; };
 		28B8BA29171087560095BB6F /* CommandBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandBase.m; sourceTree = "<group>"; };
 		28B8BA2A171087560095BB6F /* E1HRESTApiOperationFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E1HRESTApiOperationFactory.h; sourceTree = "<group>"; };
-		28B8BA2B171087560095BB6F /* EIHRESTApiOperationInsert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EIHRESTApiOperationInsert.h; sourceTree = "<group>"; };
-		28B8BA2C171087560095BB6F /* EIHRESTApiOperationInsert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EIHRESTApiOperationInsert.m; sourceTree = "<group>"; };
+		28B8BA2B171087560095BB6F /* E1HRESTApiOperationInsert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E1HRESTApiOperationInsert.h; sourceTree = "<group>"; };
+		28B8BA2C171087560095BB6F /* E1HRESTApiOperationInsert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E1HRESTApiOperationInsert.m; sourceTree = "<group>"; };
 		28B8BA2D171087560095BB6F /* Invoker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Invoker.h; sourceTree = "<group>"; };
 		28B8BA2E171087560095BB6F /* Invoker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Invoker.m; sourceTree = "<group>"; };
 		28B8BA2F171087560095BB6F /* Receiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Receiver.h; sourceTree = "<group>"; };
@@ -466,6 +497,32 @@
 			path = "Data Sources";
 			sourceTree = "<group>";
 		};
+		288DF38E1713011F008598DA /* Parse ORM */ = {
+			isa = PBXGroup;
+			children = (
+				288DF38F1713015D008598DA /* User.plist */,
+				288DF39117130173008598DA /* Member.plist */,
+				288DF39317130184008598DA /* Guest.plist */,
+				288DF39517130196008598DA /* Attendance.plist */,
+				288DF397171306AD008598DA /* Classes.plist */,
+			);
+			name = "Parse ORM";
+			path = ..;
+			sourceTree = "<group>";
+		};
+		288DF3A8171463EA008598DA /* CRUD */ = {
+			isa = PBXGroup;
+			children = (
+				28B8BA2B171087560095BB6F /* E1HRESTApiOperationInsert.h */,
+				28B8BA2C171087560095BB6F /* E1HRESTApiOperationInsert.m */,
+				288DF3A5171463DA008598DA /* E1HRESTApiOperationDelete.h */,
+				288DF3A6171463DA008598DA /* E1HRESTApiOperationDelete.m */,
+				288DF3A91714840B008598DA /* E1HRESTApiOperationUpdate.h */,
+				288DF3AA1714840B008598DA /* E1HRESTApiOperationUpdate.m */,
+			);
+			name = CRUD;
+			sourceTree = "<group>";
+		};
 		28B8BA23171087560095BB6F /* Categories */ = {
 			isa = PBXGroup;
 			children = (
@@ -478,16 +535,17 @@
 		28B8BA26171087560095BB6F /* Command */ = {
 			isa = PBXGroup;
 			children = (
+				288DF3A8171463EA008598DA /* CRUD */,
 				28B8BA27171087560095BB6F /* Command.h */,
 				28B8BA28171087560095BB6F /* CommandBase.h */,
 				28B8BA29171087560095BB6F /* CommandBase.m */,
 				28B8BA2A171087560095BB6F /* E1HRESTApiOperationFactory.h */,
-				28B8BA2B171087560095BB6F /* EIHRESTApiOperationInsert.h */,
-				28B8BA2C171087560095BB6F /* EIHRESTApiOperationInsert.m */,
 				28B8BA2D171087560095BB6F /* Invoker.h */,
 				28B8BA2E171087560095BB6F /* Invoker.m */,
 				28B8BA2F171087560095BB6F /* Receiver.h */,
 				28B8BA30171087560095BB6F /* Receiver.m */,
+				288DF39917131CB1008598DA /* E1HOperationFactory.h */,
+				288DF39A17131CB1008598DA /* E1HOperationFactory.m */,
 			);
 			path = Command;
 			sourceTree = "<group>";
@@ -537,6 +595,8 @@
 				28B8BA39171087560095BB6F /* Users */,
 				28B8BA3E171087560095BB6F /* VenueBuilder.h */,
 				28B8BA3F171087560095BB6F /* VenueBuilder.m */,
+				288DF39F171369AC008598DA /* AttendanceBuilder.h */,
+				288DF3A0171369AC008598DA /* AttendanceBuilder.m */,
 			);
 			path = Builders;
 			sourceTree = "<group>";
@@ -572,9 +632,9 @@
 		28B8BA4B171087560095BB6F /* Communicators */ = {
 			isa = PBXGroup;
 			children = (
+				28B8BA4E171087560095BB6F /* Operations */,
 				28B8BA4C171087560095BB6F /* MeetupDotComCommunicator.h */,
 				28B8BA4D171087560095BB6F /* MeetupDotComCommunicator.m */,
-				28B8BA4E171087560095BB6F /* Operations */,
 				28B8BA58171087560095BB6F /* ParseDotComCommunicator.h */,
 				28B8BA59171087560095BB6F /* ParseDotComCommunicator.m */,
 				28B8BA5A171087560095BB6F /* TwitterDotComCommunicator.h */,
@@ -678,6 +738,8 @@
 			children = (
 				28B8BA84171087560095BB6F /* SocialNetworkUtilities.h */,
 				28B8BA85171087560095BB6F /* SocialNetworkUtilities.m */,
+				288DF3A217145278008598DA /* CommonUtilities.h */,
+				288DF3A317145278008598DA /* CommonUtilities.m */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -695,6 +757,10 @@
 			children = (
 				28B8E0BE1710876A0095BB6F /* Address.h */,
 				28B8E0BF1710876A0095BB6F /* Address.m */,
+				288DF39C1713685C008598DA /* Attendance.h */,
+				288DF39D1713685D008598DA /* Attendance.m */,
+				288DF3AC171488D9008598DA /* Receptionist.h */,
+				288DF3AD171488DA008598DA /* Receptionist.m */,
 				28B8E0C01710876A0095BB6F /* AttendanceReceptionist.h */,
 				28B8E0C11710876A0095BB6F /* AttendanceReceptionist.m */,
 				28B8E0C21710876A0095BB6F /* DisplayNameReceptionist.h */,
@@ -752,6 +818,7 @@
 		28B8E0E61710876A0095BB6F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				288DF38E1713011F008598DA /* Parse ORM */,
 				28B8F05E171088F00095BB6F /* images */,
 			);
 			path = Resources;
@@ -1125,6 +1192,11 @@
 				28CA797F1710FF5E006494DF /* Default.png in Resources */,
 				28CA79801710FF5E006494DF /* Default@2x.png in Resources */,
 				288DF38D171260E4008598DA /* GuestNavIconView.xib in Resources */,
+				288DF3901713015D008598DA /* User.plist in Resources */,
+				288DF39217130173008598DA /* Member.plist in Resources */,
+				288DF39417130184008598DA /* Guest.plist in Resources */,
+				288DF39617130196008598DA /* Attendance.plist in Resources */,
+				288DF398171306AD008598DA /* Classes.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1190,7 +1262,7 @@
 				28E747E51710831200F97883 /* main.m in Sources */,
 				28B8E1151710876A0095BB6F /* NSDictionary+RWFlatten.m in Sources */,
 				28B8E1161710876A0095BB6F /* CommandBase.m in Sources */,
-				28B8E1171710876A0095BB6F /* EIHRESTApiOperationInsert.m in Sources */,
+				28B8E1171710876A0095BB6F /* E1HRESTApiOperationInsert.m in Sources */,
 				28B8E1181710876A0095BB6F /* Invoker.m in Sources */,
 				28B8E1191710876A0095BB6F /* Receiver.m in Sources */,
 				28B8E11A1710876A0095BB6F /* EventBuilder.m in Sources */,
@@ -1257,6 +1329,13 @@
 				288DF38517125838008598DA /* GuestListPopoverTableController.m in Sources */,
 				288DF38A17125A60008598DA /* PastEventListViewController.m in Sources */,
 				288DF38B17125A60008598DA /* UpcomingEventListViewController.m in Sources */,
+				288DF39B17131CB1008598DA /* E1HOperationFactory.m in Sources */,
+				288DF39E1713685D008598DA /* Attendance.m in Sources */,
+				288DF3A1171369AC008598DA /* AttendanceBuilder.m in Sources */,
+				288DF3A417145278008598DA /* CommonUtilities.m in Sources */,
+				288DF3A7171463DB008598DA /* E1HRESTApiOperationDelete.m in Sources */,
+				288DF3AB1714840C008598DA /* E1HRESTApiOperationUpdate.m in Sources */,
+				288DF3AE171488DB008598DA /* Receptionist.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

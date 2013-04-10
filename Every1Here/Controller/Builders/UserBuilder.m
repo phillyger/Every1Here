@@ -17,14 +17,17 @@
  *  Data coming from PARSE.com via RESTful API
  */
 + (User *)memberFromDictionary:(NSDictionary *)memberValues {
-    NSString *userId;
-    NSString *firstName = [memberValues objectForKey: @"firstName"];
-    NSString *lastName = [memberValues objectForKey: @"lastName"];
-    NSString *objectId = [memberValues objectForKey:@"objectId"];
-    if ([memberValues objectForKey:@"userId"]!=nil) {
-        userId = [memberValues objectForKey:@"userId"];
-    }
-    NSString *primaryEmail = [memberValues objectForKey:@"primaryEmail"];
+
+    NSString *firstName = [memberValues valueForKey:@"firstName"];
+    NSString *lastName = [memberValues valueForKey: @"lastName"];
+    NSString *objectId = [memberValues valueForKey:@"objectId"];
+    NSString *userId = [memberValues valueForKey:@"userId"];
+    
+//    if ([memberValues valueForKey:@"userId"]!=nil) {
+//        userId = [memberValues valueForKey:@"userId"];
+//    }
+    NSString *primaryEmail = [memberValues valueForKey:@"primaryEmail"];
+    NSString *eventId = [memberValues valueForKey:@"eventId"];
     
 //    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 //    [dateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'"];
@@ -41,6 +44,7 @@
                                   avatarLocation:nil
                                         objectId:objectId
                                           userId:userId
+                                        eventId:eventId
                                           slType:NONE];
     return user;
 }
@@ -78,7 +82,8 @@
 + (User *)guestFromTwitterDictionary:(NSDictionary *)guestValues socialNetworkType:(SocialNetworkType)aSlType {
     NSString *displayName = [guestValues objectForKey: @"name"];
     NSString *avatarURL = guestValues[@"profile_background_image_url"];
-    User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL slType:aSlType];
+    NSString *eventId = guestValues[@"eventId"];
+    User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL eventId:eventId slType:aSlType];
     return user;
 }
 
@@ -86,7 +91,8 @@
 + (User *)guestFromMeetupDictionary:(NSDictionary *)guestValues socialNetworkType:(SocialNetworkType)aSlType {
     NSString *displayName = [guestValues objectForKey: @"name"];
     NSString *avatarURL = guestValues[@"photo"][@"thumb_link"];
-    User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL slType:aSlType];
+    NSString *eventId = guestValues[@"eventId"];
+    User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL eventId:eventId slType:aSlType];
     return user;
 }
 

@@ -27,7 +27,7 @@
                                ]},
                  
                  { "elements":[
-                               {"type":"QPickerElement", "title":"Attending with Guest(s)?", "key":"withGuests", "items":[[0, 1, 2, 3]]}
+                               {"type":"QPickerElement", "title":"Attending with Guest(s)?", "key":"guestCount", "items":[[0, 1, 2, 3]]}
                                ]},
                  
                  { "elements":[

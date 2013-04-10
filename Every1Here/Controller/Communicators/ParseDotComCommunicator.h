@@ -11,6 +11,7 @@
 #import "ParseDotComCommunicatorDelegate.h"
 #import "EventCommunicatorDelegate.h"
 #import "MemberCommunicatorDelegate.h"
+#import "E1HOperationFactory.h"
 
 @class User;
 @class Event;
@@ -101,6 +102,12 @@ typedef void (^ParseDotComErrorBlock)(NSError *);
                           successHandler:(ParseDotComObjectNotationBlock)successBlock;
 
 - (void)insertNewRow:(id)obj forClass:(NSString *)className withParameters:(NSDictionary *)fieldDict;
+
+- (void)execute:(NSArray *)operations
+  forActionType:(ActionTypes) actionType
+   forClassName:(NSString *) className
+   errorHandler:(ParseDotComErrorBlock)errorBlock
+successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;;
 
 @end
 

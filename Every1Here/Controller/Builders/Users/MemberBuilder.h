@@ -19,7 +19,7 @@
  * @return An array of user objects with a role of member, or nil (with error set) if objectNotation cannot be parsed.
  * @see Question
  */
-- (NSArray *)membersFromJSON: (NSDictionary *)memberDict withAttendance:(NSDictionary *)attendanceDict error: (NSError **)error;
+- (NSArray *)membersFromJSON: (NSDictionary *)memberDict withAttendance:(NSDictionary *)attendanceDict withEventId:(NSString *)eventId error: (NSError **)error;
 
 
 

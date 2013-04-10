@@ -35,8 +35,8 @@
     
     
     if (![self isNewUser]) {
-        QPickerElement *withGuestsElement = (QPickerElement *)[self.root elementWithKey:@"withGuests"];
-        [withGuestsElement setValue:[NSString stringWithFormat:@"%d", [thisEventRole withGuests]]];
+        QPickerElement *guestCountElement = (QPickerElement *)[self.root elementWithKey:@"guestCount"];
+        [guestCountElement setValue:[NSString stringWithFormat:@"%d", [thisEventRole guestCount]]];
         
     }
 
@@ -98,11 +98,11 @@
         
         // Set the attendance field
         QBooleanElement *attendanceElement = (QBooleanElement *)[self.root elementWithKey: @"attendance"];
-        QPickerElement *withGuestsElement = (QPickerElement *)[self.root elementWithKey:@"withGuests"];
+        QPickerElement *guestCountElement = (QPickerElement *)[self.root elementWithKey:@"guestCount"];
         
         //[self markUserInAttendance:[attendanceElement boolValue]];
         [thisEventRole setAttendance:[attendanceElement boolValue]];
-        [thisEventRole setWithGuests:[[withGuestsElement textValue] integerValue]];
+        [thisEventRole setGuestCount:[[guestCountElement textValue] integerValue]];
         // Concatenate the firstName and lastName into fullName
         
         

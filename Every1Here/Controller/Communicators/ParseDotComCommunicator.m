@@ -16,6 +16,9 @@
 #import "User.h"
 #import "Event.h"
 #import "EventRole.h"
+#import "E1HOperationFactory.h"
+#import "E1HRESTApiOperationFactory.h"
+#import "RESTApiOperation.h"
 
 #define kURLToClasses @"1/classes"
 #define kURLToBatchProcess @"1/batch"
@@ -129,7 +132,7 @@
      /*** Clean up and cancel any existing items in the queue first **/
      [self cancelAndDiscardURLConnection];
      
-     //[[AFParseDotComAPIClient sharedClient] setParameterEncoding:AFJSONParameterEncoding];
+     [[AFParseDotComAPIClient sharedClient] setParameterEncoding:AFJSONParameterEncoding];
                                           
       [[AFParseDotComAPIClient sharedClient] postPath:postingURLPath
                                           parameters:postingURLParameters
@@ -476,6 +479,10 @@
 //    }
     
 //    fieldDict = nil;
+    
+    
+    id insertOp= [E1HOperationFactory create:Insert];
+    [insertOp createOperationWithObj:obj forClassName:className withKey:nil];
 
     
     [self postContentToURLPath: urlPath
@@ -501,7 +508,7 @@
     
     parameters = @{@"firstName": [selectedUser firstName],
                    @"lastName": [selectedUser lastName],
-                   @"userId": [selectedUser userId],
+                   @"userId": @"bKacaqBBmH",
                    @"isActive": [NSNumber numberWithBool:YES],
                    @"memberSince": @{@"__type": @"Date",
                                      @"iso": formattedDate},
@@ -626,7 +633,7 @@
     
     parameters = @{@"eventId": [selectedEvent objectId],
                    @"userId": [selectedUser userId],
-                   @"withGuests": [NSNumber numberWithInt:[thisEventRole withGuests]],
+                   @"guestCount": [NSNumber numberWithInt:[thisEventRole guestCount]],
                    @"eventRoles":[NSNumber numberWithInt:roles],
                    };
     
@@ -737,8 +744,7 @@
     
     parameters = @{@"eventId": [selectedEvent objectId],
                    @"userId": [selectedUser userId],
-                   @"withMembers": [NSNumber numberWithInt:[thisEventRole withMembers]],
-                   @"withGuests": [NSNumber numberWithInt:[thisEventRole withGuests]],
+                   @"guestCount": [NSNumber numberWithInt:[thisEventRole guestCount]],
                    @"eventRoles":[NSNumber numberWithInt:roles],
                    };
     
@@ -756,6 +762,56 @@
                   successHandler:(ParseDotComObjectNotationBlock)successBlock];
     
 }
+
+- (void)execute:(NSArray *)operations
+  forActionType:(ActionTypes)actionType
+   forClassName:(NSString *)className
+   errorHandler:(ParseDotComErrorBlock)errorBlock
+successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
+    
+    NSMutableArray *mutableRequests = [NSMutableArray array];
+    
+    [operations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        RESTApiOperation *op = (RESTApiOperation *)obj;
+        [mutableRequests addObject:[[AFParseDotComAPIClient sharedClient] requestWithMethod:[op uriMethod] path:[op uriPath] parameters:[op data]]];
+    }];
+//
+//    NSDictionary *parameters = nil;
+//    //     NSString *jsonString = nil;
+//    NSString *urlPath = nil;
+//    
+//    
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    [dateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'"];
+//    NSString *formattedDate = [dateFormatter stringFromDate:[NSDate date]];
+//    
+//    parameters = @{@"firstName": @"Tom",
+//                   @"lastName": @"Thumb",
+//                   @"userId": @"bKacaqBBmH",
+//                   @"isActive": [NSNumber numberWithBool:YES],
+//                   @"memberSince": @{@"__type": @"Date",
+//                                     @"iso": formattedDate},
+//                   @"primaryEmail": @"tt@gmail.com"
+//                   };
+//    
+//    NSLog(@"%@", parameters);
+//    
+//    dateFormatter = nil;
+//    urlPath = kURLToMembersClass;        //Parse class object are case-sensitive.  **Must MATCH with MBaaS**
+//    NSLog(@"%@", kURLToMembersClass);
+//    
+//    [self postContentToURLPath: urlPath
+//                    parameters: parameters
+//                  errorHandler:(ParseDotComErrorBlock)errorBlock
+//                successHandler:(ParseDotComObjectNotationBlock)successBlock];
+    
+    
+    [self batchContentForRequests:mutableRequests
+                     errorHandler:(ParseDotComErrorBlock)errorBlock
+              successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock];
+}
+
+
 
 - (void)dealloc {
      [[[AFParseDotComAPIClient sharedClient] operationQueue] cancelAllOperations];

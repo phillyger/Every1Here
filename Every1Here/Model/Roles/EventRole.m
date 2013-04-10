@@ -21,8 +21,7 @@
 @implementation EventRole
 @synthesize eventRoles;
 @synthesize attendance;
-@synthesize withGuests;
-@synthesize withMembers;
+@synthesize guestCount;
 
 -(id)initWithUser:(User *)aUser effective:(EffectiveDateRange *)anEffectiveDateRange {
     if (self = [super initWithUser:aUser effective:anEffectiveDateRange]) {

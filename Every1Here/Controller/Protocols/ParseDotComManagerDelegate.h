@@ -7,9 +7,11 @@
 ////
 //
 #import <Foundation/Foundation.h>
+#import "E1HOperationFactory.h"
 
 @class Event;
 @class User;
+
 
 /**
  * The delegate protocol for the ParseDotComManager class.
@@ -96,6 +98,24 @@
  * The manager received an error when deleting a User attendance record into Parse.com.
  */
 - (void)deletingExistingUserAttendanceFailedWithError: (NSError *)error;
+
+
+/**
+ * The manager received an error when executing insert operations into Parse.com.
+ */
+- (void)executedOpsFailedWithError:(NSError *)error
+                     forActionType:(ActionTypes) actionType
+                      forClassName:(NSString *)className;
+
+
+/**
+ * The manager successfully deleted an existing User Attendance record into Parse.com.
+ */
+- (void)didExecuteOps:(NSArray *)objectNotationList
+              forActionType:(ActionTypes) actionType
+               forClassName:(NSString *)className;
+
+
 
 
 @end

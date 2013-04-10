@@ -30,7 +30,9 @@
 
 - (id)init {
     
-    return [self initWithUriMethod:nil uriPath:nil data:nil dependencies:nil];
+    return [self initWithUriMethod:nil uriPath:nil data:nil];
 }
+
+
 
 @end

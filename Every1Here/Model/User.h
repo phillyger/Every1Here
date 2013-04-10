@@ -23,14 +23,29 @@
 @property (nonatomic, strong)NSString *objectId;
 
 /**
+ *   Parse eventId associated with User Table
+ */
+@property (copy) NSString *eventId;
+
+/**
  *   Parse ObjectId associated with User Table
  */
 @property (copy) NSString *userId;
 
 /**
+ *   User has an Attendance record
+ */
+@property (nonatomic, readonly) BOOL hasUserRecord; // Return YES if User has an User record.
+
+/**
  *   Parse ObjectId associated with Attendance Table
  */
 @property (copy) NSString *attendanceId;
+
+/**
+ *   User has an Attendance record
+ */
+@property (nonatomic, readonly) BOOL hasAttendanceRecord; // Return YES if User has an Attendance record.
 
 /**
  *   The display name of the user
@@ -66,32 +81,38 @@
          avatarLocation:(NSString *)location
                objectId:(NSString *)anObjectId
                  userId:(NSString *)aUserId
+                eventId:(NSString *)anEventId
                  slType:(SocialNetworkType)aSlType;
 
 - (id)initWithFirstName:(NSString *)aFirstName lastName:(NSString *)aLastName;
 - (id)initWithFirstName:(NSString *)aFirstName
                lastName:(NSString *)aLastName
          avatarLocation:(NSString *)anAvatarLocation
-               objectId:(NSString *)anObjectId;
+               objectId:(NSString *)anObjectId
+                eventId:(NSString *)anEventId;
 
 - (id)initWithFirstName:(NSString *)aFirstName
                lastName:(NSString *)aLastName
          avatarLocation:(NSString *)anAvatarLocation
                objectId:(NSString *)anObjectId
-                 userId:(NSString *)aUserId;
+                 userId:(NSString *)aUserId
+                eventId:(NSString *)anEventId;
 
 - (id)initWithFirstName:(NSString *)aFirstName
                lastName:(NSString *)aLastName
-         avatarLocation:(NSString *)anAvatarLocation;
+         avatarLocation:(NSString *)anAvatarLocation
+                eventId:(NSString *)anEventId;
 
 - (id)initWithDisplayName:(NSString *)aDisplayName
            avatarLocation:(NSString *)location
+                  eventId:(NSString *)anEventId
                    slType:(SocialNetworkType)aSlType;
 
 - (id)initWithDisplayName: (NSString *)aDisplayName
          primaryEmailAddr:(NSString *)primaryEmailAddr
        secondaryEmailAddr:(NSString *)secondaryEmailAddr
            avatarLocation:(NSString *)location
+                  eventId:(NSString *)anEventId
                    slType:(SocialNetworkType)aSlType;
 
 @end

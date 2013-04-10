@@ -13,7 +13,7 @@
 #import "MemberCommunicatorDelegate.h"
 #import "EventManagerDelegate.h"
 #import "MemberManagerDelegate.h"
-
+#import "E1HOperationFactory.h"
 
 @class ParseDotComCommunicator;
 @class EventBuilder;
@@ -99,6 +99,9 @@
 
 - (void)deleteAttendanceForUser:(User *)selectedUser;
 
+- (void)execute:(NSArray *)operations
+  forActionType:(ActionTypes) actionType
+   forClassName:(NSString *)className;
 
 
 @end

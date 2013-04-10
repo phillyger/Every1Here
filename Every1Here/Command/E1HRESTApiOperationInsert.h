@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "E1HRESTApiOperationFactory.h"
 
-@interface EIHRESTApiOperationInsert : NSObject <E1HRESTApiOperationFactory>
+@interface E1HRESTApiOperationInsert : NSObject <E1HRESTApiOperationFactory>
 
 @end

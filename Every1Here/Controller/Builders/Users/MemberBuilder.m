@@ -13,7 +13,7 @@
 
 @implementation MemberBuilder
 
-- (NSArray *)membersFromJSON:(NSDictionary *)memberDict withAttendance:(NSDictionary *)attendanceDict error:(NSError *__autoreleasing *)error
+- (NSArray *)membersFromJSON:(NSDictionary *)memberDict withAttendance:(NSDictionary *)attendanceDict withEventId:(NSString *)eventId error:(NSError *__autoreleasing *)error
 {
     NSParameterAssert(memberDict != nil);
 //    NSData *unicodeNotation = [objectNotation dataUsingEncoding: NSUTF8StringEncoding];
@@ -43,12 +43,20 @@
     if (attendanceDict) 
        attendance = [attendanceDict objectForKey: @"results"];
        
-
+    // Mutable dictionary to allow us to add the eventId
+    NSMutableDictionary *memberWIthEventId = [[NSMutableDictionary alloc] init];
+    
     
     NSMutableArray *results = [NSMutableArray arrayWithCapacity: [members count]];
     for (NSDictionary *member in members) {
         User *user = [[User alloc] init];
-        user = [UserBuilder memberFromDictionary: member];
+        
+        // Append the eventId to dictionary values
+        memberWIthEventId = [member mutableCopy];
+        [memberWIthEventId setObject:eventId forKey:@"eventId"];
+       
+        
+        user = [UserBuilder memberFromDictionary: memberWIthEventId];
         
         [user addRole:@"MemberRole"];
         [user addRole:@"EventRole"];
@@ -70,14 +78,14 @@
                     [user setAttendanceId:[attendanceRow objectForKey:@"objectId"]];
                     [thisEventRole setEventRoles: [[attendanceRow objectForKey:@"eventRoles"]unsignedIntValue]];
                     [thisEventRole setAttendance:TRUE];
-                    [thisEventRole setWithMembers:[[attendanceRow objectForKey:@"withMembers"]unsignedIntValue]];
-                    [thisEventRole setWithGuests:[[attendanceRow objectForKey:@"withGuests"]unsignedIntValue]];
+                    [thisEventRole setGuestCount:[[attendanceRow objectForKey:@"guestCount"]unsignedIntValue]];
                 }
             }];
             
                         
         }
         [results addObject: user];
+        memberWIthEventId = nil;
     }
     return [results copy];
     

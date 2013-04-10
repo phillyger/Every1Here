@@ -15,6 +15,7 @@
 #import "Event.h"
 #import "User.h"
 #import "AFHTTPRequestOperation.h"
+#import "E1HOperationFactory.h"
 
 @interface ParseDotComManager ()
 
@@ -32,6 +33,7 @@
 
 - (void)tellDelegateAboutExistingAttendanceUpdateError: (NSError *)underlyingError;
 - (void)tellDelegateAboutExistingAttendanceDeleteError: (NSError *)underlyingError;
+- (void)tellDelegateAboutOpsInsertError: (NSError *)underlyingError;
 
 
 
@@ -69,6 +71,29 @@
     parseDotComDelegate = newDelegate;
 }
 
+
+#pragma mark Operations
+
+- (void)execute:(NSArray *)operations
+  forActionType:(ActionTypes) actionType
+   forClassName:(NSString *)className
+   {
+    [communicator execute:operations
+            forActionType:(ActionTypes) actionType
+             forClassName:(NSString *)className
+                                 errorHandler:^(NSError * error){
+                                     [self executeOpsFailedWithError:error
+                                                forActionType:actionType
+                                                forClassName:className];
+                                 }
+                          successBatchHandler:^(NSArray *operations) {
+                              [self executedOps:operations
+                                  forActionType:actionType
+                                   forClassName:className];
+                          }
+     ];
+}
+
 #pragma mark Members
 
 //- (void)fetchMembersForGroup:(Group *)group
@@ -103,7 +128,7 @@
                                       [self fetchingMembersFailedWithError:error];
                                   }
                                 successBatchHandler:^(NSArray *operations) {
-                                    [self receivedMembersFetchOps:operations];
+                                    [self receivedMembersFetchOps:operations withEventId:[event objectId]];
                                 }
      ];
 }
@@ -123,7 +148,7 @@
 
 
 
-- (void)receivedMembersFetchOps:(NSArray *)operations {
+- (void)receivedMembersFetchOps:(NSArray *)operations withEventId:(NSString *)eventId {
     NSError *error = nil;
     NSArray *members;
     
@@ -156,11 +181,11 @@
     
     
     if (memberDict && attendanceDict) {
-        members = [memberBuilder membersFromJSON:memberDict withAttendance:attendanceDict error:&error];
+        members = [memberBuilder membersFromJSON:memberDict withAttendance:attendanceDict withEventId:eventId error:&error];
     } else if (memberDict && !attendanceDict){
-        members = [memberBuilder membersFromJSON:memberDict withAttendance:nil error:&error];
+        members = [memberBuilder membersFromJSON:memberDict withAttendance:nil withEventId:eventId error:&error];
     } else if (!memberDict && !attendanceDict){
-        members = [memberBuilder membersFromJSON:nil withAttendance:nil error:&error];
+        members = [memberBuilder membersFromJSON:nil withAttendance:nil withEventId:eventId error:&error];
     }
     
     if (!members ) {
@@ -173,6 +198,27 @@
     }
 }
 
+- (void)executedOps:(NSArray *)operations
+      forActionType:(ActionTypes) actionType
+       forClassName:(NSString *)className {
+    
+//    [selectedUser setAttendanceId:[objectNotation objectForKey:@"objectId"]];   // we set objectId from Attendance table to a field in the Member/Guest table.
+
+    NSMutableArray *mutableJSONObjects = [[NSMutableArray alloc] init];
+    
+    [operations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        AFHTTPRequestOperation *ro = obj;
+        NSData *jsonData = [ro responseData];
+        NSDictionary *jsonObject=[NSJSONSerialization
+                                  JSONObjectWithData:jsonData
+                                  options:NSJSONReadingMutableLeaves
+                                  error:nil];
+        [mutableJSONObjects addObject:jsonObject];
+    }];
+    
+    [parseDotComDelegate didExecuteOps:mutableJSONObjects forActionType:actionType forClassName:className];
+    
+}
 
 
 - (void)receivedGuestsFetchOps:(NSArray *)operations {
@@ -245,6 +291,8 @@
                 }
      ];
 }
+
+
 
 - (void)createNewMember:(User *)selectedMember
               withEvent: (Event *)selectedEvent {
@@ -325,6 +373,14 @@
 }
 
 
+- (void)executeOpsFailedWithError:(NSError *)error
+                    forActionType:(ActionTypes) actionType
+                     forClassName:(NSString *)className{
+    [self tellDelegateAboutExecutedOpsError: error
+                            forActionType:(ActionTypes) actionType
+                             forClassName:(NSString *)className];
+}
+
 - (void)insertingNewUserFailedWithError:(NSError *)error {
     [self tellDelegateAboutNewUserInsertError: error];
 }
@@ -363,6 +419,10 @@
     [selectedMember setUserId:[objectNotation objectForKey:@"objectId"]];   // we set objectId from User table to a field in the Member/Guest table.
     [parseDotComDelegate didInsertNewUser:(User *)selectedMember withEvent: (Event *)selectedEvent];
 }
+
+
+
+
 
 - (void)createdNewMemberJSONResponse:(NSDictionary *)objectNotation
                             withUser:(User *)selectedMember
@@ -615,6 +675,19 @@
     }
     NSError *reportableError = [NSError errorWithDomain: ParseDotComManagerError code: ParseDotComManagerErrorMemberFetchCode userInfo: errorInfo];
     [parseDotComDelegate deletingExistingUserAttendanceFailedWithError:reportableError];
+}
+
+- (void)tellDelegateAboutExecutedOpsError:(NSError *)underlyingError
+                            forActionType:(ActionTypes) actionType
+                             forClassName:(NSString *)className {
+    NSDictionary *errorInfo = nil;
+    if (underlyingError) {
+        errorInfo = [NSDictionary dictionaryWithObject: underlyingError forKey: NSUnderlyingErrorKey];
+    }
+    NSError *reportableError = [NSError errorWithDomain: ParseDotComManagerError code: ParseDotComManagerErrorMemberFetchCode userInfo: errorInfo];
+    [parseDotComDelegate executedOpsFailedWithError:reportableError
+                                      forActionType:(ActionTypes) actionType
+                                       forClassName:(NSString *)className];
 }
 
 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>userId</key>
+	<string>$_User.string.userId</string>
+	<key>socialNetworkConnection</key>
+	<string>$self.integer.slType</string>
+	<key>isActive</key>
+	<string>$self.boolean.isActive</string>
+	<key>lastName</key>
+	<string>$self.string.lastName</string>
+	<key>firstName</key>
+	<string>$self.string.firstName</string>
+	<key>objectId</key>
+	<string>$self.string.objectId</string>
+</dict>
+</plist>

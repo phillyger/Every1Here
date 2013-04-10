@@ -12,7 +12,8 @@
 
 @synthesize twitterApiOpsInProgress = _twitterApiOpsInProgress;
 @synthesize twitterApiOpsQueue = _twitterApiOpsQueue;
-
+@synthesize RESTApiOpsInProgress = _RESTApiOpsInProgress;
+@synthesize RESTApiOpsQueue = _RESTApiOpsQueue;
 
 - (NSMutableDictionary *)twitterApiOpsInProgress {
     if (!_twitterApiOpsInProgress) {
@@ -28,6 +29,22 @@
         _twitterApiOpsQueue.maxConcurrentOperationCount = 1;
     }
     return _twitterApiOpsQueue;
+}
+
+- (NSMutableDictionary *)RESTApiOpsInProgress {
+    if (!_RESTApiOpsInProgress) {
+        _RESTApiOpsInProgress = [[NSMutableDictionary alloc] init];
+    }
+    return _RESTApiOpsInProgress;
+}
+
+- (NSOperationQueue *)RESTApiOpsQueue {
+    if (!_RESTApiOpsQueue) {
+        _RESTApiOpsQueue = [[NSOperationQueue alloc] init];
+        _RESTApiOpsQueue.name = @"REST API Queue";
+        _RESTApiOpsQueue.maxConcurrentOperationCount = 1;
+    }
+    return _RESTApiOpsQueue;
 }
 
 @end

@@ -16,5 +16,7 @@
 //@property (nonatomic, strong) NSMutableDictionary *facebookApiOpsInProgress;
 //@property (nonatomic, strong) NSOperationQueue *facebookApiOpsQueue;
 
+@property (nonatomic, strong) NSMutableDictionary *RESTApiOpsInProgress;
+@property (nonatomic, strong) NSOperationQueue *RESTApiOpsQueue;
 
 @end

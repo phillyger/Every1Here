@@ -12,14 +12,13 @@
 
 @property (nonatomic, copy) NSString *uriMethod;
 @property (nonatomic, copy) NSString* uriPath;
-@property (nonatomic) NSMutableDictionary *data;
-@property (nonatomic) NSMutableArray *dependencies;
+@property (nonatomic) NSDictionary *data;
 
 - (id)initWithUriMethod:(NSString *)aUriMethod
                 uriPath:(NSString *)aUriPath
-                   data:(NSDictionary *)newData
-           dependencies:(NSArray *)newDependencies;
+                   data:(NSDictionary *)newData;
 
 - (id)init;
+
 
 @end
