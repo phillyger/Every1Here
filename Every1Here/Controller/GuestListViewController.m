@@ -359,49 +359,49 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     NSOperationQueue* aQueue = [NSOperationQueue mainQueue];  // Question: Can these updates to attendance and event roles be handled by secondary thread.
     
 
-    attendanceReceptionist = [AttendanceReceptionist receptionistForKeyPath:@"attendance"
-                                                                     object:eventRoleModel
-                                                                      queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
-                                                                          
-                                                                          NSLog(@"Running Attendance Receptionist ...");
-                                                                          BOOL oldAttendance = [[change objectForKey:NSKeyValueChangeOldKey] boolValue];
-                                                                          
-                                                                          BOOL newAttendance = [[change objectForKey:NSKeyValueChangeNewKey] boolValue];
-                                                                          //                                                                                        NSLog(@"%@", (oldAttendance?@"YES":@"NO"));
-                                                                          //                                                                                        NSLog(@"%@", (newAttendance?@"YES":@"NO"));
-                                                                          
-                                                                          if (newAttendance == oldAttendance) {
-                                                                              //do nothing
-                                                                              doesAttendanceRecordExist = TRUE;
-                                                                          } else if (newAttendance == TRUE) {
-                                                                              doesAttendanceRecordExist = FALSE;
-                                                                              [parseDotComMgr createNewAttendanceWithUser:selectedGuest withEvent: selectedEvent];
-                                                                              
-                                                                          } else if (newAttendance == FALSE) {
-                                                                              doesAttendanceRecordExist = FALSE;
-                                                                              [parseDotComMgr deleteAttendanceForUser:selectedGuest];
-                                                                              
-                                                                          }
-                                                                          
-                                                                      }];
+//    attendanceReceptionist = [AttendanceReceptionist receptionistForKeyPath:@"attendance"
+//                                                                     object:eventRoleModel
+//                                                                      queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
+//                                                                          
+//                                                                          NSLog(@"Running Attendance Receptionist ...");
+//                                                                          BOOL oldAttendance = [[change objectForKey:NSKeyValueChangeOldKey] boolValue];
+//                                                                          
+//                                                                          BOOL newAttendance = [[change objectForKey:NSKeyValueChangeNewKey] boolValue];
+//                                                                          //                                                                                        NSLog(@"%@", (oldAttendance?@"YES":@"NO"));
+//                                                                          //                                                                                        NSLog(@"%@", (newAttendance?@"YES":@"NO"));
+//                                                                          
+//                                                                          if (newAttendance == oldAttendance) {
+//                                                                              //do nothing
+//                                                                              doesAttendanceRecordExist = TRUE;
+//                                                                          } else if (newAttendance == TRUE) {
+//                                                                              doesAttendanceRecordExist = FALSE;
+//                                                                              [parseDotComMgr createNewAttendanceWithUser:selectedGuest withEvent: selectedEvent];
+//                                                                              
+//                                                                          } else if (newAttendance == FALSE) {
+//                                                                              doesAttendanceRecordExist = FALSE;
+//                                                                              [parseDotComMgr deleteAttendanceForUser:selectedGuest];
+//                                                                              
+//                                                                          }
+//                                                                          
+//                                                                      }];
     
     
 
     
-    displayNameReceptionist = [DisplayNameReceptionist receptionistForKeyPath:@"displayName"
-                                                                       object:selectedGuest
-                                                                        queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
-                                                                            
-                                                                            NSLog(@"Running DisplayName Receptionist ...");
-                                                                            NSString *oldDisplayName = [change objectForKey:NSKeyValueChangeOldKey];
-                                                                            NSString *newDisplayName = [change objectForKey:NSKeyValueChangeNewKey] ;
-                                                                            NSLog(@"Old DisplayName %@", oldDisplayName);
-                                                                            NSLog(@"New DisplayName %@", newDisplayName);
-                                                                            
-                                                                            if (![newDisplayName isEqualToString:oldDisplayName])
-                                                                                [parseDotComMgr updateExistingUser:selectedGuest withClassType:@"Guest"];
-                                                                            
-                                                                        }];
+//    displayNameReceptionist = [DisplayNameReceptionist receptionistForKeyPath:@"displayName"
+//                                                                       object:selectedGuest
+//                                                                        queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
+//                                                                            
+//                                                                            NSLog(@"Running DisplayName Receptionist ...");
+//                                                                            NSString *oldDisplayName = [change objectForKey:NSKeyValueChangeOldKey];
+//                                                                            NSString *newDisplayName = [change objectForKey:NSKeyValueChangeNewKey] ;
+//                                                                            NSLog(@"Old DisplayName %@", oldDisplayName);
+//                                                                            NSLog(@"New DisplayName %@", newDisplayName);
+//                                                                            
+//                                                                            if (![newDisplayName isEqualToString:oldDisplayName])
+//                                                                                [parseDotComMgr updateExistingUser:selectedGuest withClassType:@"Guest"];
+//                                                                            
+//                                                                        }];
     
     guestDetailsController.completionBlock = ^(BOOL success)
     {
@@ -506,7 +506,7 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
 //             NSLog(@"In-BLock Before - guestAttendeeListForSlType count: %d", [newGuestAttendeeList count]);
             // Add a new user to the the guestListAttendeeArray
             if (selectedGuest != nil) {
-                [parseDotComMgr createNewUser: selectedGuest withEvent:selectedEvent];
+//                [parseDotComMgr createNewUser: selectedGuest withEvent:selectedEvent];
 //                [newGuestAttendeeList addObject:selectedGuest];
             }
             
@@ -532,7 +532,7 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
 - (void)didInsertNewUser:(User *) aSelectedUser
                withEvent:(Event *)aSelectedEvent{
     NSLog(@"Success!! We inserted a new user into Parse");
-    [parseDotComMgr createNewGuest:aSelectedUser withEvent: aSelectedEvent];
+//    [parseDotComMgr createNewGuest:aSelectedUser withEvent: aSelectedEvent];
     
     
 }

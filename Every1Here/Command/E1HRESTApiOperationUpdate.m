@@ -40,4 +40,8 @@
     
 }
 
+-(RESTApiOperation *)createOperationWithObj:(id)anObject forClassName:(NSString *)aClassName withQuery:(NSDictionary *)aQuery {
+    return nil;
+}
+
 @end

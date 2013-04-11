@@ -75,4 +75,24 @@
     
     return uriEndPointForClassName;
 }
+
+
++ (NSString *)serializeRequestParmetersWithDictionary:(NSDictionary *)dict {
+    
+    NSError *error = nil;
+    
+    
+    //convert object to data
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
+                                                       options:kNilOptions error:&error];
+    
+    if (!jsonData) {
+        NSLog(@"NSJSONSerialization failed %@", error);
+    }
+    
+    NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    return json;
+    
+}
 @end

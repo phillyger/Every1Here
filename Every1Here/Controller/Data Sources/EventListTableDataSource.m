@@ -153,7 +153,7 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
 
 - (void)buildEventDict {
     
-    NSArray *sectionHeaderTitleFullList = @[@"Today",
+    NSArray *sectionHeaderTitleUpcomingFullList = @[@"Today",
                                             @"Tomorrow",
                                             @"Later This Week",
                                             @"Next Week",
@@ -162,13 +162,24 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
                                             @"Later"];
     
     
+    NSArray *sectionHeaderTitlePastFullList = @[@"Today",
+                                                @"Yesterday",
+                                            @"Earlier This Week",
+                                            @"Last Week",
+                                            @"Two Weeks Ago",
+                                            @"Three Weeks Ago",
+                                            @"Earlier"];
+    
     sectionHeaderTitleList = [[NSMutableArray alloc] init];
     eventDict = [[NSMutableDictionary alloc] init];
     
     NSDate *dateBeginningOfThisDay = [self dateAtBeginningOfDayForDate:[NSDate date]];
     
+    
     [events enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         Event *event = obj;
+        NSArray *sectionHeaderTitleFullList = [[event status] isEqualToString:@"upcoming"] ? sectionHeaderTitleUpcomingFullList : sectionHeaderTitlePastFullList;
+        
         NSString *sectionHeaderTitle = [self categorizeEventStartDate:[event startDateTime]
                                                         usingBaseDate:dateBeginningOfThisDay
                                                             withArray:sectionHeaderTitleFullList];
@@ -198,7 +209,8 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
     NSString *thisSectionHeaderTitle = nil;
     NSInteger daysOffset = [self numberOfDaysBetweenBaseDate:baseDate offsetDate:eventStartDate];
     
-    switch (daysOffset) {
+    // Ensure that we are using the absolute value.
+    switch (ABS(daysOffset)) {
         case 0:
             thisSectionHeaderTitle = sectionHeaderTitles[0];
             break;

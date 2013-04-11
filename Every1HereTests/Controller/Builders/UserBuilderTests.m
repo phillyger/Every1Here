@@ -175,7 +175,7 @@ static NSString *meetupDotComUserJSONString = @"{"
 }
 
 - (void)testRealJSONWithoutGuestsArrayIsError {
-    STAssertNil([guestBuilder guestsFromJSON:dictNoJSON socialNetworkType:slType error:NULL], @"No questions to parse in this JSON");
+    STAssertNil([guestBuilder guestsFromJSON:dictNoJSON socialNetworkType:slType error:NULL], @"No guests to parse in this JSON");
 }
 
 - (void)testRealJSONWithoutGuestsReturnsMissingDataError {

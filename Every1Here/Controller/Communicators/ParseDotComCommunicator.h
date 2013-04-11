@@ -12,8 +12,8 @@
 #import "EventCommunicatorDelegate.h"
 #import "MemberCommunicatorDelegate.h"
 #import "E1HOperationFactory.h"
+#import "User.h"
 
-@class User;
 @class Event;
 
 
@@ -45,69 +45,59 @@ typedef void (^ParseDotComErrorBlock)(NSError *);
 @property (weak) id <EventCommunicatorDelegate, MemberCommunicatorDelegate> delegate;
 
 
-- (void)downloadPastEventsForGroupName:(NSString *)groupName
-                          errorHandler:(ParseDotComErrorBlock)errorBlock
-                        successHandler:(ParseDotComObjectNotationBlock)successBlock;
 
 - (void)downloadEventsForGroupName:(NSString *)groupName
-                            status:(NSString *)status
-                          errorHandler:(ParseDotComErrorBlock)errorBlock
-                        successHandler:(ParseDotComObjectNotationBlock)successBlock;
+                        withStatus:(NSString *)status
+                     forActionType:(ActionTypes)actionType
+                      forClassName: (NSString*)className
+                      errorHandler:(ParseDotComErrorBlock)errorBlock
+               successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
 
-- (void)downloadMembersForGroupName:(NSString *)groupName
-                        withEventId:(NSString *)eventId
-                        errorHandler:(ParseDotComErrorBlock)errorBlock
-                      successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
-
-- (void)downloadGuestsForGroupName:(NSString *)groupName
-                        withEventId:(NSString *)eventId
-                       errorHandler:(ParseDotComErrorBlock)errorBlock
-                successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
-
-- (void)insertNewUser:(User *)selectedUser
-         errorHandler:(ParseDotComErrorBlock)errorBlock
-       successHandler:(ParseDotComObjectNotationBlock)successBlock;
-
-- (void)insertNewMember:(User *)selectedUser
-         errorHandler:(ParseDotComErrorBlock)errorBlock
-       successHandler:(ParseDotComObjectNotationBlock)successBlock;
-
-- (void)insertNewGuest:(User *)selectedUser
-           errorHandler:(ParseDotComErrorBlock)errorBlock
-         successHandler:(ParseDotComObjectNotationBlock)successBlock;
-
-- (void)insertNewAttendanceWithUser:(User *)selectedUser
-                      withEvent:(Event *)event
-                   errorHandler:(ParseDotComErrorBlock)errorBlock
-                 successHandler:(ParseDotComObjectNotationBlock)successBlock;
-
-- (void)updateAttendanceWithUser:(User *)selectedUser
-                          withEvent:(Event *)selectedEvent
-                       errorHandler:(ParseDotComErrorBlock)errorBlock
-                     successHandler:(ParseDotComObjectNotationBlock)successBlock;
-
-- (void)insertNewEvent:(Event *)selectedEvent
-          errorHandler:(ParseDotComErrorBlock)errorBlock
-        successHandler:(ParseDotComObjectNotationBlock)successBlock;
-
-
-- (void)updateExistingUser:(User *)selectedUser
-             withClassType:(NSString *)classType
-           errorHandler:(ParseDotComErrorBlock)errorBlock
-         successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
-
-
-- (void)deleteAttendanceForUser:(User *)selectedUser
-                            errorHandler:(ParseDotComErrorBlock)errorBlock
-                          successHandler:(ParseDotComObjectNotationBlock)successBlock;
-
-- (void)insertNewRow:(id)obj forClass:(NSString *)className withParameters:(NSDictionary *)fieldDict;
+- (void)downloadUsersForEvent:(Event *)event
+                forActionType:(ActionTypes)actionType
+                 forClassName:(NSString *)className
+                 errorHandler:(ParseDotComErrorBlock)errorBlock
+          successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
 
 - (void)execute:(NSArray *)operations
-  forActionType:(ActionTypes) actionType
-   forClassName:(NSString *) className
-   errorHandler:(ParseDotComErrorBlock)errorBlock
-successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;;
+                forActionType:(ActionTypes)actionType
+                 forClassName:(NSString *)className
+                 errorHandler:(ParseDotComErrorBlock)errorBlock
+          successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+
+
+- (void)insertUser:(User*)user
+            forClassName:(NSString *)className
+            errorHandler:(ParseDotComErrorBlock)errorBlock
+     successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+
+- (void)updateUser:(User*)user
+      forClassName:(NSString *)className
+      errorHandler:(ParseDotComErrorBlock)errorBlock
+successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+
+- (void)deleteUser:(User*)user
+      forClassName:(NSString *)className
+      errorHandler:(ParseDotComErrorBlock)errorBlock
+successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+
+
+
+
+- (void)insertAttendance:(User*)user
+            forClassName:(NSString *)className
+            errorHandler:(ParseDotComErrorBlock)errorBlock
+     successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+
+- (void)updateAttendance:(User*)user
+            forClassName:(NSString *)className
+            errorHandler:(ParseDotComErrorBlock)errorBlock
+     successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+
+- (void)deleteAttendance:(User*)user
+            forClassName:(NSString *)className
+            errorHandler:(ParseDotComErrorBlock)errorBlock
+     successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
 
 @end
 

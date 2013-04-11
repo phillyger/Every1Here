@@ -14,6 +14,8 @@
 #import "MeetupDotComManager.h"
 #import "EventCell.h"
 #import "HMSegmentedControl.h"
+#import "PastEventListViewController.h"
+
 #import <objc/runtime.h>
 
 
@@ -91,7 +93,25 @@
 #pragma mark - Event Manager Delegate
 - (void)didReceiveEvents: (NSArray *)events{}
 - (void)retrievingEventsFailedWithError: (NSError *)error{}
-   
+
+- (void)segmentedControlChangedValue:(HMSegmentedControl *)segmentedControl {
+	NSLog(@"Selected index %i (via UIControlEventValueChanged)", segmentedControl.selectedSegmentIndex);
+//    UpcomingEventListViewController *nextViewController = [[UpcomingEventListViewController alloc] init];
+//    EventListTableDataSource *eventDataSource = [[EventListTableDataSource alloc] init];
+//    self.dataSource = eventDataSource;
+//    nextViewController.objectConfiguration = self.objectConfiguration;
+//    [[self navigationController] pushViewController: nextViewController animated: YES];
+    
+}
+
+- (void)uisegmentedControlChangedValue:(UISegmentedControl *)segmentedControl {
+	NSLog(@"Selected index %i", segmentedControl.selectedSegmentIndex);
+    [self.tableView reloadData];
+}
+
+- (void)userDidSelectPastEvents {
+
+}
 
 @end
 

@@ -9,6 +9,7 @@
 #import "E1HOperationFactory.h"
 #import "E1HRESTApiOperationInsert.h"
 #import "E1HRESTApiOperationUpdate.h"
+#import "E1HRESTApiOperationFetch.h"
 #import "E1HRESTApiOperationDelete.h"
 
 @implementation E1HOperationFactory
@@ -21,7 +22,7 @@
         case Update:
             return [[E1HRESTApiOperationUpdate alloc] init];
         case Fetch:
-            return [[E1HRESTApiOperationInsert alloc] init];
+            return [[E1HRESTApiOperationFetch alloc] init];
         case Delete:
             return [[E1HRESTApiOperationDelete alloc] init];
     }

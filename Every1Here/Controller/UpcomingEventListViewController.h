@@ -17,4 +17,6 @@
 @property (strong) MeetupDotComManager *meetupDotComMgr;
 @property (strong) ParseDotComManager *parseDotComMgr;
 
+- (void)userDidSelectPastEvents;
+
 @end

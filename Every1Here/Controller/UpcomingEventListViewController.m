@@ -7,6 +7,8 @@
 //
 
 #import "UpcomingEventListViewController.h"
+
+#import "PastEventListViewController.h"
 #import "E1HObjectConfiguration.h"
 #import "EventListTableDataSource.h"
 #import "MemberListViewController.h"
@@ -120,11 +122,18 @@
     self.parseDotComMgr = [objectConfiguration parseDotComManager];
     self.parseDotComMgr.eventDelegate = self;
     NSString *groupUrlName = @"Panorama Toastmasters";
-    [self.parseDotComMgr fetchEventsForGroupName:groupUrlName status:@"upcoming"];
+    [self.parseDotComMgr fetchEventsForGroupName:groupUrlName withStatus:@"upcoming"];
 }
 
 
 
+- (void)userDidSelectPastEvents {
+    UpcomingEventListViewController *nextViewController = [[UpcomingEventListViewController alloc] init];
+    EventListTableDataSource *eventDataSource = [[EventListTableDataSource alloc] init];
+    self.dataSource = eventDataSource;
+    nextViewController.objectConfiguration = self.objectConfiguration;
+    [[self navigationController] pushViewController: nextViewController animated: YES];
+}
 
 
 

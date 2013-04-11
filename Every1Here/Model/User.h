@@ -11,6 +11,11 @@
 #import "SocialNetworkUtilities.h"
 
 
+typedef NS_ENUM(NSUInteger, UserTypes) {
+    Member,
+    Guest
+};
+
 @interface User : Person <RoleDelegate>
 {
     //id <RoleDelegate> delegate;

@@ -15,6 +15,7 @@
 -(RESTApiOperation *)createOperationWithObj:(id)anObject forClassName:(NSString *)aClassName withKey:(NSString *)aKey;
 -(RESTApiOperation *)createOperationWithDict:(NSDictionary *)aDict forClassName:(NSString *)aClassName;
 -(RESTApiOperation *)createOperationWithId:(NSString *)anId forClassName:(NSString *)aClassName;
+-(RESTApiOperation *)createOperationWithObj:(id)anObject forClassName:(NSString *)aClassName withQuery:(NSDictionary *)aQuery;
 
 
 @end

@@ -12,5 +12,5 @@
 
 + (NSDictionary *)generateValueDictWithObject:(id)anObject forClassName:(NSString *)className;
 + (NSString *)fetchUriEndPointFromPListForClassName:(NSString *)className;
-
++ (NSString *)serializeRequestParmetersWithDictionary:(NSDictionary *)dict;
 @end

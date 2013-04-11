@@ -14,6 +14,7 @@
 #import "EventManagerDelegate.h"
 #import "MemberManagerDelegate.h"
 #import "E1HOperationFactory.h"
+#import "User.h"
 
 @class ParseDotComCommunicator;
 @class EventBuilder;
@@ -22,7 +23,7 @@
 @class GroupBuilder;
 @class Event;
 @class Group;
-@class User;
+
 
 /**
  * A façade providing access to the external Parse.com API services.
@@ -48,18 +49,9 @@
  * @param event The subject on which to find members.
  * @see ParseDotComManagerDelegate
  */
-- (void)fetchMembersForEvent: (Event *)event;
+- (void)fetchUsersForEvent: (Event *)event
+              withUserType:(UserTypes)userType;
 
-/**
- * Retrieve members on a given group from Parse.com service.
- * @note The delegate will receive messages when new information
- *       arrives, and this class will ask the delegate if it needs
- *       guidance.
- * @param event The subject on which to find members.
- * @see ParseDotComManagerDelegate
- */
-- (void)fetchMembersForGroup:(Group *)group;
-- (void)fetchMembersForGroupName:(NSString *)groupName;
 
 /**
  * Retrieve past events on a given group from Parse.com service.
@@ -69,35 +61,17 @@
  * @param group The subject on which to find members.
  * @see ParseDotComManagerDelegate, Group
  */
-- (void)fetchPastEventsForGroup:(Group *)group;
-- (void)fetchPastEventsForGroupName:(NSString *)groupName;
-- (void)fetchEventsForGroupName:(NSString *)groupName status:(NSString *)status;
+- (void)fetchEventsForGroupName:(NSString *)groupName withStatus:(NSString *)status;
 
-/**
- *  Parse CRUD methods for User/Member/Guests
- **/
 
-- (void)createNewMember:(User *)selectedMember withEvent: selectedEvent;
-- (void)createNewUser:(User *)selectedMember withEvent: selectedEvent;
-- (void)createNewGuest:(User *)selectedGuest withEvent: selectedEvent;
+-(void)updateAttendanceForUser:(User*)user;
+-(void)insertAttendanceForUser:(User*)user;
+-(void)deleteAttendanceForUser:(User*)user;
 
-- (void)updateExistingUser:(User *)selectedMember withClassType:(NSString *)classType;
 
-/**
- *  Parse CRUD methods for Event
- **/
-- (void)createNewEvent:(Event *)selectedEvent;
-
-/**
- *  Parse CRUD methods for Attendance
- **/
-- (void)createNewAttendanceWithUser:(User *)selectedUser
-                          withEvent:(Event *)selectedEvent;
-
-- (void)updateAttendanceWithUser:(User *)selectedUser
-                          withEvent:(Event *)selectedEvent;
-
-- (void)deleteAttendanceForUser:(User *)selectedUser;
+-(void)insertUser:(User*)user withUserType:(UserTypes)userType;
+-(void)updateUser:(User*)user withUserType:(UserTypes)userType;
+-(void)deleteUser:(User*)user withUserType:(UserTypes)userType;
 
 - (void)execute:(NSArray *)operations
   forActionType:(ActionTypes) actionType

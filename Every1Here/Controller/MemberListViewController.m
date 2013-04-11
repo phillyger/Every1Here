@@ -65,33 +65,20 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-//    NSString *EventListTableDidSelectEventNotification = @"EventListTableDidSelectEventNotification";
-//    UINavigationController *navigationController = [self navigationController];
-    
-//    UIBarButtonItem *customItem = [[UIBarButtonItem alloc] initWithImage:nil style:UIBarButtonItemStylePlain target:self action:@selector(Back:)];
-    UIBarButtonItem *closeViewBttnItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonItemStyleDone target:self action:@selector(closeView)];
+
+
+    UIBarButtonItem *closeViewBttnItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(closeView)];
     UIBarButtonItem *addNewMemberBttnItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewMember)];
-//    [self.navigationController setHidesBackButton:YES];
+
     [self.navigationItem setLeftBarButtonItem: closeViewBttnItem];
     [self.navigationItem setRightBarButtonItem: addNewMemberBttnItem];
     
-//    [customItem release];
     
     [[NSNotificationCenter defaultCenter]
      addObserver: self
      selector: @selector(userDidSelectMemberListNotification:)
      name: MemberListDidSelectMemberNotification
      object: nil];
-    
-//    NSNotification *note = [NSNotification notificationWithName: @"EventListTableDidSelectEventNotification" object:self];
-//    Event *selectedEvent = (Event *)[sender object];
-    
-//    self.objectConfiguration = [[AnseoObjectConfiguration alloc] init];
-//    MemberListTableDataSource *eventDataSource = [[MemberListTableDataSource alloc] init];
-//    
-//    
-//    self.dataSource = eventDataSource;
     
     
     self.tableView.delegate = self.dataSource;
@@ -122,11 +109,8 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-//    [[NSNotificationCenter defaultCenter]
-//     removeObserver:self name:MemberListDidSelectMemberNotification object:nil];
-    
-
-
+//   [[NSNotificationCenter defaultCenter]
+//    removeObserver:self name:MemberListDidSelectMemberNotification object:nil];
 }
 
 
@@ -154,8 +138,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 - (void)closeView {
     selectedEvent = nil;
     selectedMember = nil;
-    //    [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
-    [self dismissModalViewControllerAnimated:YES];
+    [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)fetchMemberListTableContent
@@ -171,7 +154,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     self.parseDotComMgr.memberDelegate = self;
     self.parseDotComMgr.parseDotComDelegate = self;
     selectedEvent = (Event *)[(MemberListTableDataSource *)self.dataSource event];
-    [self.parseDotComMgr fetchMembersForEvent:selectedEvent];
+    [self.parseDotComMgr fetchUsersForEvent:selectedEvent withUserType:Member];
 }
 
 - (void)retrievingMembersFailedWithError:(NSError *)error {
@@ -213,10 +196,8 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                                                        NSLog(@"newEventRole %d", newEventRole);
                                                        if (doesAttendanceRecordExist)
                                                            if (oldEventRole != newEventRole) {
-                                                               id updateOp= [E1HOperationFactory create:Update];
-                                                               RESTApiOperation *op = [updateOp createOperationWithObj:selectedMember forClassName:className withKey:@"attendanceId"];
-                                                               [operations addObject:op];
-                                                               [parseDotComMgr execute:operations forActionType:Update forClassName:className];
+
+                                                               [parseDotComMgr updateAttendanceForUser:selectedMember];
 
                                                            }
                                                        
@@ -241,22 +222,13 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                                                                 doesAttendanceRecordExist = TRUE;
                                                             } else if (newAttendance == TRUE) {
                                                                 doesAttendanceRecordExist = FALSE;
-                   
-                                                                NSDictionary *parameters = [CommonUtilities generateValueDictWithObject:selectedMember forClassName:className];
 
-                                                                id insertOp= [E1HOperationFactory create:Insert];
-                                                                RESTApiOperation *op = [insertOp createOperationWithDict:parameters forClassName:className];
-                                                                [operations addObject:op];
-                                                                [parseDotComMgr execute:operations forActionType:Insert forClassName:className];
+                                                                [parseDotComMgr insertAttendanceForUser:selectedMember];
+                                                                
                                                     
                                                             } else if (newAttendance == FALSE) {
                                                                 doesAttendanceRecordExist = FALSE;
 
-                                                                id deleteOp= [E1HOperationFactory create:Delete];
-                                                                RESTApiOperation *op = [deleteOp createOperationWithId:[selectedMember valueForKeyPath:@"attendanceId"] forClassName:className];
-                                                                [operations addObject:op];
-                                                                [parseDotComMgr execute:operations forActionType:Delete forClassName:className];
-                                                                
                                                                 [parseDotComMgr deleteAttendanceForUser:selectedMember];
 
                                                             }
@@ -268,7 +240,6 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                                                            object:selectedMember
                                                             queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
                                                                 
-                                                                NSString *className = @"Member";
                                                                 
                                                                 NSLog(@"Running DisplayName Receptionist ...");
                                                                 NSString *oldDisplayName = [change objectForKey:NSKeyValueChangeOldKey];
@@ -277,10 +248,9 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                                                                 NSLog(@"New DisplayName %@", newDisplayName);
                                                             
                                                                 if (![newDisplayName isEqualToString:oldDisplayName]) {
-                                                                    id updateOp= [E1HOperationFactory create:Update];
-                                                                    RESTApiOperation *op = [updateOp createOperationWithObj:selectedMember forClassName:className withKey:@"objectId"];
-                                                                    [operations addObject:op];
-                                                                    [parseDotComMgr execute:operations forActionType:Update forClassName:className];
+
+                                                                    
+                                                                    [parseDotComMgr updateUser:selectedMember withUserType:Member];
                                                                     
                                                                 }
                                                                 
@@ -291,21 +261,21 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                                                                        object:selectedMember
                                                                         queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
                                                                             
-                                                                            NSString *className = @"Attendance";
-                                                                            
-                                                                            NSLog(@"Running guestCountReceptionist Receptionist ...");
-                                                                            NSUInteger oldGuestCount = [[change objectForKey:NSKeyValueChangeOldKey] intValue];
-                                                                            NSUInteger newGuestCount = [[change objectForKey:NSKeyValueChangeNewKey] intValue] ;
-                                                                            NSLog(@"Old Guest Count %d", oldGuestCount);
-                                                                            NSLog(@"New Guest Count %d", newGuestCount);
-                                                                            
-                                                                            if (newGuestCount != oldGuestCount ) {
-                                                                                id updateOp= [E1HOperationFactory create:Update];
-                                                                                RESTApiOperation *op = [updateOp createOperationWithObj:selectedMember forClassName:className withKey:@"attendanceId"];
-                                                                                [operations addObject:op];
-                                                                                [parseDotComMgr execute:operations forActionType:Update forClassName:className];
-                                                                            }
+                                                                            if (doesAttendanceRecordExist == TRUE) {
                                                                                 
+                                                                                NSLog(@"Running guestCountReceptionist Receptionist ...");
+                                                                                NSUInteger oldGuestCount = [[change objectForKey:NSKeyValueChangeOldKey] intValue];
+                                                                                NSUInteger newGuestCount = [[change objectForKey:NSKeyValueChangeNewKey] intValue] ;
+                                                                                NSLog(@"Old Guest Count %d", oldGuestCount);
+                                                                                NSLog(@"New Guest Count %d", newGuestCount);
+                                                                                
+                                                                                if (newGuestCount != oldGuestCount ) {
+                                                                                    
+                                                                                    [parseDotComMgr updateAttendanceForUser:selectedMember];
+
+                                                                                }
+                                                                            }
+                                                                            
                                                                             
                                                                         }];
     
@@ -399,54 +369,28 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 }
 
 
-- (void)didInsertNewUser:(User *) aSelectedUser
-                 withEvent:(Event *)aSelectedEvent{
-    NSLog(@"Success!! We inserted a new user into Parse");
-    [parseDotComMgr createNewMember:aSelectedUser withEvent: aSelectedEvent];
+- (void)didFetchUsersForUserType:(UserTypes)userType {
+    NSLog(@"Success!! We updated an existing %d record in Parse", userType);
+   
 
+}
+
+- (void)didUpdateAttendance {
+    
+
+}
+
+- (void)didDeleteAttendance {
     
 }
 
-- (void)didInsertNewMember:(User *) aSelectedUser
-                 withEvent:(Event *)aSelectedEvent{
-    NSLog(@"Success!! We inserted a new member into Parse");
-    [selectedEvent addMember:aSelectedUser];
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
-    [self.tableView reloadData];
-    selectedMember = nil;
-//    [parseDotComMgr updateExistingMember:aSelectedUser];
+- (void)didInsertAttendance {
     
 }
 
-- (void)didInsertNewAttendanceWithUser:(User *)aSelectedUser
-                             withEvent:(Event *)aSelectedEvent {
-    NSLog(@"Success!! We inserted a new attendance record into Parse"); 
+
+- (void)didUpdateUserForUserType:(UserTypes)userType {
     
-//    [parseDotComMgr updateExistingMember:aSelectedUser];
-
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
-    [tableView reloadData];
-}
-
--(void)didUpdateExistingUser:(User *)selectedUser {
-    
-
-    NSLog(@"Success!! We updated an existing Member record in Parse");
-    [self.tableView reloadData];
-    selectedUser = nil;
-    selectedMember = nil;
-}
-
-
--(void)didUpdateAttendanceWithUser:(User *)selectedUser withEvent:(Event *)selectedEvent {
-     NSLog(@"Success!! We updated an existing attendance record into Parse");
-    [self.tableView reloadData];
-}
-
-
-- (void)didDeleteAttendanceForUser:(User *)selectedUser {
-    NSLog(@"Success!! We deleted an existing attendance record from Parse: %@", [selectedUser attendanceId]);
-    [self.tableView reloadData];
 }
 
 - (void)didExecuteOps:(NSArray *)objectNotationList forActionType:(ActionTypes)actionType forClassName:(NSString *)className {
@@ -455,7 +399,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
         case Insert:
             NSLog(@"Success!! We inserted a new %@ record into Parse", className);
             if ([className isEqualToString:@"User"] || [className isEqualToString:@"Member"] ) {
-                NSLog(@"%@", objectNotationList);
+                NSLog(@"Insert: %@", objectNotationList);
                 
                 // TODO: Need to find a better pattern for extracting values from enqueued operations. Sequence here needs to
                 // ensure that
@@ -468,6 +412,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                         [selectedMember setValue:[obj valueForKey:@"objectId"] forKeyPath:@"userId"];   // User op
                 }];
                 
+                [selectedMember setValue:[selectedEvent valueForKey:@"objectId"] forKeyPath:@"eventId"];    // set member with eventId
                 
                 className = [@"Member" mutableCopy];
                 NSMutableArray *operations = [[NSMutableArray alloc] init];                
@@ -475,10 +420,21 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                 RESTApiOperation *op = [updateOp createOperationWithObj:selectedMember forClassName:className withKey:@"objectId"];
                 [operations addObject:op];
                 [parseDotComMgr execute:operations forActionType:Update forClassName:className];
+                
+                
+                [selectedEvent addMember:selectedMember];   // call to add this to current datasource
             }
+            if ([className isEqualToString:@"Attendance"]) {
+                [selectedMember setValue:[objectNotationList[0] valueForKey:@"objectId"] forKeyPath:@"attendanceId"];    // set member with eventId
+            }
+            
             break;
         case Update:
             NSLog(@"Success!! We updated an existing %@ record in Parse", className);
+             NSLog(@"Update: %@", objectNotationList);
+            if ([className isEqualToString:@"Member"]) {
+//                [selectedMember setValue:[objectNotationList[0] valueForKey:@"objectId"] forKeyPath:@"attendanceId"];    // set member with eventId
+            }
             break;
         case Delete:
             NSLog(@"Success!! We deleted an existing %@ record from Parse", className);

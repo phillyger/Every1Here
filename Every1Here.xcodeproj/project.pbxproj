@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		05901A94B2B84206A5555800 /* libPods-Every1HereTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF716BB5E4804549935C7F27 /* libPods-Every1HereTests.a */; };
+		28051A601717101700195BA6 /* E1HRESTApiOperationFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 28051A5F1717101700195BA6 /* E1HRESTApiOperationFetch.m */; };
 		284C6BBF1710F5AE001855B5 /* E1HAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 284C6BBC1710F5AE001855B5 /* E1HAppDelegate.m */; };
 		284C6BC01710F5AE001855B5 /* E1HObjectConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 284C6BBE1710F5AE001855B5 /* E1HObjectConfiguration.m */; };
 		284C6BC91710F7B6001855B5 /* EventListTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 284C6BC41710F7B6001855B5 /* EventListTableDataSource.m */; };
@@ -44,6 +45,36 @@
 		288DF3A7171463DB008598DA /* E1HRESTApiOperationDelete.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3A6171463DA008598DA /* E1HRESTApiOperationDelete.m */; };
 		288DF3AB1714840C008598DA /* E1HRESTApiOperationUpdate.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3AA1714840B008598DA /* E1HRESTApiOperationUpdate.m */; };
 		288DF3AE171488DB008598DA /* Receptionist.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3AD171488DA008598DA /* Receptionist.m */; };
+		288DF3B017161DB7008598DA /* meetup-32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = 288DF3AF17161DB7008598DA /* meetup-32x32.png */; };
+		288DF3F31716D5A3008598DA /* E1HAppDelegateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3B21716D5A2008598DA /* E1HAppDelegateTests.m */; };
+		288DF3F41716D5A3008598DA /* E1HObjectConfigurationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3B41716D5A2008598DA /* E1HObjectConfigurationTests.m */; };
+		288DF3F51716D5A3008598DA /* EventBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3B81716D5A3008598DA /* EventBuilderTests.m */; };
+		288DF3F61716D5A3008598DA /* UserBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3BA1716D5A3008598DA /* UserBuilderTests.m */; };
+		288DF3F71716D5A3008598DA /* AFNParseDotComCommunicatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3BD1716D5A3008598DA /* AFNParseDotComCommunicatorTests.m */; };
+		288DF3F81716D5A3008598DA /* InspectableParseDotComCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3BF1716D5A3008598DA /* InspectableParseDotComCommunicator.m */; };
+		288DF3F91716D5A3008598DA /* NonNetworkedParseDotComCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3C11716D5A3008598DA /* NonNetworkedParseDotComCommunicator.m */; };
+		288DF3FA1716D5A3008598DA /* EventCreationWorkflowTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3C41716D5A3008598DA /* EventCreationWorkflowTests.m */; };
+		288DF3FB1716D5A3008598DA /* EventViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3C61716D5A3008598DA /* EventViewControllerTests.m */; };
+		288DF3FC1716D5A3008598DA /* MemberCreationWorkflowTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3C81716D5A3008598DA /* MemberCreationWorkflowTests.m */; };
+		288DF3FD1716D5A3008598DA /* FakeEventBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3CB1716D5A3008598DA /* FakeEventBuilder.m */; };
+		288DF3FE1716D5A3008598DA /* FakeMemberBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3CD1716D5A3008598DA /* FakeMemberBuilder.m */; };
+		288DF3FF1716D5A3008598DA /* FakeNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3CF1716D5A3008598DA /* FakeNotificationCenter.m */; };
+		288DF4001716D5A3008598DA /* FakeURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3D11716D5A3008598DA /* FakeURLResponse.m */; };
+		288DF4011716D5A3008598DA /* MockParseDotComCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3D31716D5A3008598DA /* MockParseDotComCommunicator.m */; };
+		288DF4021716D5A3008598DA /* MockParseDotComManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3D51716D5A3008598DA /* MockParseDotComManager.m */; };
+		288DF4031716D5A3008598DA /* MockParseDotComManagerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3D71716D5A3008598DA /* MockParseDotComManagerDelegate.m */; };
+		288DF4041716D5A3008598DA /* ReloadDataWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3D91716D5A3008598DA /* ReloadDataWatcher.m */; };
+		288DF4051716D5A3008598DA /* EventTableDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3DB1716D5A3008598DA /* EventTableDataSourceTests.m */; };
+		288DF4061716D5A3008598DA /* EventTableDelegateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3DD1716D5A3008598DA /* EventTableDelegateTests.m */; };
+		288DF4071716D5A3008598DA /* MemberListTableDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3DF1716D5A3008598DA /* MemberListTableDataSourceTests.m */; };
+		288DF4081716D5A3008598DA /* AddressTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3E21716D5A3008598DA /* AddressTests.m */; };
+		288DF4091716D5A3008598DA /* EventTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3E41716D5A3008598DA /* EventTest.m */; };
+		288DF40A1716D5A3008598DA /* GroupTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3E61716D5A3008598DA /* GroupTest.m */; };
+		288DF40B1716D5A3008598DA /* UserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3E81716D5A3008598DA /* UserTests.m */; };
+		288DF40C1716D5A3008598DA /* VenueTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3EA1716D5A3008598DA /* VenueTest.m */; };
+		288DF40D1716D5A3008598DA /* AvatarStore+TestingExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3ED1716D5A3008598DA /* AvatarStore+TestingExtensions.m */; };
+		288DF40E1716D5A3008598DA /* TestObjectConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3EF1716D5A3008598DA /* TestObjectConfiguration.m */; };
+		288DF40F1716D5A3008598DA /* TestSemaphor.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3F11716D5A3008598DA /* TestSemaphor.m */; };
 		28B8E1151710876A0095BB6F /* NSDictionary+RWFlatten.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA25171087560095BB6F /* NSDictionary+RWFlatten.m */; };
 		28B8E1161710876A0095BB6F /* CommandBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA29171087560095BB6F /* CommandBase.m */; };
 		28B8E1171710876A0095BB6F /* E1HRESTApiOperationInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA2C171087560095BB6F /* E1HRESTApiOperationInsert.m */; };
@@ -182,6 +213,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		28051A5E1717101700195BA6 /* E1HRESTApiOperationFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E1HRESTApiOperationFetch.h; sourceTree = "<group>"; };
+		28051A5F1717101700195BA6 /* E1HRESTApiOperationFetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E1HRESTApiOperationFetch.m; sourceTree = "<group>"; };
 		2815F42A02DE46459DCEA97B /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		284C6BBB1710F5AE001855B5 /* E1HAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E1HAppDelegate.h; sourceTree = "<group>"; };
 		284C6BBC1710F5AE001855B5 /* E1HAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E1HAppDelegate.m; sourceTree = "<group>"; };
@@ -234,6 +267,65 @@
 		288DF3AA1714840B008598DA /* E1HRESTApiOperationUpdate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E1HRESTApiOperationUpdate.m; sourceTree = "<group>"; };
 		288DF3AC171488D9008598DA /* Receptionist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Receptionist.h; sourceTree = "<group>"; };
 		288DF3AD171488DA008598DA /* Receptionist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Receptionist.m; sourceTree = "<group>"; };
+		288DF3AF17161DB7008598DA /* meetup-32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meetup-32x32.png"; sourceTree = "<group>"; };
+		288DF3B11716D5A2008598DA /* E1HAppDelegateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E1HAppDelegateTests.h; sourceTree = "<group>"; };
+		288DF3B21716D5A2008598DA /* E1HAppDelegateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E1HAppDelegateTests.m; sourceTree = "<group>"; };
+		288DF3B31716D5A2008598DA /* E1HObjectConfigurationTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E1HObjectConfigurationTests.h; sourceTree = "<group>"; };
+		288DF3B41716D5A2008598DA /* E1HObjectConfigurationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E1HObjectConfigurationTests.m; sourceTree = "<group>"; };
+		288DF3B71716D5A3008598DA /* EventBuilderTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventBuilderTests.h; sourceTree = "<group>"; };
+		288DF3B81716D5A3008598DA /* EventBuilderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventBuilderTests.m; sourceTree = "<group>"; };
+		288DF3B91716D5A3008598DA /* UserBuilderTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserBuilderTests.h; sourceTree = "<group>"; };
+		288DF3BA1716D5A3008598DA /* UserBuilderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserBuilderTests.m; sourceTree = "<group>"; };
+		288DF3BC1716D5A3008598DA /* AFNParseDotComCommunicatorTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNParseDotComCommunicatorTests.h; sourceTree = "<group>"; };
+		288DF3BD1716D5A3008598DA /* AFNParseDotComCommunicatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNParseDotComCommunicatorTests.m; sourceTree = "<group>"; };
+		288DF3BE1716D5A3008598DA /* InspectableParseDotComCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InspectableParseDotComCommunicator.h; sourceTree = "<group>"; };
+		288DF3BF1716D5A3008598DA /* InspectableParseDotComCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InspectableParseDotComCommunicator.m; sourceTree = "<group>"; };
+		288DF3C01716D5A3008598DA /* NonNetworkedParseDotComCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NonNetworkedParseDotComCommunicator.h; sourceTree = "<group>"; };
+		288DF3C11716D5A3008598DA /* NonNetworkedParseDotComCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NonNetworkedParseDotComCommunicator.m; sourceTree = "<group>"; };
+		288DF3C31716D5A3008598DA /* EventCreationWorkflowTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCreationWorkflowTests.h; sourceTree = "<group>"; };
+		288DF3C41716D5A3008598DA /* EventCreationWorkflowTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCreationWorkflowTests.m; sourceTree = "<group>"; };
+		288DF3C51716D5A3008598DA /* EventViewControllerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventViewControllerTests.h; sourceTree = "<group>"; };
+		288DF3C61716D5A3008598DA /* EventViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventViewControllerTests.m; sourceTree = "<group>"; };
+		288DF3C71716D5A3008598DA /* MemberCreationWorkflowTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberCreationWorkflowTests.h; sourceTree = "<group>"; };
+		288DF3C81716D5A3008598DA /* MemberCreationWorkflowTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberCreationWorkflowTests.m; sourceTree = "<group>"; };
+		288DF3CA1716D5A3008598DA /* FakeEventBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeEventBuilder.h; sourceTree = "<group>"; };
+		288DF3CB1716D5A3008598DA /* FakeEventBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeEventBuilder.m; sourceTree = "<group>"; };
+		288DF3CC1716D5A3008598DA /* FakeMemberBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeMemberBuilder.h; sourceTree = "<group>"; };
+		288DF3CD1716D5A3008598DA /* FakeMemberBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeMemberBuilder.m; sourceTree = "<group>"; };
+		288DF3CE1716D5A3008598DA /* FakeNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeNotificationCenter.h; sourceTree = "<group>"; };
+		288DF3CF1716D5A3008598DA /* FakeNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeNotificationCenter.m; sourceTree = "<group>"; };
+		288DF3D01716D5A3008598DA /* FakeURLResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeURLResponse.h; sourceTree = "<group>"; };
+		288DF3D11716D5A3008598DA /* FakeURLResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeURLResponse.m; sourceTree = "<group>"; };
+		288DF3D21716D5A3008598DA /* MockParseDotComCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockParseDotComCommunicator.h; sourceTree = "<group>"; };
+		288DF3D31716D5A3008598DA /* MockParseDotComCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MockParseDotComCommunicator.m; sourceTree = "<group>"; };
+		288DF3D41716D5A3008598DA /* MockParseDotComManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockParseDotComManager.h; sourceTree = "<group>"; };
+		288DF3D51716D5A3008598DA /* MockParseDotComManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MockParseDotComManager.m; sourceTree = "<group>"; };
+		288DF3D61716D5A3008598DA /* MockParseDotComManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockParseDotComManagerDelegate.h; sourceTree = "<group>"; };
+		288DF3D71716D5A3008598DA /* MockParseDotComManagerDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MockParseDotComManagerDelegate.m; sourceTree = "<group>"; };
+		288DF3D81716D5A3008598DA /* ReloadDataWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReloadDataWatcher.h; sourceTree = "<group>"; };
+		288DF3D91716D5A3008598DA /* ReloadDataWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReloadDataWatcher.m; sourceTree = "<group>"; };
+		288DF3DA1716D5A3008598DA /* EventTableDataSourceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventTableDataSourceTests.h; sourceTree = "<group>"; };
+		288DF3DB1716D5A3008598DA /* EventTableDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventTableDataSourceTests.m; sourceTree = "<group>"; };
+		288DF3DC1716D5A3008598DA /* EventTableDelegateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventTableDelegateTests.h; sourceTree = "<group>"; };
+		288DF3DD1716D5A3008598DA /* EventTableDelegateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventTableDelegateTests.m; sourceTree = "<group>"; };
+		288DF3DE1716D5A3008598DA /* MemberListTableDataSourceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberListTableDataSourceTests.h; sourceTree = "<group>"; };
+		288DF3DF1716D5A3008598DA /* MemberListTableDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberListTableDataSourceTests.m; sourceTree = "<group>"; };
+		288DF3E11716D5A3008598DA /* AddressTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressTests.h; sourceTree = "<group>"; };
+		288DF3E21716D5A3008598DA /* AddressTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressTests.m; sourceTree = "<group>"; };
+		288DF3E31716D5A3008598DA /* EventTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventTest.h; sourceTree = "<group>"; };
+		288DF3E41716D5A3008598DA /* EventTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventTest.m; sourceTree = "<group>"; };
+		288DF3E51716D5A3008598DA /* GroupTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupTest.h; sourceTree = "<group>"; };
+		288DF3E61716D5A3008598DA /* GroupTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupTest.m; sourceTree = "<group>"; };
+		288DF3E71716D5A3008598DA /* UserTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserTests.h; sourceTree = "<group>"; };
+		288DF3E81716D5A3008598DA /* UserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserTests.m; sourceTree = "<group>"; };
+		288DF3E91716D5A3008598DA /* VenueTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VenueTest.h; sourceTree = "<group>"; };
+		288DF3EA1716D5A3008598DA /* VenueTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VenueTest.m; sourceTree = "<group>"; };
+		288DF3EC1716D5A3008598DA /* AvatarStore+TestingExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AvatarStore+TestingExtensions.h"; sourceTree = "<group>"; };
+		288DF3ED1716D5A3008598DA /* AvatarStore+TestingExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AvatarStore+TestingExtensions.m"; sourceTree = "<group>"; };
+		288DF3EE1716D5A3008598DA /* TestObjectConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestObjectConfiguration.h; sourceTree = "<group>"; };
+		288DF3EF1716D5A3008598DA /* TestObjectConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestObjectConfiguration.m; sourceTree = "<group>"; };
+		288DF3F01716D5A3008598DA /* TestSemaphor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestSemaphor.h; sourceTree = "<group>"; };
+		288DF3F11716D5A3008598DA /* TestSemaphor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestSemaphor.m; sourceTree = "<group>"; };
 		28B8BA24171087560095BB6F /* NSDictionary+RWFlatten.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+RWFlatten.h"; sourceTree = "<group>"; };
 		28B8BA25171087560095BB6F /* NSDictionary+RWFlatten.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+RWFlatten.m"; sourceTree = "<group>"; };
 		28B8BA27171087560095BB6F /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
@@ -519,8 +611,114 @@
 				288DF3A6171463DA008598DA /* E1HRESTApiOperationDelete.m */,
 				288DF3A91714840B008598DA /* E1HRESTApiOperationUpdate.h */,
 				288DF3AA1714840B008598DA /* E1HRESTApiOperationUpdate.m */,
+				28051A5E1717101700195BA6 /* E1HRESTApiOperationFetch.h */,
+				28051A5F1717101700195BA6 /* E1HRESTApiOperationFetch.m */,
 			);
 			name = CRUD;
+			sourceTree = "<group>";
+		};
+		288DF3B51716D5A3008598DA /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				288DF3B61716D5A3008598DA /* Builders */,
+				288DF3BB1716D5A3008598DA /* Communicators */,
+				288DF3C21716D5A3008598DA /* Delegates */,
+				288DF3C31716D5A3008598DA /* EventCreationWorkflowTests.h */,
+				288DF3C41716D5A3008598DA /* EventCreationWorkflowTests.m */,
+				288DF3C51716D5A3008598DA /* EventViewControllerTests.h */,
+				288DF3C61716D5A3008598DA /* EventViewControllerTests.m */,
+				288DF3C71716D5A3008598DA /* MemberCreationWorkflowTests.h */,
+				288DF3C81716D5A3008598DA /* MemberCreationWorkflowTests.m */,
+				288DF3C91716D5A3008598DA /* Mocks, Fake Stubs */,
+				288DF3D81716D5A3008598DA /* ReloadDataWatcher.h */,
+				288DF3D91716D5A3008598DA /* ReloadDataWatcher.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		288DF3B61716D5A3008598DA /* Builders */ = {
+			isa = PBXGroup;
+			children = (
+				288DF3B71716D5A3008598DA /* EventBuilderTests.h */,
+				288DF3B81716D5A3008598DA /* EventBuilderTests.m */,
+				288DF3B91716D5A3008598DA /* UserBuilderTests.h */,
+				288DF3BA1716D5A3008598DA /* UserBuilderTests.m */,
+			);
+			path = Builders;
+			sourceTree = "<group>";
+		};
+		288DF3BB1716D5A3008598DA /* Communicators */ = {
+			isa = PBXGroup;
+			children = (
+				288DF3BC1716D5A3008598DA /* AFNParseDotComCommunicatorTests.h */,
+				288DF3BD1716D5A3008598DA /* AFNParseDotComCommunicatorTests.m */,
+				288DF3BE1716D5A3008598DA /* InspectableParseDotComCommunicator.h */,
+				288DF3BF1716D5A3008598DA /* InspectableParseDotComCommunicator.m */,
+				288DF3C01716D5A3008598DA /* NonNetworkedParseDotComCommunicator.h */,
+				288DF3C11716D5A3008598DA /* NonNetworkedParseDotComCommunicator.m */,
+			);
+			path = Communicators;
+			sourceTree = "<group>";
+		};
+		288DF3C21716D5A3008598DA /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
+		288DF3C91716D5A3008598DA /* Mocks, Fake Stubs */ = {
+			isa = PBXGroup;
+			children = (
+				288DF3CA1716D5A3008598DA /* FakeEventBuilder.h */,
+				288DF3CB1716D5A3008598DA /* FakeEventBuilder.m */,
+				288DF3CC1716D5A3008598DA /* FakeMemberBuilder.h */,
+				288DF3CD1716D5A3008598DA /* FakeMemberBuilder.m */,
+				288DF3CE1716D5A3008598DA /* FakeNotificationCenter.h */,
+				288DF3CF1716D5A3008598DA /* FakeNotificationCenter.m */,
+				288DF3D01716D5A3008598DA /* FakeURLResponse.h */,
+				288DF3D11716D5A3008598DA /* FakeURLResponse.m */,
+				288DF3D21716D5A3008598DA /* MockParseDotComCommunicator.h */,
+				288DF3D31716D5A3008598DA /* MockParseDotComCommunicator.m */,
+				288DF3D41716D5A3008598DA /* MockParseDotComManager.h */,
+				288DF3D51716D5A3008598DA /* MockParseDotComManager.m */,
+				288DF3D61716D5A3008598DA /* MockParseDotComManagerDelegate.h */,
+				288DF3D71716D5A3008598DA /* MockParseDotComManagerDelegate.m */,
+			);
+			path = "Mocks, Fake Stubs";
+			sourceTree = "<group>";
+		};
+		288DF3E01716D5A3008598DA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				288DF3E11716D5A3008598DA /* AddressTests.h */,
+				288DF3E21716D5A3008598DA /* AddressTests.m */,
+				288DF3E31716D5A3008598DA /* EventTest.h */,
+				288DF3E41716D5A3008598DA /* EventTest.m */,
+				288DF3E51716D5A3008598DA /* GroupTest.h */,
+				288DF3E61716D5A3008598DA /* GroupTest.m */,
+				288DF3E71716D5A3008598DA /* UserTests.h */,
+				288DF3E81716D5A3008598DA /* UserTests.m */,
+				288DF3E91716D5A3008598DA /* VenueTest.h */,
+				288DF3EA1716D5A3008598DA /* VenueTest.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		288DF3EB1716D5A3008598DA /* Stores */ = {
+			isa = PBXGroup;
+			children = (
+				288DF3EC1716D5A3008598DA /* AvatarStore+TestingExtensions.h */,
+				288DF3ED1716D5A3008598DA /* AvatarStore+TestingExtensions.m */,
+			);
+			path = Stores;
+			sourceTree = "<group>";
+		};
+		288DF3F21716D5A3008598DA /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		28B8BA23171087560095BB6F /* Categories */ = {
@@ -553,10 +751,6 @@
 		28B8BA31171087560095BB6F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				288DF38617125A60008598DA /* PastEventListViewController.h */,
-				288DF38717125A60008598DA /* PastEventListViewController.m */,
-				288DF38817125A60008598DA /* UpcomingEventListViewController.h */,
-				288DF38917125A60008598DA /* UpcomingEventListViewController.m */,
 				284C6BC21710F7B6001855B5 /* Data Sources */,
 				28B8BA32171087560095BB6F /* Builders */,
 				28B8BA40171087560095BB6F /* Clients */,
@@ -564,6 +758,14 @@
 				28B8BA5C171087560095BB6F /* Configuration */,
 				28B8BA5D171087560095BB6F /* EventListViewController.h */,
 				28B8BA5E171087560095BB6F /* EventListViewController.m */,
+				288DF38617125A60008598DA /* PastEventListViewController.h */,
+				288DF38717125A60008598DA /* PastEventListViewController.m */,
+				288DF38817125A60008598DA /* UpcomingEventListViewController.h */,
+				288DF38917125A60008598DA /* UpcomingEventListViewController.m */,
+				28B8BA6C171087560095BB6F /* MemberListViewController.h */,
+				28B8BA6D171087560095BB6F /* MemberListViewController.m */,
+				28B8BA6A171087560095BB6F /* MemberDetailsDialogController.h */,
+				28B8BA6B171087560095BB6F /* MemberDetailsDialogController.m */,
 				288DF38317125838008598DA /* GuestListPopoverTableController.h */,
 				288DF38417125838008598DA /* GuestListPopoverTableController.m */,
 				28B8BA5F171087560095BB6F /* GuestDetailsDialogController.h */,
@@ -571,10 +773,6 @@
 				28B8BA61171087560095BB6F /* GuestListViewController.h */,
 				28B8BA62171087560095BB6F /* GuestListViewController.m */,
 				28B8BA63171087560095BB6F /* Managers */,
-				28B8BA6A171087560095BB6F /* MemberDetailsDialogController.h */,
-				28B8BA6B171087560095BB6F /* MemberDetailsDialogController.m */,
-				28B8BA6C171087560095BB6F /* MemberListViewController.h */,
-				28B8BA6D171087560095BB6F /* MemberListViewController.m */,
 				28B8BA6E171087560095BB6F /* Protocols */,
 				28B8BA7D171087560095BB6F /* Stores */,
 				28B8BA80171087560095BB6F /* UI */,
@@ -917,6 +1115,7 @@
 		28B8F05E171088F00095BB6F /* images */ = {
 			isa = PBXGroup;
 			children = (
+				288DF3AF17161DB7008598DA /* meetup-32x32.png */,
 				28FCE671171089A6009A233B /* fc-webicon-facebook-s.png */,
 				28FCE672171089A6009A233B /* profile-image-placeholder.png */,
 				28B8F05F171088F00095BB6F /* 140-gradhat.png */,
@@ -1047,6 +1246,24 @@
 		28E747FC1710831200F97883 /* Every1HereTests */ = {
 			isa = PBXGroup;
 			children = (
+				288DF3B11716D5A2008598DA /* E1HAppDelegateTests.h */,
+				288DF3B21716D5A2008598DA /* E1HAppDelegateTests.m */,
+				288DF3B31716D5A2008598DA /* E1HObjectConfigurationTests.h */,
+				288DF3B41716D5A2008598DA /* E1HObjectConfigurationTests.m */,
+				288DF3B51716D5A3008598DA /* Controller */,
+				288DF3DA1716D5A3008598DA /* EventTableDataSourceTests.h */,
+				288DF3DB1716D5A3008598DA /* EventTableDataSourceTests.m */,
+				288DF3DC1716D5A3008598DA /* EventTableDelegateTests.h */,
+				288DF3DD1716D5A3008598DA /* EventTableDelegateTests.m */,
+				288DF3DE1716D5A3008598DA /* MemberListTableDataSourceTests.h */,
+				288DF3DF1716D5A3008598DA /* MemberListTableDataSourceTests.m */,
+				288DF3E01716D5A3008598DA /* Model */,
+				288DF3EB1716D5A3008598DA /* Stores */,
+				288DF3EE1716D5A3008598DA /* TestObjectConfiguration.h */,
+				288DF3EF1716D5A3008598DA /* TestObjectConfiguration.m */,
+				288DF3F01716D5A3008598DA /* TestSemaphor.h */,
+				288DF3F11716D5A3008598DA /* TestSemaphor.m */,
+				288DF3F21716D5A3008598DA /* View */,
 				28E748021710831200F97883 /* Every1HereTests.h */,
 				28E748031710831200F97883 /* Every1HereTests.m */,
 				28E747FD1710831200F97883 /* Supporting Files */,
@@ -1197,6 +1414,7 @@
 				288DF39417130184008598DA /* Guest.plist in Resources */,
 				288DF39617130196008598DA /* Attendance.plist in Resources */,
 				288DF398171306AD008598DA /* Classes.plist in Resources */,
+				288DF3B017161DB7008598DA /* meetup-32x32.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1336,6 +1554,7 @@
 				288DF3A7171463DB008598DA /* E1HRESTApiOperationDelete.m in Sources */,
 				288DF3AB1714840C008598DA /* E1HRESTApiOperationUpdate.m in Sources */,
 				288DF3AE171488DB008598DA /* Receptionist.m in Sources */,
+				28051A601717101700195BA6 /* E1HRESTApiOperationFetch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1344,6 +1563,35 @@
 			buildActionMask = 2147483647;
 			files = (
 				28E748041710831200F97883 /* Every1HereTests.m in Sources */,
+				288DF3F31716D5A3008598DA /* E1HAppDelegateTests.m in Sources */,
+				288DF3F41716D5A3008598DA /* E1HObjectConfigurationTests.m in Sources */,
+				288DF3F51716D5A3008598DA /* EventBuilderTests.m in Sources */,
+				288DF3F61716D5A3008598DA /* UserBuilderTests.m in Sources */,
+				288DF3F71716D5A3008598DA /* AFNParseDotComCommunicatorTests.m in Sources */,
+				288DF3F81716D5A3008598DA /* InspectableParseDotComCommunicator.m in Sources */,
+				288DF3F91716D5A3008598DA /* NonNetworkedParseDotComCommunicator.m in Sources */,
+				288DF3FA1716D5A3008598DA /* EventCreationWorkflowTests.m in Sources */,
+				288DF3FB1716D5A3008598DA /* EventViewControllerTests.m in Sources */,
+				288DF3FC1716D5A3008598DA /* MemberCreationWorkflowTests.m in Sources */,
+				288DF3FD1716D5A3008598DA /* FakeEventBuilder.m in Sources */,
+				288DF3FE1716D5A3008598DA /* FakeMemberBuilder.m in Sources */,
+				288DF3FF1716D5A3008598DA /* FakeNotificationCenter.m in Sources */,
+				288DF4001716D5A3008598DA /* FakeURLResponse.m in Sources */,
+				288DF4011716D5A3008598DA /* MockParseDotComCommunicator.m in Sources */,
+				288DF4021716D5A3008598DA /* MockParseDotComManager.m in Sources */,
+				288DF4031716D5A3008598DA /* MockParseDotComManagerDelegate.m in Sources */,
+				288DF4041716D5A3008598DA /* ReloadDataWatcher.m in Sources */,
+				288DF4051716D5A3008598DA /* EventTableDataSourceTests.m in Sources */,
+				288DF4061716D5A3008598DA /* EventTableDelegateTests.m in Sources */,
+				288DF4071716D5A3008598DA /* MemberListTableDataSourceTests.m in Sources */,
+				288DF4081716D5A3008598DA /* AddressTests.m in Sources */,
+				288DF4091716D5A3008598DA /* EventTest.m in Sources */,
+				288DF40A1716D5A3008598DA /* GroupTest.m in Sources */,
+				288DF40B1716D5A3008598DA /* UserTests.m in Sources */,
+				288DF40C1716D5A3008598DA /* VenueTest.m in Sources */,
+				288DF40D1716D5A3008598DA /* AvatarStore+TestingExtensions.m in Sources */,
+				288DF40E1716D5A3008598DA /* TestObjectConfiguration.m in Sources */,
+				288DF40F1716D5A3008598DA /* TestSemaphor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,6 +22,7 @@
 @property (strong) NSObject <UITableViewDataSource, UITableViewDelegate> *dataSource;
 @property (strong) E1HObjectConfiguration *objectConfiguration;
 
+- (void)userDidSelectPastEvents;
 
 @end
 

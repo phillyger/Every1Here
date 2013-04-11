@@ -14,12 +14,12 @@
 @protocol MemberManagerDelegate <NSObject>
 
 /**
- * The manager was unable to retrieve questions from Parse.com.
+ * The manager was unable to retrieve members from Parse.com.
  */
 - (void)retrievingMembersFailedWithError: (NSError *)error;
 
 /**
- * The manager retrieved a list of questions from Parse.com.
+ * The manager retrieved a list of members from Parse.com.
  */
 - (void)didReceiveMembers: (NSArray *)members;
 

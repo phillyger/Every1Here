@@ -8,7 +8,7 @@
 //
 #import <Foundation/Foundation.h>
 #import "E1HOperationFactory.h"
-
+#import "User.h"
 @class Event;
 @class User;
 
@@ -22,82 +22,71 @@
 @protocol ParseDotComManagerDelegate <NSObject>
 
 
-/**
- * The manager successfully inserted a new User into Parse.com.
- */
-- (void)didInsertNewUser:(User *)selectedUser
-               withEvent: (Event *)selectedEvent;
 
 /**
  * The manager successfully inserted a new Member into Parse.com.
  */
-- (void)didInsertNewGuest:(User *)selectedUser
-                withEvent: (Event *)selectedEvent;
-
-
-/**
- * The manager received an error when inserting a new member into Parse.com.
- */
-- (void)insertingNewGuestFailedWithError: (NSError *)error;
-
-
-/**
- * The manager received an error when inserting a new user into Parse.com.
- */
-- (void)insertingNewUserFailedWithError: (NSError *)error;
-
-
-/**
- * The manager received an error when updating an existing member into Parse.com.
- */
-- (void)updatingExistingUserFailedWithError: (NSError *)error;
+- (void)didInsertUserForUserType:(UserTypes)userType;
 
 /**
  * The manager successfully inserted a new Member into Parse.com.
  */
-- (void)didUpdateExistingGuest:(User *)selectedUser;
+- (void)didUpdateUserForUserType:(UserTypes)userType;
 
 /**
  * The manager successfully inserted a new Member into Parse.com.
  */
-- (void)didUpdateExistingUser:(User *)selectedUser;
+- (void)didDeleteUserForUserType:(UserTypes)userType;
+
+/**
+ * The manager successfully inserted a new Member into Parse.com.
+ */
+- (void)didFetchUsersForUserType:(UserTypes)userType;
 
 
 /**
  * The manager successfully inserted a new Member into Parse.com.
  */
-- (void)didInsertNewAttendanceWithUser:(User *)selectedUser
-                             withEvent:(Event *)selectedEvent;
+- (void)didInsertAttendance;
 
-
-/**
- * The manager received an error when inserting a new member into Parse.com.
- */
-- (void)insertingNewAttendanceFailedWithError: (NSError *)error;
 
 /**
  * The manager successfully updated an existing User Attendance record into Parse.com.
  */
-- (void)didUpdateAttendanceWithUser:(User *)selectedUser
-                          withEvent:(Event *)selectedEvent;
-
+- (void)didUpdateAttendance;
 
 
 /**
  * The manager successfully deleted an existing User Attendance record into Parse.com.
  */
-- (void)didDeleteAttendanceForUser:(User *)selectedUser;
+- (void)didDeleteAttendance;
+
+/**
+ * The manager successfully deleted an existing User Attendance record into Parse.com.
+ */
+- (void)didFetchAttendance;
+
+/**
+ * The manager received an error when inserting a new member into Parse.com.
+ */
+//- (void)insertingAttendanceFailedWithError: (NSError *)error;
 
 
 /**
  * The manager received an error when updating a User attendance record into Parse.com.
  */
-- (void)updatingExistingUserAttendanceFailedWithError: (NSError *)error;
+//- (void)updatingAttendanceFailedWithError: (NSError *)error;
 
 /**
  * The manager received an error when deleting a User attendance record into Parse.com.
  */
-- (void)deletingExistingUserAttendanceFailedWithError: (NSError *)error;
+//- (void)deletingAttendanceFailedWithError: (NSError *)error;
+
+
+/**
+ * The manager received an error when updating an existing member into Parse.com.
+ */
+//- (void)updatingExistingUserFailedWithError: (NSError *)error;
 
 
 /**
@@ -106,6 +95,7 @@
 - (void)executedOpsFailedWithError:(NSError *)error
                      forActionType:(ActionTypes) actionType
                       forClassName:(NSString *)className;
+
 
 
 /**

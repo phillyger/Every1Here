@@ -1,17 +1,16 @@
 //
-//  E1HRESTApiOperationDelete.m
+//  E1HRESTApiOperationFetch.m
 //  Every1Here
 //
-//  Created by Ger O'Sullivan on 4/9/13.
+//  Created by Ger O'Sullivan on 4/11/13.
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
 //
 
-#import "E1HRESTApiOperationDelete.h"
+#import "E1HRESTApiOperationFetch.h"
 #import "RESTApiOperation.h"
 #import "CommonUtilities.h"
 
-@implementation E1HRESTApiOperationDelete
-
+@implementation E1HRESTApiOperationFetch
 
 -(RESTApiOperation *)createOperationWithObj:(id)obj forClassName:(NSString *)aClassName withKey:(NSString *)aKey {
     
@@ -26,20 +25,20 @@
 
 - (RESTApiOperation *)createOperationWithId:(NSString *)anId forClassName:(NSString *)aClassName {
     
-    
-    NSMutableString *thisUriEndPoint = [[CommonUtilities fetchUriEndPointFromPListForClassName:aClassName] mutableCopy];
-    
-    thisUriEndPoint = [[thisUriEndPoint stringByAppendingString:@"/"] copy];
-    thisUriEndPoint = [[thisUriEndPoint stringByAppendingString:anId] copy];
-    
-    RESTApiOperation *newRESTApiOperation = [[RESTApiOperation alloc] initWithUriMethod:@"DELETE" uriPath:thisUriEndPoint data:nil];
-    
-    return newRESTApiOperation;
+    return nil;
     
 }
 
 -(RESTApiOperation *)createOperationWithObj:(id)anObject forClassName:(NSString *)aClassName withQuery:(NSDictionary *)aQuery {
-    return nil;
+    
+    NSDictionary *thisDataDict = @{@"where" : [CommonUtilities serializeRequestParmetersWithDictionary:aQuery]};
+    NSMutableString *thisUriEndPoint = [[CommonUtilities fetchUriEndPointFromPListForClassName:aClassName] mutableCopy];
+    
+    NSLog(@"%@", thisDataDict);
+    
+    RESTApiOperation *newRESTApiOperation = [[RESTApiOperation alloc] initWithUriMethod:@"GET" uriPath:thisUriEndPoint data:thisDataDict];
+    
+    return newRESTApiOperation;
 }
 
 @end
