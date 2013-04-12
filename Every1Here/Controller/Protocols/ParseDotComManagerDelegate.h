@@ -26,7 +26,7 @@
 /**
  * The manager successfully inserted a new Member into Parse.com.
  */
-- (void)didInsertUserForUserType:(UserTypes)userType;
+- (void)didInsertUserForUserType:(UserTypes)userType withOutput:(NSArray *)objectNotationList;
 
 /**
  * The manager successfully inserted a new Member into Parse.com.
@@ -36,18 +36,13 @@
 /**
  * The manager successfully inserted a new Member into Parse.com.
  */
-- (void)didDeleteUserForUserType:(UserTypes)userType;
-
-/**
- * The manager successfully inserted a new Member into Parse.com.
- */
-- (void)didFetchUsersForUserType:(UserTypes)userType;
+- (void)didFetchUsers:(NSArray *)userList forUserType:(UserTypes)userType;
 
 
 /**
  * The manager successfully inserted a new Member into Parse.com.
  */
-- (void)didInsertAttendance;
+- (void)didInsertAttendanceWithOutput:(NSArray *)objectNotationList;
 
 
 /**
@@ -60,11 +55,6 @@
  * The manager successfully deleted an existing User Attendance record into Parse.com.
  */
 - (void)didDeleteAttendance;
-
-/**
- * The manager successfully deleted an existing User Attendance record into Parse.com.
- */
-- (void)didFetchAttendance;
 
 /**
  * The manager received an error when inserting a new member into Parse.com.
@@ -94,7 +84,7 @@
  */
 - (void)executedOpsFailedWithError:(NSError *)error
                      forActionType:(ActionTypes) actionType
-                      forClassName:(NSString *)className;
+                      forNamedClass:(NSString *)namedClass;
 
 
 
@@ -103,7 +93,7 @@
  */
 - (void)didExecuteOps:(NSArray *)objectNotationList
               forActionType:(ActionTypes) actionType
-               forClassName:(NSString *)className;
+               forNamedClass:(NSString *)namedClass;
 
 
 

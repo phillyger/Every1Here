@@ -7,9 +7,7 @@
 //
 
 #import "EventListViewController.h"
-#import "E1HObjectConfiguration.h"
 #import "MemberManagerDelegate.h"
-#import "EventManagerDelegate.h"
 
 @class ParseDotComManager;
 
@@ -19,4 +17,4 @@
 
 @end
 
-//extern NSString *EventListTableDidSelectEventNotification;
+

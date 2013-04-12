@@ -14,11 +14,11 @@
 @implementation E1HRESTApiOperationInsert
 
 
--(RESTApiOperation *)createOperationWithObj:(id)obj forClassName:(NSString *)aClassName withKey:(NSString *)aKey {
+-(RESTApiOperation *)createOperationWithObj:(id)obj forNamedClass:(NSString *)aNamedClass withKey:(NSString *)aKey {
 
     
-    NSDictionary *thisDataDict = [CommonUtilities generateValueDictWithObject:obj forClassName:aClassName];
-    NSString *thisUriEndPoint = [CommonUtilities fetchUriEndPointFromPListForClassName:aClassName];
+    NSDictionary *thisDataDict = [CommonUtilities generateValueDictWithObject:obj forNamedClass:aNamedClass];
+    NSString *thisUriEndPoint = [CommonUtilities fetchUriEndPointFromPListForNamedClass:aNamedClass];
     
     RESTApiOperation *newRESTApiOperation = [[RESTApiOperation alloc] initWithUriMethod:@"POST" uriPath:thisUriEndPoint data:thisDataDict];
 
@@ -26,9 +26,9 @@
     
 }
 
-- (RESTApiOperation *)createOperationWithDict:(NSDictionary *)aDataDict forClassName:(NSString *)aClassName {
+- (RESTApiOperation *)createOperationWithDict:(NSDictionary *)aDataDict forNamedClass:(NSString *)aNamedClass {
     
-    NSString *thisUriEndPoint = [CommonUtilities fetchUriEndPointFromPListForClassName:aClassName];
+    NSString *thisUriEndPoint = [CommonUtilities fetchUriEndPointFromPListForNamedClass:aNamedClass];
     
     RESTApiOperation *newRESTApiOperation = [[RESTApiOperation alloc] initWithUriMethod:@"POST" uriPath:thisUriEndPoint data:aDataDict];
     
@@ -36,11 +36,11 @@
     
 }
 
-- (RESTApiOperation *)createOperationWithId:(NSString *)anId forClassName:(NSString *)aClassName {
+- (RESTApiOperation *)createOperationWithId:(NSString *)anId forNamedClass:(NSString *)aNamedClass {
     return nil;
 }
 
--(RESTApiOperation *)createOperationWithObj:(id)anObject forClassName:(NSString *)aClassName withQuery:(NSDictionary *)aQuery {
+-(RESTApiOperation *)createOperationWithObj:(id)anObject forNamedClass:(NSString *)aNamedClass withQuery:(NSDictionary *)aQuery {
     return nil;
 }
 

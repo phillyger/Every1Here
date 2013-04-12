@@ -95,43 +95,7 @@
     [self tellDelegateAboutGuestFetchError: error];
 }
 
-#pragma mark Upcoming Event method handling
 
-- (void)fetchUpcomingEventsForGroup:(Group *)group {
-    [communicator downloadUpcomingEventsForGroupName: [group urlName]
-                                errorHandler:^(NSError *error) {
-                                    [self fetchingEventsFailedWithError:error];
-                                }
-                              successHandler:^(NSDictionary *objectNotation, SocialNetworkType slType) {
-                                  [self receivedEventsJSON:objectNotation];
-                              }];
-}
-- (void)fetchUpcomingEventsForGroupName:(NSString *)groupUrlName {
-    [communicator downloadUpcomingEventsForGroupName: groupUrlName
-                                        errorHandler:^(NSError *error) {
-                                            [self fetchingEventsFailedWithError:error];
-                                        }
-                                      successHandler:^(NSDictionary *objectNotation, SocialNetworkType slType) {
-                                          [self receivedEventsJSON:objectNotation];
-                                      }];
-}
-
-
-- (void)fetchingEventsFailedWithError:(NSError *)error {
-    [self tellDelegateAboutEventFetchError: error];
-}
-
-- (void)receivedEventsJSON:(NSDictionary *)objectNotation {
-    NSError *error = nil;
-    NSArray *events = [eventBuilder eventsFromJSON:objectNotation error:&error];
-    if (!events) {
-        [self fetchingEventsFailedWithError:error];
-    }
-    else {
-        [eventDelegate didReceiveEvents: events];
-    }
-
-}
 
 #pragma mark Class Continuation
 - (void)tellDelegateAboutGuestFetchError:(NSError *)underlyingError {

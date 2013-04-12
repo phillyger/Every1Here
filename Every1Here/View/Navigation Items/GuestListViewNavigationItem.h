@@ -15,5 +15,6 @@
 
 // Designated Initializer
 - (id)initWithDelegate:(id)delegate;
+- (id)init;
 
 @end

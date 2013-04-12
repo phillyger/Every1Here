@@ -13,6 +13,13 @@
 
 @interface E1HAppDelegate : UIResponder <UIApplicationDelegate>
 
+
+@property (nonatomic, retain) NSString	*parseDotComAccountGroupName;
+@property (nonatomic, retain) NSString	*parseDotComAccountOrgId;
+@property (nonatomic, retain) NSString	*parseDotComAccountEventStatusOnLaunch;
+@property (nonatomic, retain) NSString	*parseDotComAccountUserAccountPassword;
+
+
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) ACAccountStore *accountStore;
 @property (strong, nonatomic) ACAccount *facebookAccount;

@@ -13,8 +13,17 @@
 
 #define AccountTwitterSelectedAccountIdentifier @"TwitterAccountSelectedAccountIdentifier"
 
-@implementation E1HAppDelegate
+#define E1HParseDotComAccountGroupNameIdentifier @"E1HParseDotComAccountGroupNameIdentifier"
+#define E1HParseDotComAccountOrgIdentifier @"E1HParseDotComAccountOrgIdentifier"
+#define E1HParseDotComAccountEventStatusOnLaunchIdentifier @"E1HParseDotComAccountEventStatusOnLaunchIdentifier"
+#define E1HParseDotComAccountUserAccountPasswordIdentifier @"E1HParseDotComAccountUserAccountPasswordIdentifier"
 
+
+@implementation E1HAppDelegate
+@synthesize parseDotComAccountOrgId;
+@synthesize parseDotComAccountGroupName;
+@synthesize parseDotComAccountEventStatusOnLaunch;
+@synthesize parseDotComAccountUserAccountPassword;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -28,7 +37,61 @@
     // [PFFacebookUtils initializeWithApplicationId:@"your_facebook_app_id"];
     // ****************************************************************************
     
+    NSString *testValue = [[NSUserDefaults standardUserDefaults] stringForKey:E1HParseDotComAccountOrgIdentifier];
+	if (testValue == nil)
+	{
+        NSString *pathStr = [[NSBundle mainBundle] bundlePath];
+		NSString *settingsBundlePath = [pathStr stringByAppendingPathComponent:@"Settings.bundle"];
+		NSString *finalPath = [settingsBundlePath stringByAppendingPathComponent:@"Root.plist"];
+        
+		NSDictionary *settingsDict = [NSDictionary dictionaryWithContentsOfFile:finalPath];
+		NSArray *prefSpecifierArray = [settingsDict objectForKey:@"PreferenceSpecifiers"];
+        
+        
+        __block NSString *parseDotComAccountGroupNameDefault;
+        __block NSString *parseDotComAccountOrgIdDefault;
+        __block NSString *parseDotComAccountEventStatusOnLaunchDefault;
+        __block NSString *parseDotComAccountUserAccountPasswordDefault;
+        
+        [prefSpecifierArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+
+            
+            NSDictionary *prefItem = (NSDictionary *)obj;
+            NSString *keyValueStr = [prefItem objectForKey:@"Key"];
+			id defaultValue = [prefItem objectForKey:@"DefaultValue"];
+            if ([keyValueStr isEqualToString:E1HParseDotComAccountGroupNameIdentifier])
+			{
+				parseDotComAccountGroupNameDefault = defaultValue;
+			}
+			else if ([keyValueStr isEqualToString:E1HParseDotComAccountOrgIdentifier])
+			{
+				parseDotComAccountOrgIdDefault = defaultValue;
+			} else if ([keyValueStr isEqualToString:E1HParseDotComAccountEventStatusOnLaunchIdentifier])
+            {
+                       parseDotComAccountEventStatusOnLaunchDefault = defaultValue;
+            } else if ([keyValueStr isEqualToString:E1HParseDotComAccountUserAccountPasswordIdentifier])
+            {
+                parseDotComAccountUserAccountPasswordDefault = defaultValue;
+            }
+        }];
+
+        // since no default values have been set (i.e. no preferences file created), create it here
+		NSDictionary *appDefaults = @{E1HParseDotComAccountGroupNameIdentifier: parseDotComAccountGroupNameDefault,
+                                E1HParseDotComAccountOrgIdentifier : parseDotComAccountOrgIdDefault,
+                                E1HParseDotComAccountEventStatusOnLaunchIdentifier: parseDotComAccountEventStatusOnLaunchDefault,
+                                E1HParseDotComAccountUserAccountPasswordIdentifier: parseDotComAccountUserAccountPasswordDefault};
+        
+        
+        [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+        
+    }
     
+    // we're ready to do, so lastly set the key preference values
+	parseDotComAccountGroupName = [[NSUserDefaults standardUserDefaults] stringForKey:E1HParseDotComAccountGroupNameIdentifier];
+	parseDotComAccountOrgId = [[NSUserDefaults standardUserDefaults] stringForKey:E1HParseDotComAccountOrgIdentifier];
+    parseDotComAccountEventStatusOnLaunch = [[NSUserDefaults standardUserDefaults] stringForKey:E1HParseDotComAccountEventStatusOnLaunchIdentifier];
+    parseDotComAccountUserAccountPassword = [[NSUserDefaults standardUserDefaults] stringForKey:E1HParseDotComAccountUserAccountPasswordIdentifier];
     self.accountStore = [[ACAccountStore alloc] init];
 
     return YES;

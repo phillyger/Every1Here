@@ -7,8 +7,6 @@
 //
 
 
-
-
 #import "ParseDotComCommunicator.h"
 #import "AFParseDotComAPIClient.h"
 #import "AFHTTPRequestOperation.h"
@@ -21,20 +19,17 @@
 #import "RESTApiOperation.h"
 #import "CommonUtilities.h"
 
-
-
-
 @interface ParseDotComCommunicator ()
 
-- (NSString *)serializeRequestParmetersWithDictionary:(NSDictionary *)dict;
+
+- (void)execute:(NSArray *)operations
+   errorHandler:(ParseDotComErrorBlock)errorBlock
+successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+
 
 @end
 
 @implementation ParseDotComCommunicator
-
-@synthesize delegate;
-
-
 
 
 - (void)launchBatchConnectionForRequests {
@@ -69,11 +64,11 @@
     
 }
 
-
-- (void)downloadEventsForGroupName:(NSString *)groupName
+#pragma mark Event Operations
+- (void)downloadEventsForOrgId:(NSNumber *)orgId
                         withStatus:(NSString *)status
                     forActionType:(ActionTypes)actionType
-                    forClassName: (NSString*)className
+                    forNamedClass: (NSString*)namedClass
                       errorHandler:(ParseDotComErrorBlock)errorBlock
                successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
 
@@ -83,17 +78,17 @@
     NSMutableArray *operations = [[NSMutableArray alloc] init];
     
     // Fetch operation to return list of Events
-
+    // 'className' is a Parse defined key used in querying class content. Hence E1H variable is namedClass to avoid confusion
     queryParameters = [@{@"status":status,
                        @"groupId":
                        @{@"$inQuery":
                        @{@"where":
-                       @{@"name":groupName},
-                       @"className":@"Group"}}} mutableCopy];
+                       @{@"orgId":orgId},
+                       @"className":@"Group"}}} mutableCopy];   
     NSLog(@"%@", queryParameters);
     
     id fetchMemberOp= [E1HOperationFactory create:actionType];
-    RESTApiOperation *op1 = [fetchMemberOp createOperationWithObj:nil forClassName:className withQuery:queryParameters];
+    RESTApiOperation *op1 = [fetchMemberOp createOperationWithObj:nil forNamedClass:namedClass withQuery:queryParameters];
     [operations addObject:op1];
     
     
@@ -101,46 +96,17 @@
      ];
 }
 
-- (void)downloadUsersForEvent:(Event *)event
-                forActionType:(ActionTypes)actionType
-                 forClassName:(NSString *)className
-                 errorHandler:(ParseDotComErrorBlock)errorBlock
-          successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
-    
-    
-    NSMutableDictionary *queryParameters = [[NSMutableDictionary alloc] init];
-    NSMutableArray *operations = [[NSMutableArray alloc] init];
-   
-    // Fetch operation to return list of Members or Guests
-    queryParameters = [@{@"isActive" : [NSNumber numberWithBool:TRUE]} mutableCopy];
-    
-    id fetchUserOp= [E1HOperationFactory create:actionType];
-    RESTApiOperation *usersOp = [fetchUserOp createOperationWithObj:event forClassName:className withQuery:queryParameters];
-    [operations addObject:usersOp];
-    
-    // Fetch operation to return list of Attendance
-    NSString *attendanceClassName = [@"Attendance" mutableCopy];
-    queryParameters = [@{@"eventId" : [event valueForKey:@"objectId"]} mutableCopy];
-    
-    id fetchAttendanceOp= [E1HOperationFactory create:actionType];
-    RESTApiOperation *attendanceOp = [fetchAttendanceOp createOperationWithObj:event forClassName:attendanceClassName withQuery:queryParameters];
-    [operations addObject:attendanceOp];
-    
-    
-    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
-     ];
-    
-    
-}
-#pragma mark Attendance 
 
-- (void)insertAttendance:(User *)user forClassName:(NSString *)className errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
+
+#pragma mark Attendance Operations
+
+- (void)insertAttendance:(User *)user forNamedClass:(NSString *)namedClass errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
     
     NSMutableArray *operations = [[NSMutableArray alloc] init];
-    NSDictionary *parameters = [CommonUtilities generateValueDictWithObject:user forClassName:className];
+    NSDictionary *parameters = [CommonUtilities generateValueDictWithObject:user forNamedClass:namedClass];
     
     id insertOp= [E1HOperationFactory create:Insert];
-    RESTApiOperation *op = [insertOp createOperationWithDict:parameters forClassName:className];
+    RESTApiOperation *op = [insertOp createOperationWithDict:parameters forNamedClass:namedClass];
     [operations addObject:op];
     
     [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
@@ -150,14 +116,14 @@
 
 
 - (void)updateAttendance:(User *)user
-            forClassName:(NSString *)className
+            forNamedClass:(NSString *)namedClass
             errorHandler:(ParseDotComErrorBlock)errorBlock
      successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
     
     NSMutableArray *operations = [[NSMutableArray alloc] init];
     
     id updateOp= [E1HOperationFactory create:Update];
-    RESTApiOperation *op = [updateOp createOperationWithObj:user forClassName:className withKey:@"attendanceId"];
+    RESTApiOperation *op = [updateOp createOperationWithObj:user forNamedClass:namedClass withKey:@"attendanceId"];
     [operations addObject:op];
     
     [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
@@ -166,14 +132,14 @@
 }
 
 - (void)deleteAttendance:(User *)user
-            forClassName:(NSString *)className
+            forNamedClass:(NSString *)namedClass
             errorHandler:(ParseDotComErrorBlock)errorBlock
      successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
     
     NSMutableArray *operations = [[NSMutableArray alloc] init];
     
     id deleteOp= [E1HOperationFactory create:Delete];
-    RESTApiOperation *op = [deleteOp createOperationWithId:[user valueForKeyPath:@"attendanceId"] forClassName:className];
+    RESTApiOperation *op = [deleteOp createOperationWithId:[user valueForKeyPath:@"attendanceId"] forNamedClass:namedClass];
     [operations addObject:op];
     
     [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
@@ -181,15 +147,71 @@
 }
 
 
-#pragma mark User Ops
+#pragma mark User(Type) Operations
 
-- (void)updateUser:(User *)user forClassName:(NSString *)className errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock{
+
+- (void)downloadUsersForEvent:(Event *)event
+                forActionType:(ActionTypes)actionType
+                forNamedClass:(NSString *)namedClass
+                 errorHandler:(ParseDotComErrorBlock)errorBlock
+          successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
+    
+    
+    NSMutableDictionary *queryParameters = [[NSMutableDictionary alloc] init];
+    NSMutableArray *operations = [[NSMutableArray alloc] init];
+    
+    // Fetch operation to return list of Members or Guests
+    queryParameters = [@{@"isActive" : [NSNumber numberWithBool:TRUE]} mutableCopy];
+    
+    id fetchUserOp= [E1HOperationFactory create:actionType];
+    RESTApiOperation *usersOp = [fetchUserOp createOperationWithObj:event forNamedClass:namedClass withQuery:queryParameters];
+    [operations addObject:usersOp];
+    
+    // Fetch operation to return list of Attendance
+    NSString *attendancenamedClass = [@"Attendance" mutableCopy];
+    queryParameters = [@{@"eventId" : [event valueForKey:@"objectId"]} mutableCopy];
+    
+    id fetchAttendanceOp= [E1HOperationFactory create:actionType];
+    RESTApiOperation *attendanceOp = [fetchAttendanceOp createOperationWithObj:event forNamedClass:attendancenamedClass withQuery:queryParameters];
+    [operations addObject:attendanceOp];
+    
+    
+    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
+     ];
+    
+    
+}
+
+- (void)insertUser:(User *)user forNamedClass:(NSString *)namedClass errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
+    
+
+    NSDictionary *parameters = [CommonUtilities generateValueDictWithObject:user forNamedClass:namedClass];
+    NSLog(@"%@", parameters);
+    NSMutableArray *operations = [[NSMutableArray alloc] init];
+    
+    id insertOp1= [E1HOperationFactory create:Insert];
+    RESTApiOperation *insertToNamedTableOp = [insertOp1 createOperationWithDict:parameters forNamedClass:namedClass];
+    [operations addObject:insertToNamedTableOp];
+    
+    NSString *usernamedClass = [@"User" mutableCopy];
+    parameters = [CommonUtilities generateValueDictWithObject:user forNamedClass:usernamedClass];
+    NSLog(@"%@", parameters);
+    id insertOp2= [E1HOperationFactory create:Insert];
+    RESTApiOperation *insertToUserTableOp = [insertOp2 createOperationWithDict:parameters forNamedClass:namedClass];
+    [operations addObject:insertToUserTableOp];
+    
+    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
+     ];
+    
+}
+
+- (void)updateUser:(User *)user forNamedClass:(NSString *)namedClass errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock{
     
     NSMutableArray *operations = [[NSMutableArray alloc] init];
     
     id updateOp= [E1HOperationFactory create:Update];
-    RESTApiOperation *op = [updateOp createOperationWithObj:user forClassName:className withKey:@"objectId"];
-    [operations addObject:op];
+    RESTApiOperation *updateToNamedTableOp = [updateOp createOperationWithObj:user forNamedClass:namedClass withKey:@"objectId"];
+    [operations addObject:updateToNamedTableOp];
     
     [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
      ];
@@ -214,15 +236,11 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
 
 
 
-- (void)dealloc {
-     [[[AFParseDotComAPIClient sharedClient] operationQueue] cancelAllOperations];
-}
 
 - (void)cancelAndDiscardURLConnection {
     [[[AFParseDotComAPIClient sharedClient] operationQueue] cancelAllOperations];
 }
 
-#pragma mark NSURLConnection Delegate
 
 
 @end

@@ -12,10 +12,10 @@
 
 @protocol E1HRESTApiOperationFactory <NSObject>
 
--(RESTApiOperation *)createOperationWithObj:(id)anObject forClassName:(NSString *)aClassName withKey:(NSString *)aKey;
--(RESTApiOperation *)createOperationWithDict:(NSDictionary *)aDict forClassName:(NSString *)aClassName;
--(RESTApiOperation *)createOperationWithId:(NSString *)anId forClassName:(NSString *)aClassName;
--(RESTApiOperation *)createOperationWithObj:(id)anObject forClassName:(NSString *)aClassName withQuery:(NSDictionary *)aQuery;
+-(RESTApiOperation *)createOperationWithObj:(id)anObject forNamedClass:(NSString *)aNamedClass withKey:(NSString *)aKey;
+-(RESTApiOperation *)createOperationWithDict:(NSDictionary *)aDict forNamedClass:(NSString *)aNamedClass;
+-(RESTApiOperation *)createOperationWithId:(NSString *)anId forNamedClass:(NSString *)aNamedClass;
+-(RESTApiOperation *)createOperationWithObj:(id)anObject forNamedClass:(NSString *)aNamedClass withQuery:(NSDictionary *)aQuery;
 
 
 @end

@@ -8,9 +8,7 @@
 
 #import "User.h"
 #import "UserRole.h"
-//#import "InAttendanceState.h"
-//#import "NotPresentState.h"
-//#import "AttendanceReceptionist.h"
+
 
 
 @implementation User
@@ -101,6 +99,10 @@
 
 }
 
+- (id)initWithFirstName:(NSString *)aFirstName lastName:(NSString *)aLastName {
+    return [self initWithFirstName:aFirstName lastName:aLastName avatarLocation:nil eventId:nil];
+}
+
 - (id)initWithDisplayName:(NSString *)aDisplayName
            avatarLocation:(NSString *)location
                   eventId:(NSString *)anEventId
@@ -129,6 +131,7 @@
     }
     return self;
 }
+
 
 
 // Overridden inherited Designated Initializer

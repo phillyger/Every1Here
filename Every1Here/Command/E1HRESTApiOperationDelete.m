@@ -13,21 +13,21 @@
 @implementation E1HRESTApiOperationDelete
 
 
--(RESTApiOperation *)createOperationWithObj:(id)obj forClassName:(NSString *)aClassName withKey:(NSString *)aKey {
+-(RESTApiOperation *)createOperationWithObj:(id)obj forNamedClass:(NSString *)aNamedClass withKey:(NSString *)aKey {
     
     return nil;
 }
 
-- (RESTApiOperation *)createOperationWithDict:(NSDictionary *)aDataDict forClassName:(NSString *)aClassName {
+- (RESTApiOperation *)createOperationWithDict:(NSDictionary *)aDataDict forNamedClass:(NSString *)aNamedClass {
     
     return nil;
     
 }
 
-- (RESTApiOperation *)createOperationWithId:(NSString *)anId forClassName:(NSString *)aClassName {
+- (RESTApiOperation *)createOperationWithId:(NSString *)anId forNamedClass:(NSString *)aNamedClass {
     
     
-    NSMutableString *thisUriEndPoint = [[CommonUtilities fetchUriEndPointFromPListForClassName:aClassName] mutableCopy];
+    NSMutableString *thisUriEndPoint = [[CommonUtilities fetchUriEndPointFromPListForNamedClass:aNamedClass] mutableCopy];
     
     thisUriEndPoint = [[thisUriEndPoint stringByAppendingString:@"/"] copy];
     thisUriEndPoint = [[thisUriEndPoint stringByAppendingString:anId] copy];
@@ -38,7 +38,7 @@
     
 }
 
--(RESTApiOperation *)createOperationWithObj:(id)anObject forClassName:(NSString *)aClassName withQuery:(NSDictionary *)aQuery {
+-(RESTApiOperation *)createOperationWithObj:(id)anObject forNamedClass:(NSString *)aNamedClass withQuery:(NSDictionary *)aQuery {
     return nil;
 }
 

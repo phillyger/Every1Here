@@ -16,6 +16,7 @@
 #import "MeetupDotComManager.h"
 #import "ParseDotComManager.h"
 #import "EventMemberGuestTabBarController.h"
+#import "E1HAppDelegate.h"
 #import <objc/runtime.h>
 
 //static NSString *eventCellReuseIdentifier = @"eventCell";
@@ -119,10 +120,18 @@
 }
 
 - (void) fetchEventContents {
+    E1HAppDelegate *appDelegate = (E1HAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
     self.parseDotComMgr = [objectConfiguration parseDotComManager];
     self.parseDotComMgr.eventDelegate = self;
-    NSString *groupUrlName = @"Panorama Toastmasters";
-    [self.parseDotComMgr fetchEventsForGroupName:groupUrlName withStatus:@"upcoming"];
+    
+    // Convert user prefs orgId from NSString to NSNumber
+    NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterNoStyle];
+    NSNumber *orgId = [formatter numberFromString:[appDelegate parseDotComAccountOrgId]];
+    formatter=nil;
+    
+    [self.parseDotComMgr fetchEventsForOrgId:orgId withStatus:appDelegate.parseDotComAccountEventStatusOnLaunch];
 }
 
 

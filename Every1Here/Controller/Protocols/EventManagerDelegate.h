@@ -22,14 +22,5 @@
  */
 - (void)retrievingEventsFailedWithError: (NSError *)error;
 
-/**
- * The manager was unable to insert a new event into Parse
- */
-- (void)insertingNewEventFailedWithError: (NSError *)error;
-
-/**
- * The manager inserted a new event into Parse
- */
-- (void)didInsertNewEvent:(Event *)selectedEvent;
 
 @end

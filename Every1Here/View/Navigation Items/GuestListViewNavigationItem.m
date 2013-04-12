@@ -10,7 +10,7 @@
 #import "GuestNavIconView.h"
 
 @interface GuestListViewNavigationItem ()
-- (void)sayHello;
+
 @end
 
 @implementation GuestListViewNavigationItem

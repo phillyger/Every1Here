@@ -11,14 +11,9 @@
 @protocol EventCommunicatorDelegate <NSObject>
 
 /**
- * The communicator received a response from the Parse fetch.
- */
-- (void)receivedEventsJSON: (NSDictionary *)objectNotation;
-
-/**
  * Trying to retrieve events failed.
  * @param error The error that caused the failure.
  */
-- (void)fetchingEventsFailedWithError: (NSError *)error;
+//- (void)fetchingEventsFailedWithError: (NSError *)error;
 
 @end

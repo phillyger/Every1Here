@@ -28,6 +28,7 @@
 //    }
     NSString *primaryEmail = [memberValues valueForKey:@"primaryEmail"];
     NSString *eventId = [memberValues valueForKey:@"eventId"];
+    NSString *avatarLocation = [memberValues valueForKey:@"avatarLocation"];
     
 //    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 //    [dateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'"];
@@ -41,7 +42,7 @@
                                         lastName:lastName
                                 primaryEmailAddr:primaryEmail
                               secondaryEmailAddr:nil
-                                  avatarLocation:nil
+                                  avatarLocation:avatarLocation
                                         objectId:objectId
                                           userId:userId
                                         eventId:eventId

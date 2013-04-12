@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		05901A94B2B84206A5555800 /* libPods-Every1HereTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF716BB5E4804549935C7F27 /* libPods-Every1HereTests.a */; };
 		28051A601717101700195BA6 /* E1HRESTApiOperationFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 28051A5F1717101700195BA6 /* E1HRESTApiOperationFetch.m */; };
+		28051A67171853CD00195BA6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 28051A66171853CC00195BA6 /* Settings.bundle */; };
 		284C6BBF1710F5AE001855B5 /* E1HAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 284C6BBC1710F5AE001855B5 /* E1HAppDelegate.m */; };
 		284C6BC01710F5AE001855B5 /* E1HObjectConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 284C6BBE1710F5AE001855B5 /* E1HObjectConfiguration.m */; };
 		284C6BC91710F7B6001855B5 /* EventListTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 284C6BC41710F7B6001855B5 /* EventListTableDataSource.m */; };
@@ -215,6 +216,7 @@
 /* Begin PBXFileReference section */
 		28051A5E1717101700195BA6 /* E1HRESTApiOperationFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E1HRESTApiOperationFetch.h; sourceTree = "<group>"; };
 		28051A5F1717101700195BA6 /* E1HRESTApiOperationFetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E1HRESTApiOperationFetch.m; sourceTree = "<group>"; };
+		28051A66171853CC00195BA6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		2815F42A02DE46459DCEA97B /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		284C6BBB1710F5AE001855B5 /* E1HAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E1HAppDelegate.h; sourceTree = "<group>"; };
 		284C6BBC1710F5AE001855B5 /* E1HAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E1HAppDelegate.m; sourceTree = "<group>"; };
@@ -599,7 +601,6 @@
 				288DF397171306AD008598DA /* Classes.plist */,
 			);
 			name = "Parse ORM";
-			path = ..;
 			sourceTree = "<group>";
 		};
 		288DF3A8171463EA008598DA /* CRUD */ = {
@@ -1016,7 +1017,6 @@
 		28B8E0E61710876A0095BB6F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				288DF38E1713011F008598DA /* Parse ORM */,
 				28B8F05E171088F00095BB6F /* images */,
 			);
 			path = Resources;
@@ -1164,6 +1164,7 @@
 		28E747CC1710831200F97883 = {
 			isa = PBXGroup;
 			children = (
+				28051A66171853CC00195BA6 /* Settings.bundle */,
 				284C6BE51710F908001855B5 /* libsqlite3.dylib */,
 				284C6BE31710F8F4001855B5 /* libz.1.1.3.dylib */,
 				28E747DE1710831200F97883 /* Every1Here */,
@@ -1235,6 +1236,7 @@
 		28E747DF1710831200F97883 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				288DF38E1713011F008598DA /* Parse ORM */,
 				28E747E01710831200F97883 /* Every1Here-Info.plist */,
 				28E747E11710831200F97883 /* InfoPlist.strings */,
 				28E747E41710831200F97883 /* main.m */,
@@ -1415,6 +1417,7 @@
 				288DF39617130196008598DA /* Attendance.plist in Resources */,
 				288DF398171306AD008598DA /* Classes.plist in Resources */,
 				288DF3B017161DB7008598DA /* meetup-32x32.png in Resources */,
+				28051A67171853CD00195BA6 /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

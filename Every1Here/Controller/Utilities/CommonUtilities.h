@@ -7,10 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "User.h"
+
 
 @interface CommonUtilities : NSObject
 
-+ (NSDictionary *)generateValueDictWithObject:(id)anObject forClassName:(NSString *)className;
-+ (NSString *)fetchUriEndPointFromPListForClassName:(NSString *)className;
++ (NSDictionary *)generateValueDictWithObject:(id)anObject forNamedClass:(NSString *)namedClass;
++ (NSString *)fetchUriEndPointFromPListForNamedClass:(NSString *)namedClass;
 + (NSString *)serializeRequestParmetersWithDictionary:(NSDictionary *)dict;
++ (NSString *) convertUserTypeToNamedClass:(UserTypes)userType;
+
+
++(void)showProgressHUD:(UIView *)view;
++(void)hideProgressHUD:(UIView *)view;
+
 @end

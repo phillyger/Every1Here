@@ -8,11 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "ParseDotComManagerDelegate.h"
-//#import "ParseDotComCommunicatorDelegate.h"
 #import "EventCommunicatorDelegate.h"
 #import "MemberCommunicatorDelegate.h"
 #import "EventManagerDelegate.h"
-#import "MemberManagerDelegate.h"
 #import "E1HOperationFactory.h"
 #import "User.h"
 
@@ -29,10 +27,9 @@
  * A façade providing access to the external Parse.com API services.
  * Application code should only use this class to get at external services innards.
  */
-@interface ParseDotComManager : NSObject <EventCommunicatorDelegate, MemberCommunicatorDelegate, ParseDotComManagerDelegate>
+@interface ParseDotComManager : NSObject
 
 @property (weak, nonatomic) id <EventManagerDelegate> eventDelegate;
-@property (weak, nonatomic) id <MemberManagerDelegate> memberDelegate;
 @property (weak, nonatomic) id <ParseDotComManagerDelegate> parseDotComDelegate;
 @property (strong) ParseDotComCommunicator *communicator;
 @property (strong) EventBuilder *eventBuilder;
@@ -49,8 +46,7 @@
  * @param event The subject on which to find members.
  * @see ParseDotComManagerDelegate
  */
-- (void)fetchUsersForEvent: (Event *)event
-              withUserType:(UserTypes)userType;
+- (void)fetchUsersForEvent: (Event *)event withUserType:(UserTypes)userType;
 
 
 /**
@@ -61,7 +57,7 @@
  * @param group The subject on which to find members.
  * @see ParseDotComManagerDelegate, Group
  */
-- (void)fetchEventsForGroupName:(NSString *)groupName withStatus:(NSString *)status;
+- (void)fetchEventsForOrgId:(NSNumber *)orgId withStatus:(NSString *)status;
 
 
 -(void)updateAttendanceForUser:(User*)user;
@@ -71,11 +67,7 @@
 
 -(void)insertUser:(User*)user withUserType:(UserTypes)userType;
 -(void)updateUser:(User*)user withUserType:(UserTypes)userType;
--(void)deleteUser:(User*)user withUserType:(UserTypes)userType;
 
-- (void)execute:(NSArray *)operations
-  forActionType:(ActionTypes) actionType
-   forClassName:(NSString *)className;
 
 
 @end

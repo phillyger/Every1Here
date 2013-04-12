@@ -13,10 +13,10 @@
 @implementation E1HRESTApiOperationUpdate
 
 
--(RESTApiOperation *)createOperationWithObj:(id)obj forClassName:(NSString *)aClassName withKey:(NSString *)aKey {
+-(RESTApiOperation *)createOperationWithObj:(id)obj forNamedClass:(NSString *)aNamedClass withKey:(NSString *)aKey {
     
-    NSDictionary *thisDataDict = [CommonUtilities generateValueDictWithObject:obj forClassName:aClassName];
-    NSMutableString *thisUriEndPoint = [[CommonUtilities fetchUriEndPointFromPListForClassName:aClassName] mutableCopy];
+    NSDictionary *thisDataDict = [CommonUtilities generateValueDictWithObject:obj forNamedClass:aNamedClass];
+    NSMutableString *thisUriEndPoint = [[CommonUtilities fetchUriEndPointFromPListForNamedClass:aNamedClass] mutableCopy];
     
     
     
@@ -28,19 +28,19 @@
     return newRESTApiOperation;
 }
 
-- (RESTApiOperation *)createOperationWithDict:(NSDictionary *)aDataDict forClassName:(NSString *)aClassName {
+- (RESTApiOperation *)createOperationWithDict:(NSDictionary *)aDataDict forNamedClass:(NSString *)aNamedClass {
     
     return nil;
     
 }
 
-- (RESTApiOperation *)createOperationWithId:(NSString *)anId forClassName:(NSString *)aClassName {
+- (RESTApiOperation *)createOperationWithId:(NSString *)anId forNamedClass:(NSString *)aNamedClass {
     
     return nil;
     
 }
 
--(RESTApiOperation *)createOperationWithObj:(id)anObject forClassName:(NSString *)aClassName withQuery:(NSDictionary *)aQuery {
+-(RESTApiOperation *)createOperationWithObj:(id)anObject forNamedClass:(NSString *)aNamedClass withQuery:(NSDictionary *)aQuery {
     return nil;
 }
 

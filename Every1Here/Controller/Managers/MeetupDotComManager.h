@@ -57,16 +57,7 @@
 - (void)fetchGuestsForGroup:(Group *)group;
 - (void)fetchGuestsForGroupName:(NSString *)groupUrlName;
 
-/**
- * Retrieve upcoming events on a given group from Meetup.com service.
- * @note The delegate will receive messages when new information
- *       arrives, and this class will ask the delegate if it needs
- *       guidance.
- * @param Group The subject on which to find guests.
- * @see ParseDotComManagerDelegate, Group
- */
-- (void)fetchUpcomingEventsForGroup:(Group *)group;
-- (void)fetchUpcomingEventsForGroupName:(NSString *)groupUrlName;
+
 
 @end
 

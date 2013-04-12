@@ -15,19 +15,19 @@
 #import "Event.h"
 #import "User.h"
 #import "AFHTTPRequestOperation.h"
+#import "CommonUtilities.h"
 
 @interface ParseDotComManager ()
 
 - (void)tellDelegateAboutExecutedOpsError:(NSError *)underlyingError
                             forActionType:(ActionTypes) actionType
-                             forClassName:(NSString *)className;
+                             forNamedClass:(NSString *)namedClass;
 
 
 @end
 
 @implementation ParseDotComManager
 @synthesize eventDelegate;
-@synthesize memberDelegate;
 @synthesize parseDotComDelegate;
 @synthesize communicator;
 @synthesize eventBuilder;
@@ -43,12 +43,7 @@
     eventDelegate = newDelegate;
 }
 
-- (void)setMemberDelegate:(id<MemberManagerDelegate>)newDelegate {
-    if (newDelegate && (![newDelegate conformsToProtocol: @protocol(MemberManagerDelegate)])) {
-        [[NSException exceptionWithName: NSInvalidArgumentException reason: @"Delegate object does not conform to the delegate protocol" userInfo: nil] raise];
-    }
-    memberDelegate = newDelegate;
-}
+
 
 - (void)setParseDotComDelegate:(id<ParseDotComManagerDelegate>)newDelegate {
     if (newDelegate && (![newDelegate conformsToProtocol: @protocol(ParseDotComManagerDelegate)])) {
@@ -58,69 +53,26 @@
 }
 
 
-#pragma mark Operations
 
-- (void)execute:(NSArray *)operations
-  forActionType:(ActionTypes) actionType
-   forClassName:(NSString *)className
-   {
-    [communicator execute:operations
-            forActionType:(ActionTypes) actionType
-             forClassName:(NSString *)className
-                                 errorHandler:^(NSError * error){
-                                     [self executingOpsFailedWithError:error
-                                                forActionType:actionType
-                                                forClassName:className];
-                                 }
-                          successBatchHandler:^(NSArray *operations) {
-                              [self receivedExecutedOps:operations
-                                  forActionType:actionType
-                                   forClassName:className];
-                          }
-     ];
-}
-
-
-- (void)receivedExecutedOps:(NSArray *)operations
-              forActionType:(ActionTypes) actionType
-               forClassName:(NSString *)className {
-    
-    //    [selectedUser setAttendanceId:[objectNotation objectForKey:@"objectId"]];   // we set objectId from Attendance table to a field in the Member/Guest table.
-    
-    NSMutableArray *mutableJSONObjects = [[NSMutableArray alloc] init];
-    
-    [operations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        AFHTTPRequestOperation *ro = obj;
-        NSData *jsonData = [ro responseData];
-        NSDictionary *jsonObject=[NSJSONSerialization
-                                  JSONObjectWithData:jsonData
-                                  options:NSJSONReadingMutableLeaves
-                                  error:nil];
-        [mutableJSONObjects addObject:jsonObject];
-    }];
-    
-    [parseDotComDelegate didExecuteOps:mutableJSONObjects forActionType:actionType forClassName:className];
-    
-}
-
+#pragma mark Attendance Operations
 
 -(void)updateAttendanceForUser:(User*)user {
     ActionTypes actionType = Update;
     
-    NSString *className = @"Attendance";
+    NSString *namedClass = @"Attendance";
     
     [communicator updateAttendance:(User*)user
-                           forClassName:className
+                           forNamedClass:namedClass
                            errorHandler:^(NSError * error){
                                
                                [self executingOpsFailedWithError:error
                                                    forActionType:actionType
-                                                    forClassName:className];
+                                                    forNamedClass:namedClass];
                            }
                     successBatchHandler:^(NSArray *operations) {
                         [self receivedAttendanceOps:operations
                                      forActionType:actionType
-                                      forClassName:className
+                                      forNamedClass:namedClass
                          ];
                     }
      ];
@@ -130,20 +82,20 @@
 - (void)insertAttendanceForUser:(User *)user {
     ActionTypes actionType = Insert;
     
-    NSString *className = @"Attendance";
+    NSString *namedClass = @"Attendance";
     
     [communicator insertAttendance:(User*)user
-                      forClassName:className
+                      forNamedClass:namedClass
                       errorHandler:^(NSError * error){
                           
                           [self executingOpsFailedWithError:error
                                               forActionType:actionType
-                                               forClassName:className];
+                                               forNamedClass:namedClass];
                       }
                successBatchHandler:^(NSArray *operations) {
                    [self receivedAttendanceOps:operations
                                  forActionType:actionType
-                                  forClassName:className
+                                  forNamedClass:namedClass
                     ];
                }
      ];
@@ -151,62 +103,95 @@
 }
 
 - (void)deleteAttendanceForUser:(User *)user {
-    ActionTypes actionType = Insert;
+    ActionTypes actionType = Delete;
     
-    NSString *className = @"Attendance";
+    NSString *namedClass = @"Attendance";
     
     [communicator deleteAttendance:(User*)user
-                      forClassName:className
+                      forNamedClass:namedClass
                       errorHandler:^(NSError * error){
                           
                           [self executingOpsFailedWithError:error
                                               forActionType:actionType
-                                               forClassName:className];
+                                               forNamedClass:namedClass];
                       }
                successBatchHandler:^(NSArray *operations) {
                    [self receivedAttendanceOps:operations
                                  forActionType:actionType
-                                  forClassName:className
+                                  forNamedClass:namedClass
                     ];
                }
      ];
     
 }
 
-
-
-#pragma mark User Ops
-
-
-- (void)updateUser:(User *)user withUserType:(UserTypes)userType {
-    ActionTypes actionType = Fetch;
+-(void)receivedAttendanceOps:operations
+               forActionType:(ActionTypes)actionType
+                forNamedClass:(NSString*)namedClass {
     
-    NSString *className = nil;
-    
-    switch (userType) {
-        case Member:
-            className = @"Member";
+    switch (actionType) {
+        case Insert:
+            [parseDotComDelegate didInsertAttendanceWithOutput:operations];
             break;
-        case Guest:
-            className = @"Guest";
+        case Update:
+            [parseDotComDelegate didUpdateAttendance];
+            break;
+        case Delete:
+            [parseDotComDelegate didDeleteAttendance];
+            break;
         default:
             break;
     }
+    
+}
+
+#pragma mark User Ops
+
+-(void)insertUser:(User *)user withUserType:(UserTypes)userType {
+ 
+     ActionTypes actionType = Insert;
+    
+     NSString *namedClass = [CommonUtilities convertUserTypeToNamedClass:userType];
+    
+    [communicator insertUser:(User*)user
+                forNamedClass:namedClass
+                errorHandler:^(NSError * error){
+                    
+                    [self executingOpsFailedWithError:error
+                                        forActionType:actionType
+                                         forNamedClass:namedClass];
+                }
+         successBatchHandler:^(NSArray *operations) {
+             [self receivedUserOps:operations
+                       withEventId:nil
+                     forActionType:actionType
+                       forUserType:userType
+                      forNamedClass:namedClass
+              ];
+         }
+     ];
+    
+}
+
+- (void)updateUser:(User *)user withUserType:(UserTypes)userType {
+    ActionTypes actionType = Update;
+    
+    NSString *namedClass = [CommonUtilities convertUserTypeToNamedClass:userType];
 
     [communicator updateUser:(User*)user
-                           forClassName:className
+                           forNamedClass:namedClass
                            errorHandler:^(NSError * error){
                                
                                [self executingOpsFailedWithError:error
                                                    forActionType:actionType
-                                                    forClassName:className];
+                                                    forNamedClass:namedClass];
                            }
          successBatchHandler:^(NSArray *operations) {
              [self receivedUserOps:operations
                        withEventId:nil
                      forActionType:actionType
                        forUserType:userType
-                      forClassName:className
+                      forNamedClass:namedClass
               ];
          }
      ];
@@ -214,39 +199,29 @@
 }
 
 - (void)fetchUsersForEvent:(Event *)event
-              forUserType:(UserTypes)userType;
+              withUserType:(UserTypes)userType;
 {
     
     ActionTypes actionType = Fetch;
     
-    NSString *className = nil;
-    
-    switch (userType) {
-        case Member:
-            className = @"Member";
-            break;
-        case Guest:
-            className = @"Guest";
-        default:
-            break;
-    }
+    NSString *namedClass = [CommonUtilities convertUserTypeToNamedClass:userType];
 
     
     [communicator downloadUsersForEvent:(Event*)event
                            forActionType:actionType
-                          forClassName:className
+                          forNamedClass:namedClass
                              errorHandler:^(NSError * error){
                 
                                  [self executingOpsFailedWithError:error
                                                     forActionType:actionType
-                                                    forClassName:className];
+                                                    forNamedClass:namedClass];
                              }
                       successBatchHandler:^(NSArray *operations) {
                           [self receivedUserOps:operations
                                             withEventId:[event objectId]
                                           forActionType:actionType
                                         forUserType:userType
-                           forClassName:className
+                           forNamedClass:namedClass
                                            ];
                       }
      ];
@@ -256,17 +231,17 @@
                  withEventId:(NSString *)eventId
                forActionType:(ActionTypes) actionType
                  forUserType:(UserTypes)userType
-                forClassName:(NSString *)className
+                forNamedClass:(NSString *)namedClass
 {
     switch (actionType) {
         case Insert:
-            [parseDotComDelegate didInsertUserForUserType:userType];
+            [parseDotComDelegate didInsertUserForUserType:userType withOutput:operations];
             break;
         case Update:
             [parseDotComDelegate didUpdateUserForUserType:userType];
             break;
         case Fetch:
-            [self receivedUserOps:operations withEventId:eventId forActionType:actionType forUserType:userType forClassName:className];
+            [self receivedUserFetchOps:operations withEventId:eventId forActionType:actionType forUserType:userType forNamedClass:namedClass];
             break;
         case Delete:
             [parseDotComDelegate didDeleteAttendance];
@@ -281,10 +256,10 @@
                  withEventId:(NSString *)eventId
                forActionType:(ActionTypes) actionType
                 forUserType:(UserTypes)userType
-                 forClassName:(NSString *)className
+                 forNamedClass:(NSString *)namedClass
                     {
     NSError *error = nil;
-    NSArray *members;
+    NSArray *userList;
                         
     __block NSDictionary *memberDict;
     __block NSDictionary *attendanceDict;
@@ -313,72 +288,48 @@
     
     
     if (memberDict && attendanceDict) {
-        members = [memberBuilder membersFromJSON:memberDict withAttendance:attendanceDict withEventId:eventId error:&error];
+        userList = [memberBuilder membersFromJSON:memberDict withAttendance:attendanceDict withEventId:eventId error:&error];
     } else if (memberDict && !attendanceDict){
-        members = [memberBuilder membersFromJSON:memberDict withAttendance:nil withEventId:eventId error:&error];
+        userList = [memberBuilder membersFromJSON:memberDict withAttendance:nil withEventId:eventId error:&error];
     } else if (!memberDict && !attendanceDict){
-        members = [memberBuilder membersFromJSON:nil withAttendance:nil withEventId:eventId error:&error];
+        userList = [memberBuilder membersFromJSON:nil withAttendance:nil withEventId:eventId error:&error];
     }
 
                         
-    if (!members ) {
-        [self tellDelegateAboutExecutedOpsError:error forActionType:actionType forClassName:className];
+    if (!userList ) {
+        [self tellDelegateAboutExecutedOpsError:error forActionType:actionType forNamedClass:namedClass];
     }
     else {
-        [parseDotComDelegate didFetchUsersForUserType:userType];
+        [parseDotComDelegate didFetchUsers:userList forUserType:(UserTypes)userType];
         
     }
 }
 
 
-#pragma mark Attendence Ops
-
--(void)receivedAttendanceOps:operations
-             forActionType:(ActionTypes)actionType
-              forClassName:(NSString*)className {
-    
-    switch (actionType) {
-        case Insert:
-            [parseDotComDelegate didInsertAttendance];
-            break;
-        case Update:
-            [parseDotComDelegate didUpdateAttendance];
-            break;
-        case Fetch:
-            [parseDotComDelegate didFetchAttendance];
-            break;
-        case Delete:
-            [parseDotComDelegate didDeleteAttendance];
-            break;
-        default:
-            break;
-    }
-
-}
 
 #pragma mark Event Ops
 
 
-- (void)fetchEventsForGroupName:(NSString *)groupName withStatus:(NSString *)status
+- (void)fetchEventsForOrgId:(NSNumber *)orgId withStatus:(NSString *)status
 {
     
     ActionTypes actionType = Fetch;
-    NSString *className = @"Event";
+    NSString *namedClass = @"Event";
     
     
-    [communicator downloadEventsForGroupName:groupName
+    [communicator downloadEventsForOrgId:orgId
                                   withStatus:status
                                forActionType: actionType
-                                forClassName: className
+                                forNamedClass: namedClass
                                 errorHandler:^(NSError * error){
                                     [self executingOpsFailedWithError:error
                                                         forActionType:actionType
-                                                         forClassName:className];
+                                                         forNamedClass:namedClass];
                                 }
                          successBatchHandler:^(NSArray *operations) {
                              [self receivedEventsFetchOps:operations
                                             forActionType:actionType
-                                             forClassName:className];
+                                             forNamedClass:namedClass];
                          }
      ];
 }
@@ -386,7 +337,7 @@
 
 - (void)receivedEventsFetchOps:(NSArray *)operations
              forActionType:(ActionTypes) actionType
-              forClassName:(NSString *)className{
+              forNamedClass:(NSString *)namedClass{
     
 //    NSError *error = nil;
 //    NSArray *events = [eventBuilder eventsFromJSON:objectNotation error: &error];
@@ -419,7 +370,7 @@
     
     
     if (!events) {
-        [self tellDelegateAboutExecutedOpsError:error forActionType:actionType forClassName:className];
+        [self tellDelegateAboutExecutedOpsError:error forActionType:actionType forNamedClass:namedClass];
     }
     else {
         [eventDelegate didReceiveEvents: events];
@@ -431,9 +382,9 @@
 
 - (void)fetchingEventsFailedWithError:(NSError *)error
                         forActionType:(ActionTypes) actionType
-                         forClassName:(NSString *)className{
+                         forNamedClass:(NSString *)namedClass{
 
-    [self tellDelegateAboutExecutedOpsError:error forActionType:actionType forClassName:className];
+    [self tellDelegateAboutExecutedOpsError:error forActionType:actionType forNamedClass:namedClass];
 }
 
 
@@ -443,15 +394,15 @@
 
 - (void)executingOpsFailedWithError:(NSError *)error
                       forActionType:(ActionTypes) actionType
-                       forClassName:(NSString *)className{
+                       forNamedClass:(NSString *)namedClass{
     [self tellDelegateAboutExecutedOpsError: error
                               forActionType:(ActionTypes) actionType
-                               forClassName:(NSString *)className];
+                               forNamedClass:(NSString *)namedClass];
 }
 
 - (void)tellDelegateAboutExecutedOpsError:(NSError *)underlyingError
                             forActionType:(ActionTypes) actionType
-                             forClassName:(NSString *)className {
+                             forNamedClass:(NSString *)namedClass {
     NSDictionary *errorInfo = nil;
     if (underlyingError) {
         errorInfo = [NSDictionary dictionaryWithObject: underlyingError forKey: NSUnderlyingErrorKey];
@@ -459,7 +410,7 @@
     NSError *reportableError = [NSError errorWithDomain: ParseDotComManagerError code: ParseDotComManagerErrorMemberFetchCode userInfo: errorInfo];
     [parseDotComDelegate executedOpsFailedWithError:reportableError
                                       forActionType:(ActionTypes) actionType
-                                       forClassName:(NSString *)className];
+                                       forNamedClass:(NSString *)namedClass];
 }
 
 
