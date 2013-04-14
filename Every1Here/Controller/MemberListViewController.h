@@ -1,19 +1,21 @@
-//
-//  MemberListViewController.h
-//  Every1Here
-//
-//  Created by Ger O'Sullivan on 2/21/13.
-//  Copyright (c) 2013 Brilliant Age. All rights reserved.
-//
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *  MemberListViewController.h
+ *  Every1Here
+ *
+ *  Created by Ger O'Sullivan on 2/21/13.
+ *  Copyright (c) 2013 Brilliant Age. All rights reserved.
+ *
+ *  Handles the Member table list view.
+ *
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-#import "EventListViewController.h"
+#import "BaseViewController.h"
 #import "MemberManagerDelegate.h"
+#import "ParseDotComManagerDelegate.h"
 
-@class ParseDotComManager;
 
-@interface MemberListViewController : EventListViewController <MemberManagerDelegate, ParseDotComManagerDelegate>
+@interface MemberListViewController :BaseViewController <MemberManagerDelegate, ParseDotComManagerDelegate>
 
-@property (strong) ParseDotComManager *parseDotComMgr;
 
 @end
 

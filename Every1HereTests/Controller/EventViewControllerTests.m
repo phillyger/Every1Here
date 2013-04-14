@@ -7,7 +7,7 @@
 //
 
 #import "EventViewControllerTests.h"
-#import "UpcomingEventListViewController.h"
+#import "EventListViewController.h"
 #import "PastEventListViewController.h"
 #import "EventListTableDataSource.h" 
 #import "MemberListTableDataSource.h"
@@ -23,7 +23,7 @@
 
 static const char *notificationKey = "AnseoViewControllerTestsAssociatedNotificationKey";
 
-@implementation EventListViewController (TestNotificationDelivery)
+@implementation BaseViewController (TestNotificationDelivery)
 
 
 - (void)anseoControllerTests_userDidSelectEventNotification: (NSNotification *)note {
@@ -61,8 +61,8 @@ static const char *viewWillAppearKey = "AnseoViewControllerTestsViewWillAppearKe
 
 @implementation EventViewControllerTests
 {
-    EventListViewController *viewController;
-    UpcomingEventListViewController *upcomingViewController;
+    BaseViewController *viewController;
+    EventListViewController *upcomingViewController;
     PastEventListViewController *pastViewController;
     UITableView *tableView;
     id <UITableViewDataSource, UITableViewDelegate> dataSource;
@@ -86,8 +86,8 @@ static const char *viewWillAppearKey = "AnseoViewControllerTestsViewWillAppearKe
 }
 
 - (void)setUp {
-    viewController = [[EventListViewController alloc] init];
-    upcomingViewController = [[UpcomingEventListViewController alloc] init];
+    viewController = [[BaseViewController alloc] init];
+    upcomingViewController = [[EventListViewController alloc] init];
     pastViewController = [[PastEventListViewController alloc] init];
     tableView = [[UITableView alloc] init];
     upcomingViewController.tableView = tableView;

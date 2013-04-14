@@ -7,34 +7,35 @@
 //
 
 #import "PastEventListViewController.h"
-#import "ParseDotComManager.h"
+
 #import "E1HObjectConfiguration.h"
 #import "EventListTableDataSource.h"
+#import "MemberListViewController.h"
+#import "MemberListTableDataSource.h"
+#import "ParseDotComManager.h"
+#import "EventMemberGuestTabBarController.h"
+#import "E1HAppDelegate.h"
+
 #import <objc/runtime.h>
-/* Temp */
-#import "Event.h"
-#import "Group.h"
-#import "Venue.h"
-#import "Address.h"
 
 @interface PastEventListViewController ()
 
-- (void) fetchEventContents;
 - (void)userDidSelectEventNotification: (NSNotification *)note;
 
 @end
 
 @implementation PastEventListViewController
-@synthesize parseDotComMgr;
 @synthesize tableView;
 @synthesize dataSource;
 @synthesize objectConfiguration;
+@synthesize eventStatus;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
     }
     return self;
 }
@@ -42,43 +43,38 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-//    self.objectConfiguration = [[AnseoObjectConfiguration alloc] init];
-    //  pastEventViewController.objectConfiguration = [[AnseoObjectConfiguration alloc] init];
-  
-//    self.objectConfiguration = [[AnseoObjectConfiguration alloc] init];
-//    EventListTableDataSource *eventDataSource = [[EventListTableDataSource alloc] init];
-//    self.dataSource = eventDataSource;
-//    self.tableView.delegate = self.dataSource;
-//    self.tableView.dataSource = self.dataSource;
-//    
-//    UINib *eventCellNib = [UINib nibWithNibName:@"EventCell" bundle:nil];
-//    [self.tableView registerNib:eventCellNib
-//         forCellReuseIdentifier:eventCellReuseIdentifier];
-//    
-//    
-//    objc_property_t tableViewProperty = class_getProperty([dataSource class], "tableView");
-//    if (tableViewProperty) {
-//        [dataSource setValue: tableView forKey: @"tableView"];
-//    }
+
+    self.objectConfiguration = [[E1HObjectConfiguration alloc] init];
+    EventListTableDataSource *eventDataSource = [[EventListTableDataSource alloc] init];
+    self.dataSource = eventDataSource;
+    self.tableView.delegate = self.dataSource;
+    self.tableView.dataSource = self.dataSource;
     
+    UINib *eventCellNib = [UINib nibWithNibName:@"EventCell" bundle:nil];
+    [self.tableView registerNib:eventCellNib
+         forCellReuseIdentifier:eventCellReuseIdentifier];
     
+    objc_property_t tableViewProperty = class_getProperty([dataSource class], "tableView");
+    if (tableViewProperty) {
+        [dataSource setValue: tableView forKey: @"tableView"];
+    }
 }
 
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear: animated];
     
-    [[NSNotificationCenter defaultCenter]
-     addObserver: self
-     selector: @selector(userDidSelectEventNotification:)
-     name: EventListTableDidSelectEventNotification
-     object: nil];
-
+    E1HAppDelegate *appDelegate = (E1HAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    NSNumber *orgId = [appDelegate parseDotComAccountOrgId];
+    
     
     if ([self.dataSource isKindOfClass: [EventListTableDataSource class]]) {
-        [self fetchEventContents];
+        [self fetchEventContentForOrgId:orgId withStatus:self.eventStatus];
         //        [(EventListTableDataSource *)self.dataSource setAvatarStore: [objectConfiguration avatarStore]];
     }
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -87,53 +83,59 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-- (void)fetchEventContents
-{
-    //Past Events
-        self.parseDotComMgr = [objectConfiguration parseDotComManager];
-        self.parseDotComMgr.eventDelegate = self;
-        //        NSString *groupName = @"Panorama Toastmasters";
-        //        [self.parseDotComMgr fetchPastEventsForGroupName:groupName];
-        [self didReceiveEvents:[self events]];
-  
+- (void) fetchEventContentForOrgId:(NSNumber *)orgId withStatus:(NSString *)status {
+       
+    self.parseDotComMgr = [objectConfiguration parseDotComManager];
+    self.parseDotComMgr.eventDelegate = self;
+    
+    [self.parseDotComMgr fetchEventsForOrgId:orgId withStatus:status];
 }
 
-- (void)userDidSelectEventNotification:(NSNotification *)note {
-    [self performSegueWithIdentifier:@"Attendance" sender:note];
+
+
+- (void)userDidSelectPastEvents {
+    PastEventListViewController *nextViewController = [[PastEventListViewController alloc] init];
+    EventListTableDataSource *eventDataSource = [[EventListTableDataSource alloc] init];
+    self.dataSource = eventDataSource;
+    nextViewController.objectConfiguration = self.objectConfiguration;
+    [[self navigationController] pushViewController: nextViewController animated: YES];
 }
+
+#pragma mark - EventManagerDelegate
 
 - (void)didReceiveEvents:(NSArray *)events {
     if ([self.dataSource isKindOfClass: [EventListTableDataSource class]]) {
-        [(EventListTableDataSource *)dataSource setEvents:[(EventListTableDataSource *)dataSource sortEventArray:events]];
-        ;
+        if ([events count] > 1) {
+            [(EventListTableDataSource *)dataSource setEvents:[(EventListTableDataSource *)dataSource sortEventArray:events]];
+        } else {
+            [(EventListTableDataSource *)dataSource setEvents:events];
+        }
     }
+    
+    [(EventListTableDataSource *)dataSource buildEventDict];
+    
     [tableView reloadData];
 }
 
-
-- (NSArray *)events {
-    NSString *names[] = { @"Event 1", @"Event 2", @"Event 3", @"Event 4", @"Event 5" };
-    
-    NSMutableArray *eventList = [NSMutableArray array];
-    Group *group = [[Group alloc] initWithName:@"Panorama Toastmasters"];
-    Address *address = [[Address alloc] initWithAddress:@"123 Main St" city:@"Philadelphia" state:@"PA" zip:@"19146" country:@"US" lat:@0 lon:@0];
-    Venue *venue = [[Venue alloc] initWithName:@"The Watermark" address:address];
-    for (NSInteger i = 0; i < 5; i++) {
-        Event *thisEvent = [[Event alloc] init];
-        thisEvent.name = names[i];
-        thisEvent.group = group;
-        thisEvent.venue = venue;
-        thisEvent.startDateTime = [NSDate date];
-        [eventList addObject: thisEvent];
-    }
-    return [eventList copy];
-}
-
-#pragma mark - Event Delegate
 - (void)retrievingEventsFailedWithError:(NSError *)error {
     
 }
+
+
+
+
+#pragma mark - Notification handling
+
+- (void)userDidSelectEventNotification:(NSNotification *)note {
+    Event *selectedEvent = (Event *)[note object];
+    self.parseDotComMgr = [objectConfiguration parseDotComManager];
+    self.parseDotComMgr.eventDelegate = self;
+    
+    
+    [self performSegueWithIdentifier:@"MemberGuest" sender:selectedEvent];
+    
+}
+
 
 
 

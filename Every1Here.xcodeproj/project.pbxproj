@@ -31,8 +31,7 @@
 		284C6BEA1710FC52001855B5 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 284C6BE91710FC52001855B5 /* AdSupport.framework */; };
 		284C6BEB1710FC98001855B5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 284C6BE01710F8C0001855B5 /* StoreKit.framework */; };
 		288DF38517125838008598DA /* GuestListPopoverTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF38417125838008598DA /* GuestListPopoverTableController.m */; };
-		288DF38A17125A60008598DA /* PastEventListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF38717125A60008598DA /* PastEventListViewController.m */; };
-		288DF38B17125A60008598DA /* UpcomingEventListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF38917125A60008598DA /* UpcomingEventListViewController.m */; };
+		288DF38B17125A60008598DA /* EventListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF38917125A60008598DA /* EventListViewController.m */; };
 		288DF38D171260E4008598DA /* GuestNavIconView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 288DF38C171260E4008598DA /* GuestNavIconView.xib */; };
 		288DF3901713015D008598DA /* User.plist in Resources */ = {isa = PBXBuildFile; fileRef = 288DF38F1713015D008598DA /* User.plist */; };
 		288DF39217130173008598DA /* Member.plist in Resources */ = {isa = PBXBuildFile; fileRef = 288DF39117130173008598DA /* Member.plist */; };
@@ -76,6 +75,9 @@
 		288DF40D1716D5A3008598DA /* AvatarStore+TestingExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3ED1716D5A3008598DA /* AvatarStore+TestingExtensions.m */; };
 		288DF40E1716D5A3008598DA /* TestObjectConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3EF1716D5A3008598DA /* TestObjectConfiguration.m */; };
 		288DF40F1716D5A3008598DA /* TestSemaphor.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF3F11716D5A3008598DA /* TestSemaphor.m */; };
+		289EF04D1719AD43004CCD78 /* E1HRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289EF04C1719AD43004CCD78 /* E1HRootViewController.m */; };
+		289EF0501719AF00004CCD78 /* EventSegmentedControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289EF04F1719AF00004CCD78 /* EventSegmentedControlViewController.m */; };
+		289EF052171A1769004CCD78 /* PastEvents.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289EF051171A1769004CCD78 /* PastEvents.xib */; };
 		28B8E1151710876A0095BB6F /* NSDictionary+RWFlatten.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA25171087560095BB6F /* NSDictionary+RWFlatten.m */; };
 		28B8E1161710876A0095BB6F /* CommandBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA29171087560095BB6F /* CommandBase.m */; };
 		28B8E1171710876A0095BB6F /* E1HRESTApiOperationInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA2C171087560095BB6F /* E1HRESTApiOperationInsert.m */; };
@@ -99,7 +101,7 @@
 		28B8E1291710876A0095BB6F /* TwitterUsersLookupAPIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA57171087560095BB6F /* TwitterUsersLookupAPIRequest.m */; };
 		28B8E12A1710876A0095BB6F /* ParseDotComCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA59171087560095BB6F /* ParseDotComCommunicator.m */; };
 		28B8E12B1710876A0095BB6F /* TwitterDotComCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA5B171087560095BB6F /* TwitterDotComCommunicator.m */; };
-		28B8E12C1710876A0095BB6F /* EventListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA5E171087560095BB6F /* EventListViewController.m */; };
+		28B8E12C1710876A0095BB6F /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA5E171087560095BB6F /* BaseViewController.m */; };
 		28B8E12D1710876A0095BB6F /* GuestDetailsDialogController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA60171087560095BB6F /* GuestDetailsDialogController.m */; };
 		28B8E12E1710876A0095BB6F /* GuestListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA62171087560095BB6F /* GuestListViewController.m */; };
 		28B8E12F1710876A0095BB6F /* MeetupDotComManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA65171087560095BB6F /* MeetupDotComManager.m */; };
@@ -245,10 +247,8 @@
 		284C6BE91710FC52001855B5 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		288DF38317125838008598DA /* GuestListPopoverTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestListPopoverTableController.h; sourceTree = "<group>"; };
 		288DF38417125838008598DA /* GuestListPopoverTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuestListPopoverTableController.m; sourceTree = "<group>"; };
-		288DF38617125A60008598DA /* PastEventListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PastEventListViewController.h; sourceTree = "<group>"; };
-		288DF38717125A60008598DA /* PastEventListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PastEventListViewController.m; sourceTree = "<group>"; };
-		288DF38817125A60008598DA /* UpcomingEventListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpcomingEventListViewController.h; sourceTree = "<group>"; };
-		288DF38917125A60008598DA /* UpcomingEventListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpcomingEventListViewController.m; sourceTree = "<group>"; };
+		288DF38817125A60008598DA /* EventListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventListViewController.h; sourceTree = "<group>"; };
+		288DF38917125A60008598DA /* EventListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventListViewController.m; sourceTree = "<group>"; };
 		288DF38C171260E4008598DA /* GuestNavIconView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GuestNavIconView.xib; sourceTree = "<group>"; };
 		288DF38F1713015D008598DA /* User.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = User.plist; path = "Resources/Parse ORM/User.plist"; sourceTree = "<group>"; };
 		288DF39117130173008598DA /* Member.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Member.plist; path = "Resources/Parse ORM/Member.plist"; sourceTree = "<group>"; };
@@ -328,6 +328,11 @@
 		288DF3EF1716D5A3008598DA /* TestObjectConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestObjectConfiguration.m; sourceTree = "<group>"; };
 		288DF3F01716D5A3008598DA /* TestSemaphor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestSemaphor.h; sourceTree = "<group>"; };
 		288DF3F11716D5A3008598DA /* TestSemaphor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestSemaphor.m; sourceTree = "<group>"; };
+		289EF04B1719AD43004CCD78 /* E1HRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = E1HRootViewController.h; path = Every1Here/Controller/E1HRootViewController.h; sourceTree = SOURCE_ROOT; };
+		289EF04C1719AD43004CCD78 /* E1HRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = E1HRootViewController.m; path = Every1Here/Controller/E1HRootViewController.m; sourceTree = SOURCE_ROOT; };
+		289EF04E1719AF00004CCD78 /* EventSegmentedControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventSegmentedControlViewController.h; sourceTree = "<group>"; };
+		289EF04F1719AF00004CCD78 /* EventSegmentedControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventSegmentedControlViewController.m; sourceTree = "<group>"; };
+		289EF051171A1769004CCD78 /* PastEvents.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PastEvents.xib; sourceTree = "<group>"; };
 		28B8BA24171087560095BB6F /* NSDictionary+RWFlatten.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+RWFlatten.h"; sourceTree = "<group>"; };
 		28B8BA25171087560095BB6F /* NSDictionary+RWFlatten.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+RWFlatten.m"; sourceTree = "<group>"; };
 		28B8BA27171087560095BB6F /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
@@ -376,8 +381,8 @@
 		28B8BA59171087560095BB6F /* ParseDotComCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParseDotComCommunicator.m; sourceTree = "<group>"; };
 		28B8BA5A171087560095BB6F /* TwitterDotComCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDotComCommunicator.h; sourceTree = "<group>"; };
 		28B8BA5B171087560095BB6F /* TwitterDotComCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterDotComCommunicator.m; sourceTree = "<group>"; };
-		28B8BA5D171087560095BB6F /* EventListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventListViewController.h; sourceTree = "<group>"; };
-		28B8BA5E171087560095BB6F /* EventListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventListViewController.m; sourceTree = "<group>"; };
+		28B8BA5D171087560095BB6F /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		28B8BA5E171087560095BB6F /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		28B8BA5F171087560095BB6F /* GuestDetailsDialogController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestDetailsDialogController.h; sourceTree = "<group>"; };
 		28B8BA60171087560095BB6F /* GuestDetailsDialogController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuestDetailsDialogController.m; sourceTree = "<group>"; };
 		28B8BA61171087560095BB6F /* GuestListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestListViewController.h; sourceTree = "<group>"; };
@@ -757,12 +762,14 @@
 				28B8BA40171087560095BB6F /* Clients */,
 				28B8BA4B171087560095BB6F /* Communicators */,
 				28B8BA5C171087560095BB6F /* Configuration */,
-				28B8BA5D171087560095BB6F /* EventListViewController.h */,
-				28B8BA5E171087560095BB6F /* EventListViewController.m */,
-				288DF38617125A60008598DA /* PastEventListViewController.h */,
-				288DF38717125A60008598DA /* PastEventListViewController.m */,
-				288DF38817125A60008598DA /* UpcomingEventListViewController.h */,
-				288DF38917125A60008598DA /* UpcomingEventListViewController.m */,
+				289EF04B1719AD43004CCD78 /* E1HRootViewController.h */,
+				289EF04C1719AD43004CCD78 /* E1HRootViewController.m */,
+				289EF04E1719AF00004CCD78 /* EventSegmentedControlViewController.h */,
+				289EF04F1719AF00004CCD78 /* EventSegmentedControlViewController.m */,
+				28B8BA5D171087560095BB6F /* BaseViewController.h */,
+				28B8BA5E171087560095BB6F /* BaseViewController.m */,
+				288DF38817125A60008598DA /* EventListViewController.h */,
+				288DF38917125A60008598DA /* EventListViewController.m */,
 				28B8BA6C171087560095BB6F /* MemberListViewController.h */,
 				28B8BA6D171087560095BB6F /* MemberListViewController.m */,
 				28B8BA6A171087560095BB6F /* MemberDetailsDialogController.h */,
@@ -1030,6 +1037,7 @@
 				28B8E0F71710876A0095BB6F /* Navigation Items */,
 				28B8E0FC1710876A0095BB6F /* Sections */,
 				28B8E0FF1710876A0095BB6F /* Table Cells */,
+				289EF051171A1769004CCD78 /* PastEvents.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1418,6 +1426,7 @@
 				288DF398171306AD008598DA /* Classes.plist in Resources */,
 				288DF3B017161DB7008598DA /* meetup-32x32.png in Resources */,
 				28051A67171853CD00195BA6 /* Settings.bundle in Resources */,
+				289EF052171A1769004CCD78 /* PastEvents.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1504,7 +1513,7 @@
 				28B8E1291710876A0095BB6F /* TwitterUsersLookupAPIRequest.m in Sources */,
 				28B8E12A1710876A0095BB6F /* ParseDotComCommunicator.m in Sources */,
 				28B8E12B1710876A0095BB6F /* TwitterDotComCommunicator.m in Sources */,
-				28B8E12C1710876A0095BB6F /* EventListViewController.m in Sources */,
+				28B8E12C1710876A0095BB6F /* BaseViewController.m in Sources */,
 				28B8E12D1710876A0095BB6F /* GuestDetailsDialogController.m in Sources */,
 				28B8E12E1710876A0095BB6F /* GuestListViewController.m in Sources */,
 				28B8E12F1710876A0095BB6F /* MeetupDotComManager.m in Sources */,
@@ -1548,8 +1557,7 @@
 				284C6BCA1710F7B6001855B5 /* GuestListTableDataSource.m in Sources */,
 				284C6BCB1710F7B6001855B5 /* MemberListTableDataSource.m in Sources */,
 				288DF38517125838008598DA /* GuestListPopoverTableController.m in Sources */,
-				288DF38A17125A60008598DA /* PastEventListViewController.m in Sources */,
-				288DF38B17125A60008598DA /* UpcomingEventListViewController.m in Sources */,
+				288DF38B17125A60008598DA /* EventListViewController.m in Sources */,
 				288DF39B17131CB1008598DA /* E1HOperationFactory.m in Sources */,
 				288DF39E1713685D008598DA /* Attendance.m in Sources */,
 				288DF3A1171369AC008598DA /* AttendanceBuilder.m in Sources */,
@@ -1558,6 +1566,8 @@
 				288DF3AB1714840C008598DA /* E1HRESTApiOperationUpdate.m in Sources */,
 				288DF3AE171488DB008598DA /* Receptionist.m in Sources */,
 				28051A601717101700195BA6 /* E1HRESTApiOperationFetch.m in Sources */,
+				289EF04D1719AD43004CCD78 /* E1HRootViewController.m in Sources */,
+				289EF0501719AF00004CCD78 /* EventSegmentedControlViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

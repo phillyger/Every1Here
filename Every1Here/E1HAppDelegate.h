@@ -15,7 +15,7 @@
 
 
 @property (nonatomic, retain) NSString	*parseDotComAccountGroupName;
-@property (nonatomic, retain) NSString	*parseDotComAccountOrgId;
+@property (nonatomic, retain) NSNumber	*parseDotComAccountOrgId;
 @property (nonatomic, retain) NSString	*parseDotComAccountEventStatusOnLaunch;
 @property (nonatomic, retain) NSString	*parseDotComAccountUserAccountPassword;
 

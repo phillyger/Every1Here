@@ -8,7 +8,7 @@
 
 #import "E1HAppDelegateTests.h"
 #import "AnseoAppDelegate.h"
-#import "EventListViewController.h"
+#import "BaseViewController.h"
 #import "EventListTableDataSource.h"
 
 @implementation E1HAppDelegateTests {

@@ -1,10 +1,13 @@
-//
-//  CommonUtilities.m
-//  Every1Here
-//
-//  Created by Ger O'Sullivan on 4/9/13.
-//  Copyright (c) 2013 Brilliant Age. All rights reserved.
-//
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *  CommonUtilities.m
+ *
+ *  Created by Ger O'Sullivan on 4/9/13.
+ *  Copyright (c) 2013 Brilliant Age. All rights reserved.
+ *
+ *  A collection on common (static) methods that are used throughout the application
+ *  
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 #import "CommonUtilities.h"
 #import "User.h"
@@ -109,6 +112,28 @@
             break;
     }
     return namedClass;
+}
+
+/*---------------------------------------------------------------------------
+ * Given a dictionary, it returns a serialized version in string format.
+ *--------------------------------------------------------------------------*/
++ (NSString *)serializeRequestParmetersWithDictionary:(NSDictionary *)dict {
+    
+    NSError *error = nil;
+    
+    
+    //convert object to data
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
+                                                       options:kNilOptions error:&error];
+    
+    if (!jsonData) {
+        NSLog(@"NSJSONSerialization failed %@", error);
+    }
+    
+    NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    return json;
+    
 }
 
 

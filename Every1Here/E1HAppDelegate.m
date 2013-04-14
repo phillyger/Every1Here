@@ -89,7 +89,14 @@
     
     // we're ready to do, so lastly set the key preference values
 	parseDotComAccountGroupName = [[NSUserDefaults standardUserDefaults] stringForKey:E1HParseDotComAccountGroupNameIdentifier];
-	parseDotComAccountOrgId = [[NSUserDefaults standardUserDefaults] stringForKey:E1HParseDotComAccountOrgIdentifier];
+    
+    // Convert user prefs orgId from NSString to NSNumber
+    NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterNoStyle];
+    NSNumber *orgId = [formatter numberFromString:[[NSUserDefaults standardUserDefaults] stringForKey:E1HParseDotComAccountOrgIdentifier]];
+    formatter=nil;
+    
+	parseDotComAccountOrgId = orgId;
     parseDotComAccountEventStatusOnLaunch = [[NSUserDefaults standardUserDefaults] stringForKey:E1HParseDotComAccountEventStatusOnLaunchIdentifier];
     parseDotComAccountUserAccountPassword = [[NSUserDefaults standardUserDefaults] stringForKey:E1HParseDotComAccountUserAccountPasswordIdentifier];
     self.accountStore = [[ACAccountStore alloc] init];

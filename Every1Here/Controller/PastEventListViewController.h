@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
 //
 
-#import "EventListViewController.h"
+#import "BaseViewController.h"
 #import "EventManagerDelegate.h"
 
 @class ParseDotComManager;
 
 
-@interface PastEventListViewController : EventListViewController
+@interface PastEventListViewController : BaseViewController
 
 @property (strong) ParseDotComManager *parseDotComMgr;
 

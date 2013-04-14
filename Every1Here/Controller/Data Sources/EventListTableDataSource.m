@@ -218,35 +218,16 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
         case 1:
             thisSectionHeaderTitle = sectionHeaderTitles[1];
             break;
-        case 2:
-        case 3:
-        case 4:
-        case 5:
+        case 2 ... 7:
             thisSectionHeaderTitle = sectionHeaderTitles[2];
             break;
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 10:
-        case 11:
+        case 8 ... 14:
             thisSectionHeaderTitle = sectionHeaderTitles[3];
             break;
-        case 12:
-        case 13:
-        case 14:
-        case 15:
-        case 16:
-        case 17:
-        case 18:
-        case 19:
-        case 20:
+        case 15 ... 24:
             thisSectionHeaderTitle = sectionHeaderTitles[4];
             break;
-        case 21:
-        case 22:
-        case 23:
-        case 24:
+        case 25 ... 32:
             thisSectionHeaderTitle = sectionHeaderTitles[5];
             break;
         default:

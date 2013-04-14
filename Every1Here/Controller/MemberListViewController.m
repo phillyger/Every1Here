@@ -1,10 +1,13 @@
-//
-//  MemberListViewController.m
-//  Every1Here
-//
-//  Created by Ger O'Sullivan on 2/21/13.
-//  Copyright (c) 2013 Brilliant Age. All rights reserved.
-//
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *  MemberListViewController.h
+ *  Every1Here
+ *
+ *  Created by Ger O'Sullivan on 2/21/13.
+ *  Copyright (c) 2013 Brilliant Age. All rights reserved.
+ *
+ *  Handles the Member table list view.
+ *
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 #import "MemberListViewController.h"
 #import "MemberDetailsDialogController.h"
@@ -21,21 +24,36 @@
 
 static NSString *memberCellReuseIdentifier = @"memberCell";
 
-
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * Private interface definitions
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 @interface MemberListViewController ()
 {
+    //-------------------------------------------------------
+    // Ivars for the member and event of current selection.
+    //-------------------------------------------------------
     Event *selectedEvent;
     User * selectedMember;
+    
+    //-------------------------------------------------------
+    // Uses a KVO Receptionist Pattern to manage input form handling for fields:
+    // - Attendance
+    // - Event Roles
+    // - Guest Count
+    // - Display Name
+    //-------------------------------------------------------
     Receptionist *attendanceReceptionist;
     Receptionist *eventRoleReceptionist;
     Receptionist *displayNameReceptionist;
     Receptionist *guestCountReceptionist;
-
 }
 
 @end
 
 @implementation MemberListViewController
+//-------------------------------------------------------
+// Ivars inherited from BaseViewController.
+//-------------------------------------------------------
 @synthesize parseDotComMgr;
 @synthesize tableView;
 @synthesize dataSource;
@@ -60,45 +78,54 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 
     [self.navigationItem setLeftBarButtonItem: dismissBttnItem];
     [self.navigationItem setRightBarButtonItem: addNewMemberBttnItem];
+
     
-    
-    [[NSNotificationCenter defaultCenter]
-     addObserver: self
-     selector: @selector(userDidSelectMemberListNotification:)
-     name: MemberListDidSelectMemberNotification
-     object: nil];
-    
-    
-    self.tableView.delegate = self.dataSource;
-    self.tableView.dataSource = self.dataSource;
-    
+    //-------------------------------------------------------
+    // Register member summary cell used in table data source.
+    //-------------------------------------------------------
     UINib *memberCellNib = [UINib nibWithNibName:@"MemberSummaryCell" bundle:nil];
     [self.tableView registerNib:memberCellNib
          forCellReuseIdentifier:memberCellReuseIdentifier];
     
     
+    self.tableView.delegate = self.dataSource;
+    self.tableView.dataSource = self.dataSource;
+    
     objc_property_t tableViewProperty = class_getProperty([dataSource class], "tableView");
     if (tableViewProperty) {
         [dataSource setValue: tableView forKey: @"tableView"];
     }
-   
-    
+
 
     if ([self.dataSource isKindOfClass: [MemberListTableDataSource class]]) {
         [self fetchMemberListTableContent];
-        //        [(EventListTableDataSource *)self.dataSource setAvatarStore: [objectConfiguration avatarStore]];
     }
     
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 
+    //-------------------------------------------------------
+    // Register notification when user selects a member.
+    //-------------------------------------------------------
+    [[NSNotificationCenter defaultCenter]
+     addObserver: self
+     selector: @selector(userDidSelectMemberListNotification:)
+     name: MemberListDidSelectMemberNotification
+     object: nil];
+    
+    [CommonUtilities showProgressHUD:self.view];
     
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-
+- (void)viewDidAppear:(BOOL)animated {
+    //-------------------------------------------------------
+    // Hide progress HUD when view displays.
+    //-------------------------------------------------------
+    [CommonUtilities hideProgressHUD:self.view];
 }
+
+
 
 
 - (void)didReceiveMemoryWarning
@@ -107,16 +134,23 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     // Dispose of any resources that can be recreated.
 }
 
-
+/*---------------------------------------------------------------------------
+ * Target-Action method for 'Done' button.
+ * Dismisses the current view controller.
+ *--------------------------------------------------------------------------*/
 - (void)dismiss {
     selectedEvent = nil;
     selectedMember = nil;
     [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
+
+/*---------------------------------------------------------------------------
+ * Target-Action method for 'Done' button.
+ * Dismisses the current view controller.
+ *--------------------------------------------------------------------------*/
 - (void)fetchMemberListTableContent
 {
-    [CommonUtilities showProgressHUD:self.view];
     
     self.parseDotComMgr = [objectConfiguration parseDotComManager];
     self.parseDotComMgr.parseDotComDelegate = self;
@@ -240,17 +274,12 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     
     memberDetailsController.completionBlock = ^(BOOL success)
     {
-        if (success)
-        {
-            [CommonUtilities showProgressHUD:self.view];
-            
-            [selectedMember removeObserver:attendanceReceptionist forKeyPath:@"roles.EventRole.attendance"];
-            [selectedMember removeObserver:eventRoleReceptionist forKeyPath:@"roles.EventRole.eventRoles"];
-            [selectedMember removeObserver:displayNameReceptionist forKeyPath:@"displayName"];
-            [selectedMember removeObserver:guestCountReceptionist forKeyPath:@"roles.EventRole.guestCount"];
-            
-            
-        }
+  
+        [selectedMember removeObserver:attendanceReceptionist forKeyPath:@"roles.EventRole.attendance"];
+        [selectedMember removeObserver:eventRoleReceptionist forKeyPath:@"roles.EventRole.eventRoles"];
+        [selectedMember removeObserver:displayNameReceptionist forKeyPath:@"displayName"];
+        [selectedMember removeObserver:guestCountReceptionist forKeyPath:@"roles.EventRole.guestCount"];
+
         [self dismissViewControllerAnimated:YES completion:nil];
     };
     
@@ -297,6 +326,8 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 -(void)didUpdateUserForUserType:(UserTypes)userType {
     NSString *namedClass = [CommonUtilities convertUserTypeToNamedClass:userType];
      NSLog(@"Success!! We updated the %@ record in Parse", namedClass);
+        [self.tableView reloadData];
+    
 }
 
 
@@ -332,16 +363,15 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
         [selectedEvent addMember:thisUser];
     }
     
-    
     [self.tableView reloadData];
-    [CommonUtilities hideProgressHUD:self.view];
+
 }
 
 - (void)didUpdateAttendance {
     NSLog(@"Success!! We updated Attendance record in Parse");
 
     [self.tableView reloadData];
-    [CommonUtilities hideProgressHUD:self.view];
+
 
 }
 
@@ -350,7 +380,6 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 
     
     [self.tableView reloadData];
-    [CommonUtilities hideProgressHUD:self.view];
 }
 
 - (void)didInsertAttendanceWithOutput:(NSArray *)objectNotationList {
@@ -372,20 +401,30 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     }];
     
     [self.tableView reloadData];
-    [CommonUtilities hideProgressHUD:self.view];
+
 }
 
 
-
-- (void)didExecuteOps:(NSArray *)objectNotationList forActionType:(ActionTypes)actionType forNamedClass:(NSString *)namedClass {
+- (void)viewWillDisappear:(BOOL)animated {
+    //-------------------------------------------------------
+    // Remove notification for member selection.
+    //-------------------------------------------------------
+    [[NSNotificationCenter defaultCenter]
+     removeObserver: self name: MemberListDidSelectMemberNotification object: nil];
     
-
 }
 
-- (void)executedOpsFailedWithError:(NSError *)error
-                     forActionType:(ActionTypes) actionType
-                     forNamedClass:(NSString *)namedClass {}
 
+//
+//- (void)didExecuteOps:(NSArray *)objectNotationList forActionType:(ActionTypes)actionType forNamedClass:(NSString *)namedClass {
+//    
+//
+//}
+//
+//- (void)executedOpsFailedWithError:(NSError *)error
+//                     forActionType:(ActionTypes) actionType
+//                     forNamedClass:(NSString *)namedClass {}
+//
 
 @end
 

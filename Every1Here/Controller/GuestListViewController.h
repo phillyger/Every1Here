@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EventListViewController.h"
+#import "BaseViewController.h"
 #import "FPPopoverController.h"
 #import "GuestCommunicatorDelegate.h"
 #import "GuestListViewManagerDelegate.h"

@@ -1,29 +1,26 @@
 //
-//  Every1HereViewController.h
-//  Every1Here
+//  UpcomingEventsViewController.h
+//  Anseo
 //
-//  Created by Ger O'Sullivan on 2/3/13.
+//  Created by Ger O'Sullivan on 2/20/13.
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "ParseDotComManagerDelegate.h"
-#import "MeetupDotComManagerDelegate.h"
+#import "BaseViewController.h"
 #import "EventManagerDelegate.h"
 
-@class E1HObjectConfiguration;
 
+@class E1HObjectConfiguration;
 @class EventTableDelegate;
 @class EventListTableDataSource;
 
-@interface EventListViewController : UIViewController <EventManagerDelegate>
+@interface EventListViewController : BaseViewController <EventManagerDelegate>
 
-@property (weak) IBOutlet UITableView *tableView;
-@property (strong) NSObject <UITableViewDataSource, UITableViewDelegate> *dataSource;
-@property (strong) E1HObjectConfiguration *objectConfiguration;
+@property (nonatomic, strong) NSString *eventStatus;
 
-- (void)userDidSelectPastEvents;
+- (void) fetchEventContentForOrgId:(NSNumber *)orgId withStatus:(NSString *)status;
 
 @end
+
 
 extern NSString *eventCellReuseIdentifier;
