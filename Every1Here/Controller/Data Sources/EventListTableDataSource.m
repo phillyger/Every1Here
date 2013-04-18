@@ -154,7 +154,8 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
 - (void)buildEventDict {
     
     NSArray *sectionHeaderTitleUpcomingFullList = @[@"Today",
-                                            @"Tomorrow",
+                                            @"Tomorrow"
+                                            @"In Two Days",
                                             @"Later This Week",
                                             @"Next Week",
                                             @"In Two Weeks",
@@ -164,6 +165,7 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
     
     NSArray *sectionHeaderTitlePastFullList = @[@"Today",
                                                 @"Yesterday",
+                                                @"Two Days Ago",
                                             @"Earlier This Week",
                                             @"Last Week",
                                             @"Two Weeks Ago",
@@ -217,20 +219,23 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
         case 1:
             thisSectionHeaderTitle = sectionHeaderTitles[1];
             break;
-        case 2 ... 7:
+        case 2:
             thisSectionHeaderTitle = sectionHeaderTitles[2];
             break;
-        case 8 ... 13:
+        case 3 ... 7:
             thisSectionHeaderTitle = sectionHeaderTitles[3];
             break;
-        case 14 ... 23:
+        case 8 ... 14:
             thisSectionHeaderTitle = sectionHeaderTitles[4];
             break;
-        case 24 ... 31:
+        case 15 ... 25:
             thisSectionHeaderTitle = sectionHeaderTitles[5];
             break;
-        default:
+        case 26 ... 33:
             thisSectionHeaderTitle = sectionHeaderTitles[6];
+            break;
+        default:
+            thisSectionHeaderTitle = sectionHeaderTitles[7];
             break;
     }
     
