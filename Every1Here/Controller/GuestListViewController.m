@@ -27,27 +27,71 @@
 #import "EventRole.h"
 #import "ParseDotComManager.h"
 #import "MBProgressHUD.h"
+#import "CommonUtilities.h"
+#import "Receptionist.h"
 
 
 static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
 
 @interface GuestListViewController ()
 {
+    
+    //-------------------------------------------------------
+    // member and event of current selection.
+    //-------------------------------------------------------
     Event *selectedEvent;
     User * selectedGuest;
+    
+    //-------------------------------------------------------
+    // Uses a KVO Receptionist Pattern to manage input form handling for fields:
+    // - Attendance
+    // - Event Roles
+    // - Guest Count
+    // - Display Name
+    //-------------------------------------------------------
+    Receptionist *attendanceReceptionist;
+    Receptionist *eventRoleReceptionist;
+    Receptionist *displayNameReceptionist;
+    Receptionist *guestCountReceptionist;
+    
+    //-------------------------------------------------------
+    // Dicitionary for holding the values of Quick Dialog
+    // form names.
+    //-------------------------------------------------------
+    NSDictionary *pListInfoDictForE1HQuickDialog;
+    
+    //-------------------------------------------------------
+    // Queue for receptionist instances.
+    //-------------------------------------------------------
+    NSOperationQueue *aQueue;
+    
+    //-------------------------------------------------------
+    // Social Network type.
+    //-------------------------------------------------------
     NSString *slTypeString;
     
-    AttendanceReceptionist *attendanceReceptionist;
-    DisplayNameReceptionist *displayNameReceptionist;
-    MBProgressHUD *hud;
+    //-------------------------------------------------------
+    // Popover Controller variable.
+    // https://github.com/50pixels/FPPopover
+    // Installed using cocoapods
+    //-------------------------------------------------------
+    FPPopoverController *popover;
+    
+    //-------------------------------------------------------
+    // Used to hold an instance of the custom icon bar on Guest view.
+    //-------------------------------------------------------
+    GuestListViewNavigationItem *navItem;
 }
+
+
+@property (nonatomic, strong) NSMutableDictionary *guestFullListDict;
+@property (nonatomic, strong) NSMutableDictionary *guestAttendeeListDict;
+@property (nonatomic, strong) NSMutableArray *guestAttendeeListForSlType;
+@property (nonatomic, strong) NSMutableArray *guestFullListForSlType;
 
 -(void)setGuestAttendeeListWithSlType:(SocialNetworkType) slType;
 -(void)setGuestFullListWithSlType:(SocialNetworkType) slType;
 
-
-//@property (strong) NSDictionary *guestListFullDict;
-//@property (nonatomic, assign, getter=isAttendee) BOOL attendee;
 
 -(IBAction) popover:(id)sender slType:(SocialNetworkType)slType;
 
@@ -88,17 +132,10 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     EventMemberGuestTabBarController *tabBarController = (EventMemberGuestTabBarController *)[[self navigationController] tabBarController];
     selectedEvent = [tabBarController selectedEvent];
     selectedGuest = [[User alloc] initWithFirstName:nil lastName:nil];
-    
-    
-    
-    
-    // custom navigationItem to display social media links.
-//    GuestListViewNavigationItem *navItem = [(GuestListViewNavigationItem *)[self navigationItem] init];
 
-    GuestListViewNavigationItem *navItem = [(GuestListViewNavigationItem *)[self navigationItem] initWithDelegate:self];
+    // custom navigationItem to display social media links
+    navItem = [(GuestListViewNavigationItem *)[self navigationItem] initWithDelegate:self];
     
-    // assign controller as the delegate for the custom navItem's to ensure image clicks on social icons get triggered.
-//    navItem.delegate = self;
     
     // A full listing of all potential guests
     self.guestFullListDict = [[NSMutableDictionary alloc] init];
@@ -114,7 +151,13 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     guestListDataSource.event = selectedEvent;
     
 
-
+    //-------------------------------------------------------
+    // Load the Quick Dialog form names mapping.
+    //-------------------------------------------------------
+    NSString *pathToPList=[[NSBundle mainBundle] pathForResource:@"E1H_QuickDialog_FileNames" ofType:@"plist"];
+    pListInfoDictForE1HQuickDialog = [[NSDictionary alloc] initWithContentsOfFile:pathToPList];
+    
+    
     
     self.parseDotComMgr = [objectConfiguration parseDotComManager];
     self.parseDotComMgr.parseDotComDelegate = self;
@@ -123,10 +166,6 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     self.tableView.delegate = self.dataSource;
     self.tableView.dataSource = self.dataSource;
     
-    if ([self.dataSource isKindOfClass: [GuestListTableDataSource class]]) {
-//        [self fetchGuestListTableContent];
-        //        [(EventListTableDataSource *)self.dataSource setAvatarStore: [objectConfiguration avatarStore]];
-    }
 
 }
 
@@ -138,11 +177,20 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
      name: GuestListDidSelectGuestNotification
      object: nil];
     
+    [CommonUtilities hideProgressHUD:self.view];
+    
     
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
+    [CommonUtilities showProgressHUD:self.view];
+    
+    if ([self.dataSource isKindOfClass: [GuestListTableDataSource class]]) {
+        //        [self fetchGuestListTableContent];
+        //        [(EventListTableDataSource *)self.dataSource setAvatarStore: [objectConfiguration avatarStore]];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -158,26 +206,18 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     [[NSNotificationCenter defaultCenter]
      removeObserver: self name: GuestListDidSelectGuestNotification object: nil];
     
-    //    [[NSNotificationCenter defaultCenter]
-    //     removeObserver: self name: EventListTableDidSelectEventNotification object: nil];
-    //    [[NSNotificationCenter defaultCenter]
-    //     removeObserver: self name: MemberListDidSelectMemberNotification object: nil];
+    navItem = nil;
 }
 
 
 - (void)fetchMemberListTableContent
 {
-    hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
-    hud.dimBackground = YES;
-    // Regiser for HUD callbacks so we can remove it from the window at the right time
-    hud.labelText = @"Loading..";
-    [hud show:TRUE];
+    
     
     self.parseDotComMgr = [objectConfiguration parseDotComManager];
     self.parseDotComMgr.parseDotComDelegate = self;
     selectedEvent = (Event *)[(GuestListTableDataSource *)self.dataSource event];
-//    [self.parseDotComMgr fetchGuestsForEvent:selectedEvent];
+    [self.parseDotComMgr fetchUsersForEvent:selectedEvent withUserType:Guest];
 }
 
 
@@ -191,7 +231,7 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     controller.slType = slType;
     controller.guestFullListForSlType = self.guestFullListForSlType;
     controller.guestAttendeeListForSlType = self.guestAttendeeListForSlType;
-    controller.event = selectedEvent;
+    controller.selectedEvent = selectedEvent;
     controller.delegate = self;
     
     popover = [[FPPopoverController alloc] initWithViewController:controller];
@@ -207,7 +247,9 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
 - (void)presentedNewPopoverController:(FPPopoverController *)newPopoverController
           shouldDismissVisiblePopover:(FPPopoverController*)visiblePopoverController
 {
-    [visiblePopoverController dismissPopoverAnimated:YES];
+    [visiblePopoverController dismissPopoverAnimated:YES completion:^{
+        NSLog(@"Popover has been dismissed! Woo hoo!!");
+    }];
 }
 
 
@@ -231,47 +273,6 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
 
 
 #pragma mark - Popover Delegate
-//-(void)didSelectPopoverRow:(NSUInteger)rowNum forSocialNetworkType:(SocialNetworkType)slType
-//{
-//    // Sets the guestFullList array for SlType
-////    [self setGuestFullListWithSlType:slType];
-////    [self setGuestAttendeeListWithSlType:slType];
-//    
-//    User *popoverUser = [self guestFullListForSlType][rowNum];
-//    BOOL isAttendeeForSlType = [self isAttendee:popoverUser forSlType:slType inRow:rowNum];
-//    
-//    if (!isAttendeeForSlType) {
-//        // Add a new user to the the guestListAttendeeArray
-//        [self.guestAttendeeListForSlType addObject:popoverUser];
-//        
-//    }
-//    
-//    [self updateTableContentsForSlType:slType];
-//}
-//
-//-(void)didDeselectPopoverRow:(NSUInteger)rowNum forSocialNetworkType:(SocialNetworkType)slType
-//{
-//
-//    // Sets the guestFullList array for SlType
-////    [self setGuestFullListWithSlType:slType];
-////    [self setGuestAttendeeListWithSlType:slType];
-//    
-//    User *popoverUser = [self guestFullListForSlType][rowNum];
-//    BOOL isAttendeeForSlType = [self isAttendee:popoverUser forSlType:slType inRow:rowNum];
-//    
-//    if (isAttendeeForSlType) {
-//        // Remove a new user from the the guestAttendeeList array for specific social network type
-//        [[self guestAttendeeListForSlType] removeObject:popoverUser];
-//        
-//        // remove section header if the attendee array is empty
-//        if ([[self guestAttendeeListForSlType] count] == 0) {
-//            [[self guestAttendeeListDict] removeObjectForKey:[SocialNetworkUtilities formatTypeToString:slType]];
-//        }
-//        
-//    }
-//    
-//    [self updateTableContentsForSlType:slType];
-//}
 
 
 - (BOOL)isAttendee:(User *)user forSlType:(SocialNetworkType)slType inRow:(NSUInteger)rowNum {
@@ -355,54 +356,8 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     GuestDetailsDialogController *guestDetailsController = [(GuestDetailsDialogController *)[GuestDetailsDialogController alloc] initWithRoot:root];
     guestDetailsController.userToEdit = selectedGuest;
     
-    EventRole *eventRoleModel = [selectedGuest getRole:@"EventRole"];
-    NSOperationQueue* aQueue = [NSOperationQueue mainQueue];  // Question: Can these updates to attendance and event roles be handled by secondary thread.
-    
 
-//    attendanceReceptionist = [AttendanceReceptionist receptionistForKeyPath:@"attendance"
-//                                                                     object:eventRoleModel
-//                                                                      queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
-//                                                                          
-//                                                                          NSLog(@"Running Attendance Receptionist ...");
-//                                                                          BOOL oldAttendance = [[change objectForKey:NSKeyValueChangeOldKey] boolValue];
-//                                                                          
-//                                                                          BOOL newAttendance = [[change objectForKey:NSKeyValueChangeNewKey] boolValue];
-//                                                                          //                                                                                        NSLog(@"%@", (oldAttendance?@"YES":@"NO"));
-//                                                                          //                                                                                        NSLog(@"%@", (newAttendance?@"YES":@"NO"));
-//                                                                          
-//                                                                          if (newAttendance == oldAttendance) {
-//                                                                              //do nothing
-//                                                                              doesAttendanceRecordExist = TRUE;
-//                                                                          } else if (newAttendance == TRUE) {
-//                                                                              doesAttendanceRecordExist = FALSE;
-//                                                                              [parseDotComMgr createNewAttendanceWithUser:selectedGuest withEvent: selectedEvent];
-//                                                                              
-//                                                                          } else if (newAttendance == FALSE) {
-//                                                                              doesAttendanceRecordExist = FALSE;
-//                                                                              [parseDotComMgr deleteAttendanceForUser:selectedGuest];
-//                                                                              
-//                                                                          }
-//                                                                          
-//                                                                      }];
-    
-    
 
-    
-//    displayNameReceptionist = [DisplayNameReceptionist receptionistForKeyPath:@"displayName"
-//                                                                       object:selectedGuest
-//                                                                        queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
-//                                                                            
-//                                                                            NSLog(@"Running DisplayName Receptionist ...");
-//                                                                            NSString *oldDisplayName = [change objectForKey:NSKeyValueChangeOldKey];
-//                                                                            NSString *newDisplayName = [change objectForKey:NSKeyValueChangeNewKey] ;
-//                                                                            NSLog(@"Old DisplayName %@", oldDisplayName);
-//                                                                            NSLog(@"New DisplayName %@", newDisplayName);
-//                                                                            
-//                                                                            if (![newDisplayName isEqualToString:oldDisplayName])
-//                                                                                [parseDotComMgr updateExistingUser:selectedGuest withClassType:@"Guest"];
-//                                                                            
-//                                                                        }];
-    
     guestDetailsController.completionBlock = ^(BOOL success)
     {
         if (success)
@@ -445,27 +400,6 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     
 }
 
-//- (void)updateTableContentsWithArray:(NSArray *)newList forKey:(NSString *)aKey {
-//    
-////    slTypeString = [SocialNetworkUtilities formatTypeToString:slType];   
-////    [self setGuestAttendeeListWithSlType:slType];
-//  
-//    if ([[self guestAttendeeListForSlType] count] > 0) {
-//        [[self guestAttendeeListDict] setObject:[self guestAttendeeListForSlType] forKey:slTypeString];
-//        
-//    }
-//
-//
-//    
-//    [selectedEvent sortSocialNetworkTypes:[self guestAttendeeListDict]];
-//    [selectedEvent setGuestList:[guestAttendeeListDict rw_flattenIntoArray]];
-//    
-//    //[self.guestAttendeeListForSlType removeAllObjects];
-//    
-//    //[popover dismissPopoverAnimated:YES];
-//    [self.tableView reloadData];
-//    
-//}
 
 
 - (void)createNewGuest {
@@ -562,12 +496,12 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
 - (void)didInsertNewGuest:(User *) aSelectedUser
                  withEvent:(Event *)aSelectedEvent{
     NSLog(@"Success!! We inserted a new guest into Parse");
-//    [selectedEvent addGuest:aSelectedUser];
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
-//    [self.tableView reloadData];
-    aSelectedUser = nil;
-    selectedGuest = nil;
-    //    [parseDotComMgr updateExistingMember:aSelectedUser];
+////    [selectedEvent addGuest:aSelectedUser];
+//    [MBProgressHUD hideHUDForView:self.view animated:YES];
+////    [self.tableView reloadData];
+    
+
+//    [parseDotComMgr updateExistingMember:aSelectedUser];
     
 }
 
@@ -575,9 +509,9 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     
     
     NSLog(@"Success!! We updated an existing Member record in Parse");
-    [self.tableView reloadData];
-    selectedUser = nil;
-    selectedGuest = nil;
+//    [self.tableView reloadData];
+//    selectedUser = nil;
+//    selectedGuest = nil;
 }
 
 

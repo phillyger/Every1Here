@@ -18,13 +18,14 @@
 #import "User.h"
 #import "MBProgressHUD.h"
 #import "SocialNetworkUtilities.h"
+#import "ParseDotComManager.h"
 
 
 static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
 
 @interface GuestListPopoverTableController ()
 {
-    Event *event;
+    Event *selectedEvent;
     MBProgressHUD *hud;
     NSString *slTypeString;
 //    NSMutableArray *guestFullListForSlType;
@@ -42,12 +43,11 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
 @synthesize delegate=_delegate;
 @synthesize slType;
 @synthesize meetupDotComMgr;
+@synthesize parseDotComMgr;
 @synthesize twitterDotComMgr;
 @synthesize objectConfiguration;
 @synthesize guestCell;
-@synthesize event;
-//@synthesize guestListFullDict;
-//@synthesize guestListAttendeeDict;
+@synthesize selectedEvent;
 @synthesize guestFullListForSlType;
 @synthesize guestAttendeeListForSlType;
 
@@ -63,14 +63,18 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     
     self.objectConfiguration = [[E1HObjectConfiguration alloc] init];
     
+    self.parseDotComMgr = [objectConfiguration parseDotComManager];
+    self.parseDotComMgr.parseDotComDelegate = self;
+    
 //    guestFullListForSlType = [[NSMutableArray alloc] init];
 
 //    [self.event clearGuestList];
     
     slTypeString = (NSString *)[SocialNetworkUtilities formatTypeToString:slType];
     [self fetchGuestListTableContent];
+
     
-//  [(EventListTableDataSource *)self.dataSource setAvatarStore: [objectConfiguration avatarStore]];    
+   // [(EventListTableDataSource *)self.dataSource setAvatarStore: [objectConfiguration avatarStore]];
 
 }
 
@@ -83,10 +87,12 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
         User *user = (User *)obj;
         
         NSLog(@"Selected user: %@ at index %d", [user displayName], idx );
+        NSLog(@"Selected user avatar: %@ at index %d", [user avatarURL], idx );
         [newGuestAttendeeList addObject:user];
     }];
     
     [[self delegate] updateTableContentsWithArray:newGuestAttendeeList forKey:slTypeString];
+    
 }
 
 
@@ -130,7 +136,16 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
         User *user = [[self guestFullListForSlType] objectAtIndex:[indexPath row]];
         guestCell = [aTableView dequeueReusableCellWithIdentifier:guestCellReuseIdentifier forIndexPath:indexPath];
         guestCell.displayNameLabel.text = user.displayName;
-        [guestCell.avatarView setImageWithURL:user.avatarURL placeholderImage:[UIImage imageNamed:@"profile-image-placeholder.png"]];
+        
+        NSURLRequest *request = [NSURLRequest requestWithURL:user.avatarURL];
+        __weak UIImageView *imageView = guestCell.avatarView;
+        [guestCell.avatarView setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"profile-image-placeholder.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            imageView.image = image;
+            CALayer *layer = imageView.layer;
+            layer.masksToBounds = YES;
+            layer.cornerRadius = 10.0f;
+        } failure:NULL];
+        
         
         if ([self.selectedIndexes containsIndex:indexPath.row]) {
             [guestCell setAccessoryType:UITableViewCellAccessoryCheckmark];

@@ -197,7 +197,7 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     parameters = [CommonUtilities generateValueDictWithObject:user forNamedClass:usernamedClass];
     NSLog(@"%@", parameters);
     id insertOp2= [E1HOperationFactory create:Insert];
-    RESTApiOperation *insertToUserTableOp = [insertOp2 createOperationWithDict:parameters forNamedClass:namedClass];
+    RESTApiOperation *insertToUserTableOp = [insertOp2 createOperationWithDict:parameters forNamedClass:usernamedClass];
     [operations addObject:insertToUserTableOp];
     
     [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock

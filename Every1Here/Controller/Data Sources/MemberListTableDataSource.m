@@ -13,6 +13,7 @@
 #import "EventRole.h"
 #import "User.h"
 
+#import <QuartzCore/QuartzCore.h>
 #import "AvatarStore.h"
 
 
@@ -91,7 +92,16 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 //        NSData *avatarData = [avatarStore dataForURL: user.avatarURL];
 //        if (avatarData) {
 //        if (user.avatarURL) {
-            [memberCell.avatarView setImageWithURL:user.avatarURL placeholderImage:[UIImage imageNamed:@"profile-image-placeholder.png"]];
+        
+        NSURLRequest *request = [NSURLRequest requestWithURL:user.avatarURL];
+        __weak UIImageView *imageView = memberCell.avatarView;
+        [memberCell.avatarView setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"profile-image-placeholder.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            imageView.image = image;
+            CALayer *layer = imageView.layer;
+            layer.masksToBounds = YES;
+            layer.cornerRadius = 10.0f;
+        } failure:NULL];
+
 
             
 //        }
@@ -103,7 +113,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"placeholder"];
         }
-        cell.textLabel.text = @"There was a problem connecting to the network.";
+//        cell.textLabel.text = @"There was a problem connecting to the network.";
         
     }
     return cell;

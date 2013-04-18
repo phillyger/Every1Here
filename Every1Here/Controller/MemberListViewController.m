@@ -30,7 +30,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 @interface MemberListViewController ()
 {
     //-------------------------------------------------------
-    // Ivars for the member and event of current selection.
+    // member and event of current selection.
     //-------------------------------------------------------
     Event *selectedEvent;
     User * selectedMember;
@@ -46,6 +46,18 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     Receptionist *eventRoleReceptionist;
     Receptionist *displayNameReceptionist;
     Receptionist *guestCountReceptionist;
+    
+    //-------------------------------------------------------
+    // Dicitionary for holding the values of Quick Dialog
+    // form names.
+    //-------------------------------------------------------
+    NSDictionary *pListInfoDictForE1HQuickDialog;
+    
+    //-------------------------------------------------------
+    // Queue for receptionist instances.
+    //-------------------------------------------------------
+    NSOperationQueue *aQueue;
+    
 }
 
 @end
@@ -79,6 +91,12 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     [self.navigationItem setLeftBarButtonItem: dismissBttnItem];
     [self.navigationItem setRightBarButtonItem: addNewMemberBttnItem];
 
+    //-------------------------------------------------------
+    // Load the Quick Dialog form names mapping.
+    //-------------------------------------------------------
+    NSString *pathToPList=[[NSBundle mainBundle] pathForResource:@"E1H_QuickDialog_FileNames" ofType:@"plist"];
+    pListInfoDictForE1HQuickDialog = [[NSDictionary alloc] initWithContentsOfFile:pathToPList];
+    
     
     //-------------------------------------------------------
     // Register member summary cell used in table data source.
@@ -87,6 +105,10 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     [self.tableView registerNib:memberCellNib
          forCellReuseIdentifier:memberCellReuseIdentifier];
     
+    //-------------------------------------------------------
+    // Register member summary cell used in table data source.
+    //-------------------------------------------------------
+    aQueue = [NSOperationQueue mainQueue];  // Question: Can these updates to attendance and event roles be handled by secondary thread.
     
     self.tableView.delegate = self.dataSource;
     self.tableView.dataSource = self.dataSource;
@@ -125,6 +147,15 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     [CommonUtilities hideProgressHUD:self.view];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    //-------------------------------------------------------
+    // Remove notification for member selection.
+    //-------------------------------------------------------
+    [[NSNotificationCenter defaultCenter]
+     removeObserver: self name: MemberListDidSelectMemberNotification object: nil];
+    
+}
+
 
 
 
@@ -158,41 +189,66 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     [self.parseDotComMgr fetchUsersForEvent:selectedEvent withUserType:Member];
 }
 
-- (void)retrievingMembersFailedWithError:(NSError *)error {
-    
-}
-
-
 
 
 #pragma mark - Notification handling
+
+/*---------------------------------------------------------------------------
+ * Handles member selection in table view. Implements four(4) KVO receptionist
+ * pattern methods to handle insert/updates/edits to the selected member fields
+ * - Attendance
+ * - Event Roles
+ * - Guest Count
+ * - Display Name
+ *
+ * A completion block is used to remove the KVO on form close and dismiss the 
+ * child controller.
+ *--------------------------------------------------------------------------*/
+
 - (void)userDidSelectMemberListNotification:(NSNotification *)note {
     
-    __block BOOL doesAttendanceRecordExist = FALSE;
-    
+
+    //-------------------------------------------------------
+    // The current member selected.
+    //-------------------------------------------------------
     selectedMember = (User *)[note object];
-    QRootElement *root =[[QRootElement alloc] initWithJSONFile:@"memberDetails_EDIT"];
+    
+    //-------------------------------------------------------
+    // QuickDialog :: Reads the JSON file to structure the
+    // member form. The form name is loads from plist.
+    //-------------------------------------------------------
+    QRootElement *root =[[QRootElement alloc] initWithJSONFile:[pListInfoDictForE1HQuickDialog valueForKey:@"member_details_edit"]];
     [root bindToObject:(User *)selectedMember];
     
     
+    //-------------------------------------------------------
+    // Initialize the destination controller with the
+    // Quick Dialog root object. Assign the Ivars for
+    // - userToEdit
+    // - newUser
+    // in destination controller
+    //-------------------------------------------------------
     MemberDetailsDialogController *memberDetailsController = [(MemberDetailsDialogController *)[MemberDetailsDialogController alloc] initWithRoot:root];
     memberDetailsController.userToEdit = selectedMember;
-    
     memberDetailsController.newUser = NO;
-    
-    
-    NSOperationQueue* aQueue = [NSOperationQueue mainQueue];  // Question: Can these updates to attendance and event roles be handled by secondary thread.
 
+    //-------------------------------------------------------
+    // Check to see if Attendance Id field has been set on
+    // selected member .
+    //-------------------------------------------------------
+     __block BOOL doesAttendanceRecordExist = [selectedMember attendanceId]!=nil ? TRUE : FALSE;
     
+    //-------------------------------------------------------
+    // KVO Receptionist pattern for handling changes to
+    // eventRoles field.
+    //-------------------------------------------------------
     eventRoleReceptionist = [Receptionist receptionistForKeyPath:@"roles.EventRole.eventRoles"
                                                   object:selectedMember
                                                    queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
                                                        
-                                                       NSLog(@"Running EventRole Receptionist ...");
                                                        NSUInteger oldEventRole = [[change objectForKey:NSKeyValueChangeOldKey] intValue];
                                                        NSUInteger newEventRole = [[change objectForKey:NSKeyValueChangeNewKey] intValue];
-                                                       NSLog(@"oldEventRole %d", oldEventRole);
-                                                       NSLog(@"newEventRole %d", newEventRole);
+  
                                                        if (doesAttendanceRecordExist)
                                                            if (oldEventRole != newEventRole) {
 
@@ -202,7 +258,10 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                                                        
                                                    }];
     
-
+    //-------------------------------------------------------
+    // KVO Receptionist pattern for handling changes to
+    // attendance field.
+    //-------------------------------------------------------
     attendanceReceptionist = [Receptionist receptionistForKeyPath:@"roles.EventRole.attendance"
                                                        object:selectedMember
                                                         queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
@@ -231,7 +290,10 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                                                             
                                                         }];
     
-    
+    //-------------------------------------------------------
+    // KVO Receptionist pattern for handling changes to
+    // displayName field.
+    //-------------------------------------------------------
     displayNameReceptionist = [Receptionist receptionistForKeyPath:@"displayName"
                                                            object:selectedMember
                                                             queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
@@ -242,15 +304,15 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                                                                 NSString *newDisplayName = [change objectForKey:NSKeyValueChangeNewKey] ;
                                                             
                                                                 if (![newDisplayName isEqualToString:oldDisplayName]) {
-
-                                                                    
                                                                     [parseDotComMgr updateUser:selectedMember withUserType:Member];
-                                                                    
                                                                 }
                                                                 
                                                             }];
     
-
+    //-------------------------------------------------------
+    // KVO Receptionist pattern for handling changes to
+    // guestCount field.
+    //-------------------------------------------------------
     guestCountReceptionist = [Receptionist receptionistForKeyPath:@"roles.EventRole.guestCount"
                                                                        object:selectedMember
                                                                         queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
@@ -262,9 +324,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                                                                                 NSUInteger newGuestCount = [[change objectForKey:NSKeyValueChangeNewKey] intValue];
                                                                                 
                                                                                 if (newGuestCount != oldGuestCount ) {
-                                                                                    
                                                                                     [parseDotComMgr updateAttendanceForUser:selectedMember];
-
                                                                                 }
                                                                             }
                                                                             
@@ -272,6 +332,9 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                                                                         }];
     
     
+    //-------------------------------------------------------
+    // On completion, ensure to remove KVO observers.
+    //-------------------------------------------------------
     memberDetailsController.completionBlock = ^(BOOL success)
     {
   
@@ -291,24 +354,56 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 }
 
 
-
+/*---------------------------------------------------------------------------
+ * Handles the creation of a new member 
+ *--------------------------------------------------------------------------*/
 - (void)addNewMember {
     
+    
+    //-------------------------------------------------------
+    // Create a new selected member instance.
+    //-------------------------------------------------------
     selectedMember = [[User alloc] init];
-    selectedEvent = (Event *)[(MemberListTableDataSource *)self.dataSource event];
-    QRootElement *root =[[QRootElement alloc] initWithJSONFile:@"memberDetails_NEW"];
+    
+    //-------------------------------------------------------
+    // QuickDialog :: Reads the JSON file to structure the
+    // member form. The form name is loads from plist.
+    //-------------------------------------------------------
+    QRootElement *root =[[QRootElement alloc] initWithJSONFile:[pListInfoDictForE1HQuickDialog valueForKey:@"member_details_new"]];
+    
 
+    //-------------------------------------------------------
+    // Initialize the destination controller with the
+    // Quick Dialog root object. Assign the Ivars for
+    // - userToEdit
+    // - newUser
+    // in destination controller
+    //-------------------------------------------------------
     MemberDetailsDialogController *memberDetailsController = [(MemberDetailsDialogController *)[MemberDetailsDialogController alloc] initWithRoot:root];
     memberDetailsController.userToEdit = selectedMember;
     memberDetailsController.newUser = YES;
     
+    
+    //-------------------------------------------------------
+    // On completion, if form content has changed, insert
+    // new user,
+    //-------------------------------------------------------
     memberDetailsController.completionBlock = ^(BOOL success)
     {
         if (success)
         {
 
-            [CommonUtilities showProgressHUD:self.view];    
-            [parseDotComMgr insertUser:selectedMember withUserType:Member];
+            [CommonUtilities showProgressHUD:self.view];
+            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                // insert a new user.
+                [parseDotComMgr insertUser:selectedMember withUserType:Member];
+                [selectedEvent addMember:selectedMember];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [CommonUtilities hideProgressHUD:self.view];
+
+                });
+            });
+            
 
         }
         
@@ -318,19 +413,28 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:memberDetailsController];
+    
+    
     [self presentViewController:navController animated:YES completion:nil];
     
 }
 
 
+
+/*---------------------------------------------------------------------------
+ * Delegation callback for updates of an existing member
+ *--------------------------------------------------------------------------*/
 -(void)didUpdateUserForUserType:(UserTypes)userType {
     NSString *namedClass = [CommonUtilities convertUserTypeToNamedClass:userType];
      NSLog(@"Success!! We updated the %@ record in Parse", namedClass);
-        [self.tableView reloadData];
+    [self.tableView reloadData];
     
 }
 
 
+/*---------------------------------------------------------------------------
+ * Delegation callback for insert of a new member
+ *--------------------------------------------------------------------------*/
 - (void)didInsertUserForUserType:(UserTypes)userType withOutput:(NSArray *)objectNotationList{
     
     /* TODO: Need to find a better pattern for extracting values from enqueued operations. 
@@ -341,10 +445,17 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     */
     
     [objectNotationList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        AFHTTPRequestOperation *ro = obj;
+        NSData *jsonData = [ro responseData];
+        NSDictionary *jsonObject=[NSJSONSerialization
+                                  JSONObjectWithData:jsonData
+                                  options:NSJSONReadingMutableLeaves
+                                  error:nil];
+        
         if (idx == 0)
-            [selectedMember setValue:[obj valueForKey:@"objectId"] forKeyPath:@"objectId"];     // Member op
+            [selectedMember setValue:[jsonObject valueForKey:@"objectId"] forKeyPath:@"objectId"];     // Member op
         if (idx == 1)
-            [selectedMember setValue:[obj valueForKey:@"objectId"] forKeyPath:@"userId"];   // User op
+            [selectedMember setValue:[jsonObject valueForKey:@"objectId"] forKeyPath:@"userId"];   // User op
     }];
     
     [selectedMember setValue:[selectedEvent valueForKey:@"objectId"] forKeyPath:@"eventId"];    // set member with eventId
@@ -354,7 +465,9 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 }
 
 
-
+/*---------------------------------------------------------------------------
+ * Delegation callback for fetching members
+ *--------------------------------------------------------------------------*/
 - (void)didFetchUsers:(NSArray *)userList forUserType:(UserTypes)userType  {
     NSLog(@"Success!! We updated an existing %d record in Parse", userType);
    
@@ -367,21 +480,9 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 
 }
 
-- (void)didUpdateAttendance {
-    NSLog(@"Success!! We updated Attendance record in Parse");
-
-    [self.tableView reloadData];
-
-
-}
-
-- (void)didDeleteAttendance {
-    NSLog(@"Success!! We deleted an existing Attendance record from Parse");
-
-    
-    [self.tableView reloadData];
-}
-
+/*---------------------------------------------------------------------------
+ * Delegation callback for inserting attendance record.
+ *--------------------------------------------------------------------------*/
 - (void)didInsertAttendanceWithOutput:(NSArray *)objectNotationList {
     NSLog(@"Success!! We inserted a new Attendance record into Parse");
     
@@ -397,34 +498,46 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                                   options:NSJSONReadingMutableLeaves
                                   error:nil];
         
-    [selectedMember setAttendanceId:[jsonObject valueForKey:@"objectId"]];
+        [selectedMember setAttendanceId:[jsonObject valueForKey:@"objectId"]];
     }];
     
     [self.tableView reloadData];
-
-}
-
-
-- (void)viewWillDisappear:(BOOL)animated {
-    //-------------------------------------------------------
-    // Remove notification for member selection.
-    //-------------------------------------------------------
-    [[NSNotificationCenter defaultCenter]
-     removeObserver: self name: MemberListDidSelectMemberNotification object: nil];
     
 }
 
+/*---------------------------------------------------------------------------
+ * Delegation callback for updating attendance record.
+ *--------------------------------------------------------------------------*/
+- (void)didUpdateAttendance {
+    NSLog(@"Success!! We updated Attendance record in Parse");
 
-//
-//- (void)didExecuteOps:(NSArray *)objectNotationList forActionType:(ActionTypes)actionType forNamedClass:(NSString *)namedClass {
-//    
-//
-//}
-//
-//- (void)executedOpsFailedWithError:(NSError *)error
-//                     forActionType:(ActionTypes) actionType
-//                     forNamedClass:(NSString *)namedClass {}
-//
+    [self.tableView reloadData];
+
+
+}
+
+/*---------------------------------------------------------------------------
+ * Delegation callback for deleting attendance record.
+ *--------------------------------------------------------------------------*/
+- (void)didDeleteAttendance {
+    NSLog(@"Success!! We deleted an existing Attendance record from Parse");
+
+    
+    [self.tableView reloadData];
+}
+
+
+
+/*---------------------------------------------------------------------------
+ * Delegation callback for Parse batche executions that failed.
+ *--------------------------------------------------------------------------*/
+- (void)executedOpsFailedWithError:(NSError *)error
+                     forActionType:(ActionTypes) actionType
+                     forNamedClass:(NSString *)namedClass {}
+
+
+
+
 
 @end
 

@@ -144,7 +144,7 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
             if (!cell) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"placeholder"];
             }
-            cell.textLabel.text = @"There was a problem connecting to the network.";
+//            cell.textLabel.text = @"There was a problem connecting to the network.";
         }
 
     return cell;
@@ -214,20 +214,19 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
         case 0:
             thisSectionHeaderTitle = sectionHeaderTitles[0];
             break;
-            
         case 1:
             thisSectionHeaderTitle = sectionHeaderTitles[1];
             break;
         case 2 ... 7:
             thisSectionHeaderTitle = sectionHeaderTitles[2];
             break;
-        case 8 ... 14:
+        case 8 ... 13:
             thisSectionHeaderTitle = sectionHeaderTitles[3];
             break;
-        case 15 ... 24:
+        case 14 ... 23:
             thisSectionHeaderTitle = sectionHeaderTitles[4];
             break;
-        case 25 ... 32:
+        case 24 ... 31:
             thisSectionHeaderTitle = sectionHeaderTitles[5];
             break;
         default:

@@ -24,35 +24,44 @@
 
 
 /**
- * The manager successfully inserted a new Member into Parse.com.
+ * The manager successfully inserted a new Member or Guest into Parse.com.
  */
 - (void)didInsertUserForUserType:(UserTypes)userType withOutput:(NSArray *)objectNotationList;
 
 /**
- * The manager successfully inserted a new Member into Parse.com.
+ * The manager successfully updated a new Member or Guest in Parse.com.
  */
 - (void)didUpdateUserForUserType:(UserTypes)userType;
 
 /**
- * The manager successfully inserted a new Member into Parse.com.
+ * The manager successfully fetch a listing of Members or Guests from Parse.com.
  */
 - (void)didFetchUsers:(NSArray *)userList forUserType:(UserTypes)userType;
 
+/**
+ * The manager received an error when inserting an existing Member or Guest into Parse.com.
+ */
+//- (void)insertingUserFailedWithError: (NSError *)error;
 
 /**
- * The manager successfully inserted a new Member into Parse.com.
+ * The manager received an error when updating an existing Member or Guest into Parse.com.
+ */
+//- (void)updatingExistingUserFailedWithError: (NSError *)error;
+
+/**
+ * The manager successfully inserted a new Member or Guest Attendance record into Parse.com.
  */
 - (void)didInsertAttendanceWithOutput:(NSArray *)objectNotationList;
 
 
 /**
- * The manager successfully updated an existing User Attendance record into Parse.com.
+ * The manager successfully updated an existing Member or Guest's Attendance record into Parse.com.
  */
 - (void)didUpdateAttendance;
 
 
 /**
- * The manager successfully deleted an existing User Attendance record into Parse.com.
+ * The manager successfully deleted an existing Member or Guest's Attendance record into Parse.com.
  */
 - (void)didDeleteAttendance;
 
@@ -74,26 +83,9 @@
 
 
 /**
- * The manager received an error when updating an existing member into Parse.com.
+ * The manager received an error when executing batch operation in Parse.com.
  */
-//- (void)updatingExistingUserFailedWithError: (NSError *)error;
-
-
-/**
- * The manager received an error when executing insert operations into Parse.com.
- */
-- (void)executedOpsFailedWithError:(NSError *)error
-                     forActionType:(ActionTypes) actionType
-                      forNamedClass:(NSString *)namedClass;
-
-
-
-/**
- * The manager successfully deleted an existing User Attendance record into Parse.com.
- */
-- (void)didExecuteOps:(NSArray *)objectNotationList
-              forActionType:(ActionTypes) actionType
-               forNamedClass:(NSString *)namedClass;
+- (void)executedOpsFailedWithError:reportableError forActionType:(ActionTypes) actionType forNamedClass:(NSString *)namedClass;
 
 
 

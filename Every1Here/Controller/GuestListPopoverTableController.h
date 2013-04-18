@@ -9,28 +9,29 @@
 #import <UIKit/UIKit.h>
 #import "GuestCommunicatorDelegate.h"
 #import "GuestManagerDelegate.h"
+#import "ParseDotComManagerDelegate.h"
 
 @class Event;
 @class GuestListViewController;
 @class MeetupDotComManager;
+@class ParseDotComManager;
 @class TwitterDotComManager;
 @class E1HObjectConfiguration;
 @class GuestSelectedCell;
 
 
-@interface GuestListPopoverTableController : UITableViewController <GuestManagerDelegate>
+@interface GuestListPopoverTableController : UITableViewController <GuestManagerDelegate, ParseDotComManagerDelegate>
 
 //@property (weak, nonatomic) id <GuestManagerDelegate> guestDelegate;
 @property (weak) IBOutlet GuestSelectedCell *guestCell;
 @property (strong) MeetupDotComManager *meetupDotComMgr;
+@property (strong) ParseDotComManager *parseDotComMgr;
 @property (strong) TwitterDotComManager *twitterDotComMgr;
 @property (strong) E1HObjectConfiguration *objectConfiguration;
 
 @property(nonatomic,assign) GuestListViewController *delegate;
 @property (nonatomic, readwrite) SocialNetworkType slType;
-@property(nonatomic, strong) Event *event;
-//@property(nonatomic, strong) NSMutableDictionary *guestListFullDict;
-//@property(nonatomic, strong) NSMutableDictionary *guestListAttendeeDict;
+@property(nonatomic, strong) Event *selectedEvent;
 
 @property(nonatomic, strong) NSMutableArray *guestFullListForSlType;
 @property(nonatomic, strong) NSMutableArray *guestAttendeeListForSlType;

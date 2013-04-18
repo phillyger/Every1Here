@@ -15,6 +15,7 @@
 #import "ParseDotComManager.h"
 #import "EventMemberGuestTabBarController.h"
 #import "E1HAppDelegate.h"
+#import "CommonUtilities.h"
 
 #import <objc/runtime.h>
 
@@ -48,7 +49,6 @@
 	// Do any additional setup after loading the view.
 
     
-    
     self.objectConfiguration = [[E1HObjectConfiguration alloc] init];
     EventListTableDataSource *eventDataSource = [[EventListTableDataSource alloc] init];
     self.dataSource = eventDataSource;
@@ -70,7 +70,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
-
+    
+    [CommonUtilities showProgressHUD:self.view];
+    
     [[NSNotificationCenter defaultCenter]
      addObserver: self
      selector: @selector(userDidSelectEventNotification:)
@@ -96,6 +98,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [CommonUtilities hideProgressHUD:self.view];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -140,13 +143,10 @@
 }
 
 - (void) fetchEventContentForOrgId:(NSNumber *)orgId withStatus:(NSString *)status {
-    
-   
 
     self.parseDotComMgr = [objectConfiguration parseDotComManager];
     self.parseDotComMgr.eventDelegate = self;
 
-    
     [self.parseDotComMgr fetchEventsForOrgId:orgId withStatus:status];
 }
 

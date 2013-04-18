@@ -13,6 +13,7 @@
 #import "User.h"
 #import "AvatarStore.h"
 #import "GuestAttendeeListSection.h"
+#import <QuartzCore/QuartzCore.h>
 
 NSString *guestCellReuseIdentifier = @"guestSummaryCell";
 
@@ -85,8 +86,17 @@ NSString *guestCellReuseIdentifier = @"guestSummaryCell";
         
         //        NSData *avatarData = [avatarStore dataForURL: user.avatarURL];
         //        if (avatarData) {
-        [guestCell.avatarView setImageWithURL:user.avatarURL placeholderImage:[UIImage imageNamed:@"profile-image-placeholder.png"]];
+//        [guestCell.avatarView setImageWithURL:user.avatarURL placeholderImage:[UIImage imageNamed:@"profile-image-placeholder.png"]];
         
+        
+        NSURLRequest *request = [NSURLRequest requestWithURL:user.avatarURL];
+        __weak UIImageView *imageView = guestCell.avatarView;
+        [guestCell.avatarView setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"profile-image-placeholder.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            imageView.image = image;
+            CALayer *layer = imageView.layer;
+            layer.masksToBounds = YES;
+            layer.cornerRadius = 10.0f;
+        } failure:NULL];
         
         
         cell = guestCell;

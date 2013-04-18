@@ -35,7 +35,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.eventSegmentedControlViewController.eventListViewController = self.eventListViewController;
+    self.eventSegmentedControlViewController.eventListViewController = (EventListViewController *)self.eventListViewController;
     self.eventSegmentedControlViewController.currentViewController = self.eventListViewController;
     
 }
@@ -64,36 +64,6 @@
     }
 }
 
-#pragma mark - Segmented Control
-//- (UIViewController *)viewControllerForSegmentIndex:(NSInteger)index {
-//    UIViewController *vc;
-//    switch (index) {
-//        case 0:
-//            vc = [[UpcomingEventListViewController alloc] init];
-//            break;
-//        case 1:
-//            vc = [[PastEventListViewController alloc] init];
-//            break;
-//    }
-//    return vc;
-//}
-//
-//- (void)segmentedControlChangedValue:(HMSegmentedControl *)aSegmentedControl {
-//	NSLog(@"Selected index %i (via UIControlEventValueChanged)", aSegmentedControl.selectedSegmentIndex);
-//    UIViewController *vc = [self viewControllerForSegmentIndex:aSegmentedControl.selectedSegmentIndex];
-//    [self.eventListViewController addChildViewController:vc];
-//    [self.eventListViewController transitionFromViewController:self.currentViewController toViewController:vc duration:0.5 options:UIViewAnimationOptionTransitionFlipFromBottom animations:^{
-//        [self.currentViewController.view removeFromSuperview];
-//        vc.view.frame = self.contentView.bounds;
-//        [self.contentView addSubview:vc.view];
-//    } completion:^(BOOL finished) {
-//        [vc didMoveToParentViewController:self];
-//        [self.currentViewController removeFromParentViewController];
-//        self.currentViewController = vc;
-//    }];
-//    self.navigationItem.title = vc.title;
-//    
-//}
 
 
 @end
