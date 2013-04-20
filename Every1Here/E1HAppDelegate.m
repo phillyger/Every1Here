@@ -13,10 +13,15 @@
 
 #define AccountTwitterSelectedAccountIdentifier @"TwitterAccountSelectedAccountIdentifier"
 
+// Parse.com preference setting keys
 #define E1HParseDotComAccountGroupNameIdentifier @"E1HParseDotComAccountGroupNameIdentifier"
 #define E1HParseDotComAccountOrgIdentifier @"E1HParseDotComAccountOrgIdentifier"
 #define E1HParseDotComAccountEventStatusOnLaunchIdentifier @"E1HParseDotComAccountEventStatusOnLaunchIdentifier"
 #define E1HParseDotComAccountUserAccountPasswordIdentifier @"E1HParseDotComAccountUserAccountPasswordIdentifier"
+
+// Meetup.com preference keys
+#define E1HMeetupDotComGroupUrlNameIdentifier @"E1HMeetupDotComGroupUrlNameIdentifier"
+#define E1HMeetupDotComTwitterAccountNameIdentifier @"E1HMeetupDotComTwitterAccountNameIdentifier"
 
 
 @implementation E1HAppDelegate
@@ -24,6 +29,8 @@
 @synthesize parseDotComAccountGroupName;
 @synthesize parseDotComAccountEventStatusOnLaunch;
 @synthesize parseDotComAccountUserAccountPassword;
+@synthesize meetupDotComAccountGroupUrlName;
+@synthesize twitterDotComAccountName;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -42,10 +49,13 @@
 	{
         NSString *pathStr = [[NSBundle mainBundle] bundlePath];
 		NSString *settingsBundlePath = [pathStr stringByAppendingPathComponent:@"Settings.bundle"];
-		NSString *finalPath = [settingsBundlePath stringByAppendingPathComponent:@"Root.plist"];
+		NSString *rootPrefsPath = [settingsBundlePath stringByAppendingPathComponent:@"Root.plist"];
+        NSString *socialNetworksPrefsPath = [settingsBundlePath stringByAppendingPathComponent:@"SocialNetworks.plist"];
         
-		NSDictionary *settingsDict = [NSDictionary dictionaryWithContentsOfFile:finalPath];
-		NSArray *prefSpecifierArray = [settingsDict objectForKey:@"PreferenceSpecifiers"];
+		NSDictionary *rootPrefsSettingsDict = [NSDictionary dictionaryWithContentsOfFile:rootPrefsPath];
+        NSDictionary *socialNetworkPrefsSettingsDict = [NSDictionary dictionaryWithContentsOfFile:socialNetworksPrefsPath];
+		NSArray *rootPrefSpecifierArray = [rootPrefsSettingsDict objectForKey:@"PreferenceSpecifiers"];
+        NSArray *socialNetworksPrefSpecifierArray = [socialNetworkPrefsSettingsDict objectForKey:@"PreferenceSpecifiers"];
         
         
         __block NSString *parseDotComAccountGroupNameDefault;
@@ -53,7 +63,7 @@
         __block NSString *parseDotComAccountEventStatusOnLaunchDefault;
         __block NSString *parseDotComAccountUserAccountPasswordDefault;
         
-        [prefSpecifierArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [rootPrefSpecifierArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 
             
             NSDictionary *prefItem = (NSDictionary *)obj;
@@ -74,12 +84,34 @@
                 parseDotComAccountUserAccountPasswordDefault = defaultValue;
             }
         }];
+        
+        
+        __block NSString *meetupDotComAccountGroupUrlNameDefault;
+        __block NSString *twitterDotComAccountNameDefault;
+
+        
+        [socialNetworksPrefSpecifierArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSDictionary *prefItem = (NSDictionary *)obj;
+            NSString *keyValueStr = [prefItem objectForKey:@"Key"];
+			id defaultValue = [prefItem objectForKey:@"DefaultValue"];
+            if ([keyValueStr isEqualToString:E1HMeetupDotComGroupUrlNameIdentifier])
+			{
+				meetupDotComAccountGroupUrlNameDefault = defaultValue;
+			}
+			else if ([keyValueStr isEqualToString:E1HMeetupDotComTwitterAccountNameIdentifier])
+			{
+				twitterDotComAccountNameDefault = defaultValue;
+			}
+            
+        }];  
 
         // since no default values have been set (i.e. no preferences file created), create it here
 		NSDictionary *appDefaults = @{E1HParseDotComAccountGroupNameIdentifier: parseDotComAccountGroupNameDefault,
                                 E1HParseDotComAccountOrgIdentifier : parseDotComAccountOrgIdDefault,
                                 E1HParseDotComAccountEventStatusOnLaunchIdentifier: parseDotComAccountEventStatusOnLaunchDefault,
-                                E1HParseDotComAccountUserAccountPasswordIdentifier: parseDotComAccountUserAccountPasswordDefault};
+                                E1HParseDotComAccountUserAccountPasswordIdentifier: parseDotComAccountUserAccountPasswordDefault,
+                                E1HMeetupDotComGroupUrlNameIdentifier: meetupDotComAccountGroupUrlNameDefault,
+                                E1HMeetupDotComTwitterAccountNameIdentifier: twitterDotComAccountNameDefault};
         
         
         [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
@@ -99,6 +131,11 @@
 	parseDotComAccountOrgId = orgId;
     parseDotComAccountEventStatusOnLaunch = [[NSUserDefaults standardUserDefaults] stringForKey:E1HParseDotComAccountEventStatusOnLaunchIdentifier];
     parseDotComAccountUserAccountPassword = [[NSUserDefaults standardUserDefaults] stringForKey:E1HParseDotComAccountUserAccountPasswordIdentifier];
+    
+    
+    meetupDotComAccountGroupUrlName = [[NSUserDefaults standardUserDefaults] stringForKey:E1HMeetupDotComGroupUrlNameIdentifier];
+    twitterDotComAccountName = [[NSUserDefaults standardUserDefaults] stringForKey:E1HMeetupDotComTwitterAccountNameIdentifier];
+    
     self.accountStore = [[ACAccountStore alloc] init];
 
     return YES;

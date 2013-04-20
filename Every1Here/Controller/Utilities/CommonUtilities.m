@@ -67,6 +67,10 @@
                 
                 [dataDict setValue:dateParams forKey:thisKey];
 
+            } else if ([thisObj isEqualToString:@"@string"]){
+                NSURL *toStringObj = [anObject valueForKey:thisKey];
+
+                [dataDict setValue:[toStringObj absoluteString] forKeyPath:thisKey];
             }
         } else {
             [dataDict setValue:[anObject valueForKeyPath:thisObj] forKeyPath:thisKey];

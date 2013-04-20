@@ -84,7 +84,7 @@ static NSString *meetupDotComUserJSONString = @"{"
     
     slType = Meetup;
     guestBuilder = [[GuestBuilder alloc] init];
-    userGuest = [[guestBuilder guestsFromJSON:dictJSONMeetupDotComMember socialNetworkType:slType error:NULL] objectAtIndex:0];
+    userGuest = [[guestBuilder usersFromJSON:dictJSONMeetupDotComMember socialNetworkType:slType error:NULL] objectAtIndex:0];
 }
 
 - (void)tearDown {
@@ -156,37 +156,37 @@ static NSString *meetupDotComUserJSONString = @"{"
 
 
 - (void)testThatGuestsNilIsNotAnAcceptableParameter {
-    STAssertThrows([guestBuilder guestsFromJSON:nil socialNetworkType:slType error: NULL], @"Lack of data should have been handled elsewhere");
+    STAssertThrows([guestBuilder usersFromJSON:nil socialNetworkType:slType error: NULL], @"Lack of data should have been handled elsewhere");
 }
 
 - (void)testGuestsNilReturnedWhenStringIsNotJSON {
-    STAssertNil([guestBuilder guestsFromJSON:dictIsNotJSON socialNetworkType:slType error: NULL], @"This parameter should not be parsable");
+    STAssertNil([guestBuilder usersFromJSON:dictIsNotJSON socialNetworkType:slType error: NULL], @"This parameter should not be parsable");
 }
 
 - (void)testErrorSetWhenGuestsStringIsNotJSON {
     NSError *error = nil;
-    [guestBuilder guestsFromJSON: dictIsNotJSON socialNetworkType:slType error: &error];
+    [guestBuilder usersFromJSON: dictIsNotJSON socialNetworkType:slType error: &error];
     STAssertNotNil(error, @"An error occurred, we should be told");
 }
 
 
 - (void)testPassingGuestsNullErrorDoesNotCauseCrash {
-    STAssertNoThrow([guestBuilder guestsFromJSON: dictIsNotJSON socialNetworkType:slType error: NULL], @"Using a NULL error parameter should not be a problem");
+    STAssertNoThrow([guestBuilder usersFromJSON: dictIsNotJSON socialNetworkType:slType error: NULL], @"Using a NULL error parameter should not be a problem");
 }
 
 - (void)testRealJSONWithoutGuestsArrayIsError {
-    STAssertNil([guestBuilder guestsFromJSON:dictNoJSON socialNetworkType:slType error:NULL], @"No guests to parse in this JSON");
+    STAssertNil([guestBuilder usersFromJSON:dictNoJSON socialNetworkType:slType error:NULL], @"No guests to parse in this JSON");
 }
 
 - (void)testRealJSONWithoutGuestsReturnsMissingDataError {
     NSError *error = nil;
-    [guestBuilder guestsFromJSON:dictNoJSON socialNetworkType:slType error:&error];
+    [guestBuilder usersFromJSON:dictNoJSON socialNetworkType:slType error:&error];
     STAssertEquals([error code], MemberBuilderMissingDataError, @"This case should not be an invalid JSON error");
 }
 
 - (void)testJSONWithOneGuestReturnsOneGuestObject {
     NSError *error = nil;
-    NSArray *members = [guestBuilder guestsFromJSON:dictJSONMeetupDotComMember socialNetworkType:slType error:&error];
+    NSArray *members = [guestBuilder usersFromJSON:dictJSONMeetupDotComMember socialNetworkType:slType error:&error];
     STAssertEquals([members count], (NSUInteger)1, @"The builder should have created a guest.");
 }
 
@@ -199,7 +199,7 @@ static NSString *meetupDotComUserJSONString = @"{"
 }
 
 - (void)testGuestCreatedFromEmptyObjectIsStillValidObject {
-    NSArray *guests = [guestBuilder guestsFromJSON: dictWithEmptyArray socialNetworkType:slType error: NULL];
+    NSArray *guests = [guestBuilder usersFromJSON: dictWithEmptyArray socialNetworkType:slType error: NULL];
     STAssertEquals([guests count], (NSUInteger)0, @"guestBuilder must handle partial input");
 }
 

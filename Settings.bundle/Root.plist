@@ -6,9 +6,31 @@
 	<array>
 		<dict>
 			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Social Network Settings</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>Social Networks</string>
+			<key>Key</key>
+			<string>SocialNetworks</string>
+			<key>File</key>
+			<string>SocialNetworks</string>
+		</dict>
+		<dict>
+			<key>Title</key>
+			<string>Parse.com</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 			<key>Title</key>
-			<string>Parse Password Default</string>
+			<string>User Password Default</string>
 			<key>Key</key>
 			<string>E1HParseDotComAccountUserAccountPasswordIdentifier</string>
 			<key>DefaultValue</key>
@@ -43,12 +65,6 @@
 			<string>E1HParseDotComAccountGroupNameIdentifier</string>
 			<key>DefaultValue</key>
 			<string>Panorama Toastmasters</string>
-		</dict>
-		<dict>
-			<key>Title</key>
-			<string>Parse.com</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
 		</dict>
 	</array>
 	<key>StringsTable</key>

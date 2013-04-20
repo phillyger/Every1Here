@@ -66,7 +66,12 @@
 
 
 -(void)insertUser:(User*)user withUserType:(UserTypes)userType;
+-(void)insertUserList:(NSArray *)userList withUserType:(UserTypes)userType forSocialNetworkKey:(SocialNetworkType)slType;
+
 -(void)updateUser:(User*)user withUserType:(UserTypes)userType;
+
+-(void)deleteUser:(User*)user withUserType:(UserTypes)userType;
+-(void)deleteUserList:(NSArray *)userList withUserType:(UserTypes)userType forSocialNetworkKey:(SocialNetworkType)slType;
 
 
 

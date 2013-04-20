@@ -47,7 +47,9 @@
 
 - (void)receivedGuestsJSON:(NSDictionary *)objectNotation socialNetworkType:(SocialNetworkType)slType {
     NSError *error = nil;
-    NSArray *guests = [guestBuilder guestsFromJSON:objectNotation socialNetworkType:slType error:&error];
+//    NSArray *guests = [guestBuilder usersFromJSON:objectNotation socialNetworkType:slType error:&error];
+    NSArray *guests = [guestBuilder usersFromJSON:objectNotation withAttendance:nil withEventId:nil socialNetworkType:slType error:&error];
+    
     if (!guests) {
         [self fetchingGuestsFailedWithError: error];
     }

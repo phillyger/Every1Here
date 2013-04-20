@@ -94,8 +94,10 @@
 
 - (id)initWithFirstName:(NSString *)aFirstName
                lastName:(NSString *)aLastName
+               objectId:(NSString *)anObjectId
+                 userId:(NSString *)aUserId
                 eventId:(NSString *)anEventId{
-    return [self initWithFirstName:aFirstName lastName:aLastName avatarLocation:nil eventId:anEventId];
+    return [self initWithFirstName:aFirstName lastName:aLastName avatarLocation:nil objectId:anObjectId userId:aUserId eventId:anEventId];
 
 }
 
@@ -105,9 +107,11 @@
 
 - (id)initWithDisplayName:(NSString *)aDisplayName
            avatarLocation:(NSString *)location
+                 objectId:(NSString *)anObjectId
+                   userId:(NSString *)aUserId
                   eventId:(NSString *)anEventId
                    slType:(SocialNetworkType)aSlType{
-    return [self initWithDisplayName:aDisplayName primaryEmailAddr:nil secondaryEmailAddr:nil avatarLocation:location eventId:anEventId slType:aSlType];
+    return [self initWithDisplayName:aDisplayName primaryEmailAddr:nil secondaryEmailAddr:nil avatarLocation:location objectId:anObjectId userId:aUserId eventId:anEventId slType:aSlType];
 }
 
 
@@ -115,6 +119,8 @@
          primaryEmailAddr:(NSString *)aPrimaryEmailAddr
        secondaryEmailAddr:(NSString *)aSecondaryEmailAddr
            avatarLocation:(NSString *)location
+                 objectId:(NSString *)anObjectId
+                   userId:(NSString *)aUserId
                   eventId:(NSString *)anEventId
                    slType:(SocialNetworkType)aSlType{
     if ((self = [self initWithFirstName:nil
@@ -122,8 +128,8 @@
                        primaryEmailAddr:aPrimaryEmailAddr
                      secondaryEmailAddr:aSecondaryEmailAddr
                          avatarLocation:location
-                               objectId:nil
-                                 userId:nil
+                               objectId:anObjectId
+                                 userId:aUserId
                                 eventId:anEventId
                                  slType:aSlType])) {
         displayName = [aDisplayName copy];

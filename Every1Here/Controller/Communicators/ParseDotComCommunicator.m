@@ -142,6 +142,7 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     RESTApiOperation *op = [deleteOp createOperationWithId:[user valueForKeyPath:@"attendanceId"] forNamedClass:namedClass];
     [operations addObject:op];
     
+    deleteOp=nil;
     [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
      ];
 }
@@ -175,7 +176,8 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     RESTApiOperation *attendanceOp = [fetchAttendanceOp createOperationWithObj:event forNamedClass:attendancenamedClass withQuery:queryParameters];
     [operations addObject:attendanceOp];
     
-    
+    fetchUserOp=nil;
+    fetchAttendanceOp=nil;
     [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
      ];
     
@@ -193,17 +195,64 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     RESTApiOperation *insertToNamedTableOp = [insertOp1 createOperationWithDict:parameters forNamedClass:namedClass];
     [operations addObject:insertToNamedTableOp];
     
-    NSString *usernamedClass = [@"User" mutableCopy];
-    parameters = [CommonUtilities generateValueDictWithObject:user forNamedClass:usernamedClass];
-    NSLog(@"%@", parameters);
-    id insertOp2= [E1HOperationFactory create:Insert];
-    RESTApiOperation *insertToUserTableOp = [insertOp2 createOperationWithDict:parameters forNamedClass:usernamedClass];
-    [operations addObject:insertToUserTableOp];
+    if ([namedClass isEqualToString:@"Member"]) {
+        NSString *usernamedClass = [@"User" mutableCopy];
+        parameters = [CommonUtilities generateValueDictWithObject:user forNamedClass:usernamedClass];
+        NSLog(@"%@", parameters);
+        id insertOp2= [E1HOperationFactory create:Insert];
+        RESTApiOperation *insertToUserTableOp = [insertOp2 createOperationWithDict:parameters forNamedClass:usernamedClass];
+        [operations addObject:insertToUserTableOp];
+        insertOp2= nil;
+    }
+    
+    insertOp1= nil;
+    
     
     [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
      ];
     
 }
+
+
+- (void)insertUserList:(NSArray *)userList forNamedClass:(NSString *)namedClass forSocialNetworkKey:(SocialNetworkType)slType errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
+
+    
+    NSMutableArray *operations = [[NSMutableArray alloc] init];
+    
+    [userList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        
+        NSMutableDictionary *parameters = [[CommonUtilities generateValueDictWithObject:(User*)obj forNamedClass:namedClass] mutableCopy];
+        if ([namedClass isEqualToString:@"Guest"]) {
+            [parameters setObject:[NSNumber numberWithInt:slType] forKey:@"socialNetwork"];
+        }
+        
+        NSLog(@"%@", parameters);
+        id insertOp1= [E1HOperationFactory create:Insert];
+        RESTApiOperation *insertToNamedTableOp = [insertOp1 createOperationWithDict:parameters forNamedClass:namedClass];
+        [operations addObject:insertToNamedTableOp];
+        
+
+        
+        if ([namedClass isEqualToString:@"Member"]) {
+            NSString *userNamedClass = [@"User" mutableCopy];
+            parameters = [[CommonUtilities generateValueDictWithObject:(User*)obj forNamedClass:userNamedClass] mutableCopy];
+            NSLog(@"%@", parameters);
+            id insertOp2= [E1HOperationFactory create:Insert];
+            RESTApiOperation *insertToUserTableOp = [insertOp2 createOperationWithDict:parameters forNamedClass:userNamedClass];
+            [operations addObject:insertToUserTableOp];
+            insertOp2= nil;
+        }
+        
+        insertOp1= nil;
+        
+    }];
+    
+    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
+     ];
+    
+}
+
+
 
 - (void)updateUser:(User *)user forNamedClass:(NSString *)namedClass errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock{
     
@@ -213,9 +262,43 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     RESTApiOperation *updateToNamedTableOp = [updateOp createOperationWithObj:user forNamedClass:namedClass withKey:@"objectId"];
     [operations addObject:updateToNamedTableOp];
     
+    updateOp=nil;
     [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
      ];
 }
+
+- (void)deleteUser:(User *)user forNamedClass:(NSString *)namedClass errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock{
+    
+    NSMutableArray *operations = [[NSMutableArray alloc] init];
+    
+    id deleteOp= [E1HOperationFactory create:Delete];
+    RESTApiOperation *deleteToNamedTableOp = [deleteOp createOperationWithObj:user forNamedClass:namedClass withKey:@"objectId"];
+    [operations addObject:deleteToNamedTableOp];
+    
+    deleteOp= nil;
+    
+    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
+     ];
+}
+
+- (void)deleteUserList:(NSArray *)userList forNamedClass:(NSString *)namedClass forSocialNetworkKey:(SocialNetworkType)slType errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock{
+    
+    NSMutableArray *operations = [[NSMutableArray alloc] init];
+    
+    
+    [userList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        id deleteOp= [E1HOperationFactory create:Delete];
+        RESTApiOperation *deleteToNamedTableOp = [deleteOp createOperationWithObj:obj forNamedClass:namedClass withKey:@"objectId"];
+        [operations addObject:deleteToNamedTableOp];
+        
+       deleteOp= nil;
+    }];
+
+    
+    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
+     ];
+}
+
 
 - (void)execute:(NSArray *)operations
    errorHandler:(ParseDotComErrorBlock)errorBlock

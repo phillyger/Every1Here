@@ -15,7 +15,15 @@
 
 -(RESTApiOperation *)createOperationWithObj:(id)obj forNamedClass:(NSString *)aNamedClass withKey:(NSString *)aKey {
     
-    return nil;
+    NSDictionary *thisDataDict = [CommonUtilities generateValueDictWithObject:obj forNamedClass:aNamedClass];
+    NSMutableString *thisUriEndPoint = [[CommonUtilities fetchUriEndPointFromPListForNamedClass:aNamedClass] mutableCopy];
+
+    thisUriEndPoint = [[thisUriEndPoint stringByAppendingString:@"/"] copy];
+    thisUriEndPoint = [[thisUriEndPoint stringByAppendingString:[obj valueForKeyPath:aKey]] copy];
+    
+    RESTApiOperation *newRESTApiOperation = [[RESTApiOperation alloc] initWithUriMethod:@"DELETE" uriPath:thisUriEndPoint data:thisDataDict];
+    
+    return newRESTApiOperation;
 }
 
 - (RESTApiOperation *)createOperationWithDict:(NSDictionary *)aDataDict forNamedClass:(NSString *)aNamedClass {

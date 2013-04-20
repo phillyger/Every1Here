@@ -2,17 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>userId</key>
-	<string>$_User.string.userId</string>
-	<key>socialNetworkConnection</key>
-	<string>$self.integer.slType</string>
-	<key>isActive</key>
-	<string>$self.boolean.isActive</string>
+	<key>displayName</key>
+	<string>displayName</string>
 	<key>lastName</key>
-	<string>$self.string.lastName</string>
+	<string>lastName</string>
 	<key>firstName</key>
-	<string>$self.string.firstName</string>
-	<key>objectId</key>
-	<string>$self.string.objectId</string>
+	<string>firstName</string>
+	<key>primaryEmail</key>
+	<string>primaryEmailAddr</string>
+	<key>isActive</key>
+	<string>@boolean</string>
+	<key>userId</key>
+	<string>objectId</string>
+	<key>avatarURL</key>
+	<string>@string</string>
 </dict>
 </plist>

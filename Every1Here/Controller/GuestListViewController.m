@@ -29,6 +29,7 @@
 #import "MBProgressHUD.h"
 #import "CommonUtilities.h"
 #import "Receptionist.h"
+#import "AFHTTPRequestOperation.h"
 
 
 static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
@@ -91,7 +92,7 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
 
 -(void)setGuestAttendeeListWithSlType:(SocialNetworkType) slType;
 -(void)setGuestFullListWithSlType:(SocialNetworkType) slType;
-
+-(void)fetchGuestListTableContent;
 
 -(IBAction) popover:(id)sender slType:(SocialNetworkType)slType;
 
@@ -187,11 +188,25 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     [CommonUtilities showProgressHUD:self.view];
     
     if ([self.dataSource isKindOfClass: [GuestListTableDataSource class]]) {
-        //        [self fetchGuestListTableContent];
+                [self fetchGuestListTableContent];
         //        [(EventListTableDataSource *)self.dataSource setAvatarStore: [objectConfiguration avatarStore]];
     }
     
 }
+
+/*---------------------------------------------------------------------------
+ * Target-Action method for 'Done' button.
+ * Dismisses the current view controller.
+ *--------------------------------------------------------------------------*/
+- (void)fetchGuestListTableContent
+{
+    
+    self.parseDotComMgr = [objectConfiguration parseDotComManager];
+    self.parseDotComMgr.parseDotComDelegate = self;
+    selectedEvent = (Event *)[(GuestListTableDataSource *)self.dataSource event];
+    [self.parseDotComMgr fetchUsersForEvent:selectedEvent withUserType:Guest];
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -493,26 +508,53 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
 }
 
 
-- (void)didInsertNewGuest:(User *) aSelectedUser
-                 withEvent:(Event *)aSelectedEvent{
-    NSLog(@"Success!! We inserted a new guest into Parse");
-////    [selectedEvent addGuest:aSelectedUser];
-//    [MBProgressHUD hideHUDForView:self.view animated:YES];
-////    [self.tableView reloadData];
+- (void)didInsertUserForUserType:(UserTypes)userType withOutput:(NSArray *)objectNotationList {
+    NSLog(@"Success!! We inserted new Guests into Parse ");
     
-
-//    [parseDotComMgr updateExistingMember:aSelectedUser];
+    /* TODO: Need to find a better pattern for extracting values from enqueued operations.
+     * Sequence here needs to ensure that
+     *
+     * a) the Member op is always first returned
+     * b) the User op is second
+     */
+    
+    [objectNotationList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        AFHTTPRequestOperation *ro = obj;
+        NSData *jsonData = [ro responseData];
+        NSDictionary *jsonObject=[NSJSONSerialization
+                                  JSONObjectWithData:jsonData
+                                  options:NSJSONReadingMutableLeaves
+                                  error:nil];
+        
+        NSLog(@"jspnObject: %@", jsonObject);
+    }];
+    
+    [self.tableView reloadData];
     
 }
 
--(void)didUpdateExistingUser:(User *)selectedUser {
+
+/*---------------------------------------------------------------------------
+ * Delegation callback for fetching members
+ *--------------------------------------------------------------------------*/
+- (void)didFetchUsers:(NSArray *)userList forUserType:(UserTypes)userType  {
+    NSLog(@"Success!! We updated an existing %d record in Parse", userType);
     
     
-    NSLog(@"Success!! We updated an existing Member record in Parse");
-//    [self.tableView reloadData];
-//    selectedUser = nil;
-//    selectedGuest = nil;
+    if ([userList count] > 0) {
+        for (User *thisUser in userList) {
+            
+            [[self guestAttendeeListDict] setObject:thisUser forKey:[SocialNetworkUtilities formatIntegerToString:[thisUser slType]]];
+            [selectedEvent addGuest:thisUser];
+        }
+        
+        
+        [self.tableView reloadData];
+    }
+    
+    
 }
+
 
 
 @end

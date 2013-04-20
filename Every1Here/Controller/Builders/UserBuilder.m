@@ -16,19 +16,23 @@
 /*
  *  Data coming from PARSE.com via RESTful API
  */
-+ (User *)memberFromDictionary:(NSDictionary *)memberValues {
++ (User *)userFromDictionary:(NSDictionary *)userValues forUserType:(UserTypes)userType {
 
-    NSString *firstName = [memberValues valueForKey:@"firstName"];
-    NSString *lastName = [memberValues valueForKey: @"lastName"];
-    NSString *objectId = [memberValues valueForKey:@"objectId"];
-    NSString *userId = [memberValues valueForKey:@"userId"];
+    User *user = nil;
+    
+    NSString *firstName = [userValues valueForKey:@"firstName"];
+    NSString *lastName = [userValues valueForKey: @"lastName"];
+    NSString *objectId = [userValues valueForKey:@"objectId"];
+    NSString *userId = [userValues valueForKey:@"userId"];
+    NSString *displayName = [userValues valueForKey:@"displayName"];
     
 //    if ([memberValues valueForKey:@"userId"]!=nil) {
 //        userId = [memberValues valueForKey:@"userId"];
 //    }
-    NSString *primaryEmail = [memberValues valueForKey:@"primaryEmail"];
-    NSString *eventId = [memberValues valueForKey:@"eventId"];
-    NSString *avatarLocation = [memberValues valueForKey:@"avatarLocation"];
+    NSString *primaryEmail = [userValues valueForKey:@"primaryEmail"];
+    NSString *eventId = [userValues valueForKey:@"eventId"];
+    NSString *avatarLocation = [userValues valueForKey:@"avatarURL"];
+
     
 //    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 //    [dateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'"];
@@ -38,15 +42,36 @@
 
 //    NSString *avatarURL = [NSString stringWithFormat: @"http://www.gravatar.com/avatar/%@", [ownerValues objectForKey: @"email_hash"]];
 
-    User *user = [[User alloc] initWithFirstName:firstName
-                                        lastName:lastName
-                                primaryEmailAddr:primaryEmail
-                              secondaryEmailAddr:nil
-                                  avatarLocation:avatarLocation
-                                        objectId:objectId
-                                          userId:userId
+    if (userType == Member) {
+
+       user = [[User alloc] initWithFirstName:firstName
+                                            lastName:lastName
+                                    primaryEmailAddr:primaryEmail
+                                  secondaryEmailAddr:nil
+                                      avatarLocation:avatarLocation
+                                            objectId:objectId
+                                              userId:userId
+                                            eventId:eventId
+                                              slType:NONE];
+        
+    } else {
+        
+        NSNumber *slTypeNumObj = [userValues valueForKey:@"socialNetwork"];
+        NSUInteger slTypeUInteger = [slTypeNumObj unsignedIntegerValue];
+        SocialNetworkType slType = [SocialNetworkUtilities formatIntegerToType:slTypeUInteger];
+        
+        // set the value of userId to that on objectId for the purpose of tracking transient attendance such as Guests
+        // There shouldn't be a need to add a User object for transient objects.
+        userId = [objectId copy];
+        
+        user = [[User alloc] initWithDisplayName:displayName
+                                 avatarLocation:avatarLocation
+                                       objectId:objectId
+                                         userId:userId
                                         eventId:eventId
-                                          slType:NONE];
+                                         slType:slType];
+    }
+    
     return user;
 }
 
@@ -61,17 +86,21 @@
 //    return user;
 //}
 
-+ (User *)guestFromDictionary:(NSDictionary *)guestValues socialNetworkType:(SocialNetworkType)aSlType {
++ (User *)userFromDictionary:(NSDictionary *)guestValues socialNetworkType:(SocialNetworkType)aSlType forUserType:(UserTypes)userType {
 
     User *user = nil;
     
     switch (aSlType) {
+        case NONE:
+            user = (User*)[self userFromDictionary:guestValues forUserType:Guest];
+            break;
         case Meetup:
-            user = [self guestFromMeetupDictionary:guestValues socialNetworkType:(SocialNetworkType)aSlType];
+            user = [self guestFromMeetupDotCom:guestValues];
             break;
         case Twitter:
-            user = [self guestFromTwitterDictionary:guestValues socialNetworkType:(SocialNetworkType)aSlType];
+            user = [self guestFromTwitterDotCom:guestValues];
             break;
+
         default:
             break;
     }
@@ -80,20 +109,22 @@
 
 
 
-+ (User *)guestFromTwitterDictionary:(NSDictionary *)guestValues socialNetworkType:(SocialNetworkType)aSlType {
+
+
++ (User *)guestFromTwitterDotCom:(NSDictionary *)guestValues {
     NSString *displayName = [guestValues objectForKey: @"name"];
     NSString *avatarURL = guestValues[@"profile_background_image_url"];
     NSString *eventId = guestValues[@"eventId"];
-    User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL eventId:eventId slType:aSlType];
+    User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL objectId:nil userId:nil eventId:eventId slType:Twitter];
     return user;
 }
 
 
-+ (User *)guestFromMeetupDictionary:(NSDictionary *)guestValues socialNetworkType:(SocialNetworkType)aSlType {
++ (User *)guestFromMeetupDotCom:(NSDictionary *)guestValues {
     NSString *displayName = [guestValues objectForKey: @"name"];
     NSString *avatarURL = guestValues[@"photo"][@"thumb_link"];
     NSString *eventId = guestValues[@"eventId"];
-    User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL eventId:eventId slType:aSlType];
+    User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL objectId:nil userId:nil eventId:eventId slType:Meetup];
     return user;
 }
 

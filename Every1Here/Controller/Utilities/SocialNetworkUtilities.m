@@ -91,7 +91,7 @@
  *  Converts an integer value into it corresponding SocialNetworkType
  */
 
-+ (SocialNetworkType)formatIntegerToType:(NSUInteger *)slTypeInt {
++ (SocialNetworkType)formatIntegerToType:(NSUInteger)slTypeInt {
     
     
     if ((int)slTypeInt == Meetup) {

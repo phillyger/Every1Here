@@ -73,8 +73,25 @@ typedef void (^ParseDotComErrorBlock)(NSError *);
             errorHandler:(ParseDotComErrorBlock)errorBlock
      successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
 
+- (void)insertUserList:(NSArray*)userList
+     forNamedClass:(NSString *)namedClass
+forSocialNetworkKey:(SocialNetworkType)slType
+      errorHandler:(ParseDotComErrorBlock)errorBlock
+successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+
 - (void)updateUser:(User*)user
       forNamedClass:(NSString *)namedClass
+      errorHandler:(ParseDotComErrorBlock)errorBlock
+successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+
+- (void)deleteUser:(User*)user
+     forNamedClass:(NSString *)namedClass
+      errorHandler:(ParseDotComErrorBlock)errorBlock
+successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+
+- (void)deleteUserList:(NSArray*)userList
+     forNamedClass:(NSString *)namedClass
+forSocialNetworkKey:(SocialNetworkType)slType
       errorHandler:(ParseDotComErrorBlock)errorBlock
 successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
 

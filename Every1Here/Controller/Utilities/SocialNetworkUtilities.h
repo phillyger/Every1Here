@@ -22,6 +22,6 @@ typedef NS_ENUM(NSUInteger, SocialNetworkType) {
 + (NSString*)formatTypeToString:(SocialNetworkType)slType;
 + (SocialNetworkType)formatStringToType:(NSString*)slTypeString;
 + (NSString *)formatIntegerToString:(NSUInteger)slTypeInt;
-+ (SocialNetworkType)formatIntegerToType:(NSUInteger *)slTypeInt;
++ (SocialNetworkType)formatIntegerToType:(NSUInteger)slTypeInt;
 
 @end

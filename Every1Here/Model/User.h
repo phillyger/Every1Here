@@ -106,10 +106,14 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
 - (id)initWithFirstName:(NSString *)aFirstName
                lastName:(NSString *)aLastName
          avatarLocation:(NSString *)anAvatarLocation
+               objectId:(NSString *)anObjectId
+                 userId:(NSString *)aUserId
                 eventId:(NSString *)anEventId;
 
 - (id)initWithDisplayName:(NSString *)aDisplayName
            avatarLocation:(NSString *)location
+                 objectId:(NSString *)anObjectId
+                   userId:(NSString *)aUserId
                   eventId:(NSString *)anEventId
                    slType:(SocialNetworkType)aSlType;
 
@@ -117,7 +121,11 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
          primaryEmailAddr:(NSString *)primaryEmailAddr
        secondaryEmailAddr:(NSString *)secondaryEmailAddr
            avatarLocation:(NSString *)location
+                 objectId:(NSString *)anObjectId
+                   userId:(NSString *)aUserId
                   eventId:(NSString *)anEventId
                    slType:(SocialNetworkType)aSlType;
+
+
 
 @end

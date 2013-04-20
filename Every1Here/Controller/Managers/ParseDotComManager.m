@@ -173,6 +173,33 @@
     
 }
 
+- (void)insertUserList:(NSArray *)userList withUserType:(UserTypes)userType forSocialNetworkKey:(SocialNetworkType)slType {
+    ActionTypes actionType = Insert;
+    
+    NSString *namedClass = [CommonUtilities convertUserTypeToNamedClass:userType];
+    
+    [communicator insertUserList:(NSArray*)userList
+                   forNamedClass:namedClass
+             forSocialNetworkKey:slType
+                    errorHandler:^(NSError * error){
+                        
+                        [self executingOpsFailedWithError:error
+                                            forActionType:actionType
+                                            forNamedClass:namedClass];
+                    }
+             successBatchHandler:^(NSArray *operations) {
+                 [self receivedUserOps:operations
+                           withEventId:nil
+                         forActionType:actionType
+                           forUserType:userType
+                         forNamedClass:namedClass
+                  ];
+             }
+     ];
+    
+}
+
+
 - (void)updateUser:(User *)user withUserType:(UserTypes)userType {
     ActionTypes actionType = Update;
     
@@ -192,6 +219,58 @@
                      forActionType:actionType
                        forUserType:userType
                       forNamedClass:namedClass
+              ];
+         }
+     ];
+    
+}
+
+
+- (void)deleteUser:(User *)user withUserType:(UserTypes)userType {
+    ActionTypes actionType = Update;
+    
+    NSString *namedClass = [CommonUtilities convertUserTypeToNamedClass:userType];
+    
+    [communicator deleteUser:(User*)user
+               forNamedClass:namedClass
+                errorHandler:^(NSError * error){
+                    
+                    [self executingOpsFailedWithError:error
+                                        forActionType:actionType
+                                        forNamedClass:namedClass];
+                }
+         successBatchHandler:^(NSArray *operations) {
+             [self receivedUserOps:operations
+                       withEventId:nil
+                     forActionType:actionType
+                       forUserType:userType
+                     forNamedClass:namedClass
+              ];
+         }
+     ];
+    
+}
+
+- (void)deleteUserList:(NSArray *)userList withUserType:(UserTypes)userType forSocialNetworkKey:(SocialNetworkType)slType {
+    ActionTypes actionType = Delete;
+    
+    NSString *namedClass = [CommonUtilities convertUserTypeToNamedClass:userType];
+    
+    [communicator deleteUserList:(NSArray*)userList
+               forNamedClass:namedClass
+             forSocialNetworkKey:slType
+                errorHandler:^(NSError * error){
+                    
+                    [self executingOpsFailedWithError:error
+                                        forActionType:actionType
+                                        forNamedClass:namedClass];
+                }
+         successBatchHandler:^(NSArray *operations) {
+             [self receivedUserOps:operations
+                       withEventId:nil
+                     forActionType:actionType
+                       forUserType:userType
+                     forNamedClass:namedClass
               ];
          }
      ];
@@ -260,8 +339,11 @@
                     {
     NSError *error = nil;
     NSArray *userList;
+    SocialNetworkType slType = NONE;
                         
-    __block NSDictionary *memberDict;
+                        
+                        
+    __block NSDictionary *userDict;
     __block NSDictionary *attendanceDict;
 
     [operations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -279,24 +361,26 @@
                 attendanceDict = jsonObject;
             } else {
                 // contains member key
-                memberDict = jsonObject;
+                userDict = jsonObject;
             }
         } 
         //NSLog(@"jsonObject is %@",jsonObject);
     }];
     
     
+    id userBuilder = ([namedClass isEqualToString:@"Member"] ? memberBuilder : guestBuilder);
     
-    if (memberDict && attendanceDict) {
-        userList = [memberBuilder membersFromJSON:memberDict withAttendance:attendanceDict withEventId:eventId error:&error];
-    } else if (memberDict && !attendanceDict){
-        userList = [memberBuilder membersFromJSON:memberDict withAttendance:nil withEventId:eventId error:&error];
-    } else if (!memberDict && !attendanceDict){
-        userList = [memberBuilder membersFromJSON:nil withAttendance:nil withEventId:eventId error:&error];
+    if (userDict && attendanceDict) {
+        
+        userList = [userBuilder usersFromJSON:userDict withAttendance:attendanceDict withEventId:eventId socialNetworkType:slType error:&error];
+    } else if (userDict && !attendanceDict){
+        userList = [userBuilder usersFromJSON:userDict withAttendance:nil withEventId:eventId socialNetworkType:slType error:&error];
+    } else if (!userDict && !attendanceDict){
+//        userList = [userBuilder usersFromJSON:nil withAttendance:nil withEventId:eventId socialNetworkType:slType error:&error];
     }
 
                         
-    if (!userList ) {
+    if (!userList && userType != Guest) {
         [self tellDelegateAboutExecutedOpsError:error forActionType:actionType forNamedClass:namedClass];
     }
     else {

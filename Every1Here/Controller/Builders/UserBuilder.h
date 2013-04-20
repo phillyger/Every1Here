@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "GuestCommunicatorDelegate.h"
+#import "User.h"
 
-@class User;
 
 /**
  * Construct User objects from an external representation.
@@ -24,12 +24,12 @@
 * Given a dictionary that describes a person on Stack Overflow, create
 * a Person object with the supplied properties.
 */
-+ (User *) memberFromDictionary:(NSDictionary *) memberValues;
++ (User *) userFromDictionary:(NSDictionary *) userValues forUserType:(UserTypes)userType;
 
 /**
  * Given a dictionary that describes a person on Stack Overflow, create
  * a Person object with the supplied properties.
  */
-+ (User *) guestFromDictionary:(NSDictionary *)guestValues socialNetworkType:(SocialNetworkType)slType;
++ (User *) userFromDictionary:(NSDictionary *)guestValues socialNetworkType:(SocialNetworkType)slType forUserType:(UserTypes)userType;
 
 @end

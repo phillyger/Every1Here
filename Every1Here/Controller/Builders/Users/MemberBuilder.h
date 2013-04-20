@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SocialNetworkUtilities.h"
+
 
 @interface MemberBuilder : NSObject {
 
@@ -19,7 +21,11 @@
  * @return An array of user objects with a role of member, or nil (with error set) if objectNotation cannot be parsed.
  * @see Question
  */
-- (NSArray *)membersFromJSON: (NSDictionary *)memberDict withAttendance:(NSDictionary *)attendanceDict withEventId:(NSString *)eventId error: (NSError **)error;
+- (NSArray *)usersFromJSON: (NSDictionary *)objectNotation
+            withAttendance:(NSDictionary *)attendanceDict
+               withEventId:(NSString *)eventId
+         socialNetworkType:(SocialNetworkType)slType
+                     error: (NSError **)error;
 
 
 

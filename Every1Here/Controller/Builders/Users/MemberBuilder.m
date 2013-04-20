@@ -13,7 +13,11 @@
 
 @implementation MemberBuilder
 
-- (NSArray *)membersFromJSON:(NSDictionary *)memberDict withAttendance:(NSDictionary *)attendanceDict withEventId:(NSString *)eventId error:(NSError *__autoreleasing *)error
+- (NSArray *)usersFromJSON:(NSDictionary *)memberDict
+            withAttendance:(NSDictionary *)attendanceDict
+               withEventId:(NSString *)eventId
+         socialNetworkType:(SocialNetworkType)slType
+                     error:(NSError *__autoreleasing *)error
 {
     NSParameterAssert(memberDict != nil);
 //    NSData *unicodeNotation = [objectNotation dataUsingEncoding: NSUTF8StringEncoding];
@@ -32,6 +36,8 @@
         }
         return nil;
     }
+    
+    
     NSArray *members = [parsedObject objectForKey: @"results"];
     if (members == nil) {
         if (error != NULL) {
@@ -44,7 +50,7 @@
        attendance = [attendanceDict objectForKey: @"results"];
        
     // Mutable dictionary to allow us to add the eventId
-    NSMutableDictionary *memberWIthEventId = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *memberWithEventId = [[NSMutableDictionary alloc] init];
     
     
     NSMutableArray *results = [NSMutableArray arrayWithCapacity: [members count]];
@@ -52,11 +58,11 @@
         User *user = [[User alloc] init];
         
         // Append the eventId to dictionary values
-        memberWIthEventId = [member mutableCopy];
-        [memberWIthEventId setObject:eventId forKey:@"eventId"];
+        memberWithEventId = [member mutableCopy];
+        [memberWithEventId setObject:eventId forKey:@"eventId"];
        
         
-        user = [UserBuilder memberFromDictionary: memberWIthEventId];
+        user = [UserBuilder userFromDictionary:memberWithEventId forUserType:Member];
         
         [user addRole:@"MemberRole"];
         [user addRole:@"EventRole"];
@@ -85,7 +91,7 @@
                         
         }
         [results addObject: user];
-        memberWIthEventId = nil;
+        memberWithEventId = nil;
     }
     return [results copy];
     

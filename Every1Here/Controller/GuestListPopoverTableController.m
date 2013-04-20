@@ -19,6 +19,9 @@
 #import "MBProgressHUD.h"
 #import "SocialNetworkUtilities.h"
 #import "ParseDotComManager.h"
+#import "E1HAppDelegate.h"
+#import "CommonUtilities.h"
+#import "NSIndexSet+Operations.h"
 
 
 static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
@@ -29,13 +32,19 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     MBProgressHUD *hud;
     NSString *slTypeString;
 //    NSMutableArray *guestFullListForSlType;
+    E1HAppDelegate *appDelegate;
+    NSMutableArray *addGuests;
+    NSMutableArray *removeGuests;
     
 }
 
-@property (nonatomic, strong) NSMutableIndexSet *selectedIndexes;
+@property (nonatomic, strong) NSMutableIndexSet *onLoadIndices;
+@property (nonatomic, strong) NSMutableIndexSet *selectedIndices;
+@property (nonatomic, strong) NSIndexSet *addedIndices;
+@property (nonatomic, strong) NSIndexSet *removedIndices;
 @property (nonatomic, assign, getter=isSelected) BOOL selected;
 
-- (void)setSelectedIndexesFromArray:(NSArray *)attendeeList WithArray:(NSArray *)fullGuestList;
+- (void)setselectedIndicesFromArray:(NSArray *)attendeeList WithArray:(NSArray *)fullGuestList;
 
 @end
 
@@ -66,30 +75,83 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     self.parseDotComMgr = [objectConfiguration parseDotComManager];
     self.parseDotComMgr.parseDotComDelegate = self;
     
-//    guestFullListForSlType = [[NSMutableArray alloc] init];
-
-//    [self.event clearGuestList];
+    appDelegate = (E1HAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
     
     slTypeString = (NSString *)[SocialNetworkUtilities formatTypeToString:slType];
-    [self fetchGuestListTableContent];
+    
+    // An set of indexes
+    self.selectedIndices = [[NSMutableIndexSet alloc] init];
+    self.onLoadIndices = [[NSMutableIndexSet alloc] init];
+    
+//    [self fetchGuestListTableContent];
 
+    self.addedIndices = [[NSIndexSet alloc] init];
+    self.removedIndices = [[NSIndexSet alloc] init];
+    
+    addGuests = [[NSMutableArray alloc] init];
+    removeGuests = [[NSMutableArray alloc] init];
+    
+    
+
+    [self fetchGuestListTableContent];
     
    // [(EventListTableDataSource *)self.dataSource setAvatarStore: [objectConfiguration avatarStore]];
 
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    
+    self.addedIndices = [[self onLoadIndices] relativeComplementIn:[self selectedIndices]];
+    
+    self.removedIndices = [[self selectedIndices] relativeComplementIn:[self onLoadIndices]];
+    
+    [self.addedIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+        NSLog(@"Added Index is %d", idx);
+    }];
+    
+    [self.removedIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+        NSLog(@"Removed Index is %d", idx);
+    }];
+    
+}
+
 
 - (void)viewDidDisappear:(BOOL)animated {
-     NSLog(@"indexes: %@", [self selectedIndexes]);
+     NSLog(@"indexes: %@", [self selectedIndices]);
     NSMutableArray *newGuestAttendeeList = [[NSMutableArray alloc] init];
     NSLog(@"Popover disappeared");
-    [[self guestFullListForSlType] enumerateObjectsAtIndexes:[self selectedIndexes] options:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [[self guestFullListForSlType] enumerateObjectsAtIndexes:[self selectedIndices] options:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         User *user = (User *)obj;
         
         NSLog(@"Selected user: %@ at index %d", [user displayName], idx );
         NSLog(@"Selected user avatar: %@ at index %d", [user avatarURL], idx );
         [newGuestAttendeeList addObject:user];
     }];
+    
+    
+    [[self guestFullListForSlType] enumerateObjectsAtIndexes:[self addedIndices] options:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        User *user = (User *)obj;
+        
+        NSLog(@"Selected user: %@ at index %d", [user displayName], idx );
+        NSLog(@"Selected user avatar: %@ at index %d", [user avatarURL], idx );
+        [addGuests addObject:user];
+    }];
+    
+    [[self guestFullListForSlType] enumerateObjectsAtIndexes:[self removedIndices] options:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        User *user = (User *)obj;
+        
+        NSLog(@"Selected user: %@ at index %d", [user displayName], idx );
+        NSLog(@"Selected user avatar: %@ at index %d", [user avatarURL], idx );
+        [removeGuests addObject:user];
+    }];
+    
+    if ([removeGuests count] > 0)
+        [[[self delegate] parseDotComMgr] deleteUserList:removeGuests withUserType:Guest forSocialNetworkKey:slType];
+    
+    if ([addGuests count] > 0)
+        [[[self delegate] parseDotComMgr] insertUserList:addGuests withUserType:Guest forSocialNetworkKey:slType];
+    
     
     [[self delegate] updateTableContentsWithArray:newGuestAttendeeList forKey:slTypeString];
     
@@ -101,7 +163,7 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (void)setSelectedIndexesFromArray:(NSArray *)childList WithArray:(NSArray *)parentList {
+- (void)setselectedIndicesFromArray:(NSArray *)childList WithArray:(NSArray *)parentList {
 
     
     BOOL (^test)(id obj, NSUInteger idx, BOOL *stop);
@@ -114,10 +176,13 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     };
     
     NSIndexSet *indexes = [parentList indexesOfObjectsPassingTest:test];
+     
     
     NSLog(@"indexes: %@", indexes);
     
-    [self setSelectedIndexes:[indexes mutableCopy]];
+    [self setSelectedIndices:[indexes mutableCopy]];
+    [self setOnLoadIndices:[indexes mutableCopy]];
+    
 }
 
 #pragma mark - Table view data source
@@ -147,7 +212,7 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
         } failure:NULL];
         
         
-        if ([self.selectedIndexes containsIndex:indexPath.row]) {
+        if ([self.selectedIndices containsIndex:indexPath.row]) {
             [guestCell setAccessoryType:UITableViewCellAccessoryCheckmark];
         } else {
             [guestCell setAccessoryType:UITableViewCellAccessoryNone];
@@ -175,7 +240,7 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     
     self.selected = NO;
     
-    [self.selectedIndexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+    [self.selectedIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
         NSLog(@"SelectIndex is %d vs current index is %d", idx, [indexPath row]);
         if (idx == [indexPath row]) {
             self.selected = YES;
@@ -184,17 +249,11 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     }];
     
     if (self.isSelected) {
-        [self.selectedIndexes removeIndex:[indexPath row]];
-        if([self.delegate respondsToSelector:@selector(didDeselectPopoverRow:forSocialNetworkType:)])
-        {
-//            [self.delegate didDeselectPopoverRow:[indexPath row] forSocialNetworkType:slType];
-        }
+        [self.selectedIndices removeIndex:[indexPath row]];
+        
     } else {
-        [self.selectedIndexes addIndex:[indexPath row]];
-        if([self.delegate respondsToSelector:@selector(didSelectPopoverRow:forSocialNetworkType:)])
-        {
-//            [self.delegate didSelectPopoverRow:[indexPath row] forSocialNetworkType:slType];
-        }
+        [self.selectedIndices addIndex:[indexPath row]];
+        
     }
     
     [self.tableView reloadData];
@@ -238,8 +297,7 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
 - (void)fetchGuestListTableContent
 {
     
-    // An set of indexes
-    self.selectedIndexes = [[NSMutableIndexSet alloc] init];
+
 //    guestFullListForSlType = (NSMutableArray *)[self.guestListFullDict objectForKey:slTypeString];
     
 
@@ -247,7 +305,7 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
 //        [event setGuestList:guestFullListForSlType];
 //        NSArray *attendeeListForSlType = (NSArray *)[self.guestListAttendeeDict objectForKey:slTypeString];
         
-        [self setSelectedIndexesFromArray:[self guestAttendeeListForSlType] WithArray:[self guestFullListForSlType]];
+        [self setselectedIndicesFromArray:[self guestAttendeeListForSlType] WithArray:[self guestFullListForSlType]];
     
         
         [self setPopoverTitleWithString:slTypeString];
@@ -262,53 +320,60 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
 
 -(void)fetchGuestListFromWS {
     
-    hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
-    hud.dimBackground = YES;
-    // Regiser for HUD callbacks so we can remove it from the window at the right time
-    hud.labelText = @"Loading..";
-    [hud show:TRUE];
-    
-    
+
+    [CommonUtilities showProgressHUD:self.view];
     [self setPopoverTitleWithString:slTypeString];
     
-    switch (self.slType)
-    {
-        case Meetup:
-            self.meetupDotComMgr = [self.objectConfiguration meetupDotComManager];
-            self.meetupDotComMgr.guestDelegate = self;
-            //        Event *selectedEvent = (Event *)[(GuestListTableDataSource *)self.dataSource event];
-            [self.meetupDotComMgr fetchGuestsForGroupName:@"Panorama-Toastmasters"];
-            break;
-        case Facebook:
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        // insert a new user.
+        
+        
+        switch (self.slType)
+        {
+            case Meetup:
+                self.meetupDotComMgr = [self.objectConfiguration meetupDotComManager];
+                self.meetupDotComMgr.guestDelegate = self;
+                //        Event *selectedEvent = (Event *)[(GuestListTableDataSource *)self.dataSource event];
+                [self.meetupDotComMgr fetchGuestsForGroupName:[appDelegate meetupDotComAccountGroupUrlName]];
+                break;
+            case Facebook:
+                
+                NSLog(@"Welcome to Facebook!");
+                
+                break;
+                
+            case LinkedIn:
+                
+                NSLog(@"Welcome to LinkedIN!");
+                
+                break;
+                
+            case Twitter:
+                self.twitterDotComMgr = [self.objectConfiguration twitterDotComManager];
+                self.twitterDotComMgr.guestDelegate = self;
+                [self.twitterDotComMgr fetchGuestsForGroupName:[appDelegate twitterDotComAccountName]];
+                
+                NSLog(@"Welcome to Twitter!");
+                
+                break;
+                
+            default:
+                
+                NSLog(@"Welcome to Meetup!");
+                
+                break;
+                
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [CommonUtilities hideProgressHUD:self.view];
             
-            NSLog(@"Welcome to Facebook!");
-            
-            break;
-            
-        case LinkedIn:
-            
-            NSLog(@"Welcome to LinkedIN!");
-            
-            break;
-            
-        case Twitter:
-            self.twitterDotComMgr = [self.objectConfiguration twitterDotComManager];
-            self.twitterDotComMgr.guestDelegate = self;
-            [self.twitterDotComMgr fetchGuestsForGroupName:@"panoramatoast"];
-            
-            NSLog(@"Welcome to Twitter!");
-            
-            break;
-            
-        default:
-            
-            NSLog(@"Welcome to Meetup!");
-            
-            break;
-            
-    }
+        });
+    });
+
+
     
+       
 }
 
 

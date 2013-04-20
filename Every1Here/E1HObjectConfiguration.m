@@ -25,6 +25,7 @@
     parseDotComMgr.communicator = [[ParseDotComCommunicator alloc] init];
     parseDotComMgr.communicator.delegate = parseDotComMgr;
     parseDotComMgr.memberBuilder = [[MemberBuilder alloc] init];
+    parseDotComMgr.guestBuilder = [[GuestBuilder alloc] init];
     parseDotComMgr.eventBuilder = [[EventBuilder alloc] init];
     return parseDotComMgr;
 }

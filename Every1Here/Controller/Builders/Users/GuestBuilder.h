@@ -20,7 +20,12 @@
  * @return An array of user objects with a role of guest, or nil (with error set) if objectNotation cannot be parsed.
  * @see Question
  */
-- (NSArray *)guestsFromJSON: (NSDictionary *)objectNotation socialNetworkType:(SocialNetworkType)slType error: (NSError **)error;
+//- (NSArray *)usersFromJSON: (NSDictionary *)objectNotation  error: (NSError **)error;
+- (NSArray *)usersFromJSON: (NSDictionary *)objectNotation
+            withAttendance:(NSDictionary *)attendanceDict
+               withEventId:(NSString *)eventId
+         socialNetworkType:(SocialNetworkType)slType
+                     error: (NSError **)error;
 
 @end
 

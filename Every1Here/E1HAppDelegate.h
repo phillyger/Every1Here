@@ -19,6 +19,9 @@
 @property (nonatomic, retain) NSString	*parseDotComAccountEventStatusOnLaunch;
 @property (nonatomic, retain) NSString	*parseDotComAccountUserAccountPassword;
 
+@property (nonatomic, retain) NSString	*meetupDotComAccountGroupUrlName;
+@property (nonatomic, retain) NSString	*twitterDotComAccountName;
+
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) ACAccountStore *accountStore;
