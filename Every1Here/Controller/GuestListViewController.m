@@ -529,8 +529,6 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
         NSLog(@"jspnObject: %@", jsonObject);
     }];
     
-    [self.tableView reloadData];
-    
 }
 
 
@@ -541,15 +539,37 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     NSLog(@"Success!! We updated an existing %d record in Parse", userType);
     
     
+    
     if ([userList count] > 0) {
         for (User *thisUser in userList) {
+//            NSString *thisKey = [SocialNetworkUtilities formatIntegerToString:[thisUser slType]];
             
-            [[self guestAttendeeListDict] setObject:thisUser forKey:[SocialNetworkUtilities formatIntegerToString:[thisUser slType]]];
             [selectedEvent addGuest:thisUser];
         }
+    
+    NSArray *slTypeArray = [userList valueForKey:@"slType"];
+       
         
+    for(NSUInteger slTypeIdx = NONE; slTypeIdx < Facebook; ++slTypeIdx) {
+            //do something with i...
+        NSIndexSet *indexes = [slTypeArray indexesOfObjectsPassingTest:
+                               ^BOOL (id slType, NSUInteger i, BOOL *stop) {
+                                   NSUInteger slTypeUInt = [slType unsignedIntegerValue];
+                                   return slTypeUInt == slTypeIdx ? true : false;
+                               }];
+        NSArray *results = [userList objectsAtIndexes:indexes];
+        if ([results count] >0 )
+            [self updateTableContentsWithArray:results forKey:[SocialNetworkUtilities formatIntegerToString:slTypeIdx]];
         
-        [self.tableView reloadData];
+        results = nil;
+    }
+
+//        [[self guestAttendeeListDict] setObject:userList forKey:@"Meetup"];
+//        [self.tableView reloadData];
+         
+//        [self setGuestAttendeeListWithSlType:Meetup];
+//        [self setGuestFullListWithSlType:Meetup];
+       
     }
     
     

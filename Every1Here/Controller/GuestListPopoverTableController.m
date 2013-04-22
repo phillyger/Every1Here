@@ -44,7 +44,7 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
 @property (nonatomic, strong) NSIndexSet *removedIndices;
 @property (nonatomic, assign, getter=isSelected) BOOL selected;
 
-- (void)setselectedIndicesFromArray:(NSArray *)attendeeList WithArray:(NSArray *)fullGuestList;
+- (void)setSelectedIndicesFromArray:(NSArray *)attendeeList WithArray:(NSArray *)fullGuestList;
 
 @end
 
@@ -163,13 +163,14 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (void)setselectedIndicesFromArray:(NSArray *)childList WithArray:(NSArray *)parentList {
+- (void)setSelectedIndicesFromArray:(NSArray *)childList WithArray:(NSArray *)parentList {
 
     
     BOOL (^test)(id obj, NSUInteger idx, BOOL *stop);
     
     test = ^(id obj, NSUInteger idx, BOOL *stop) {
-            if ([childList containsObject: obj]) {
+        NSArray *childListDisplayName = [childList valueForKey:@"displayName"];
+            if ([childListDisplayName containsObject: [(User*)obj displayName]]) {
                 return YES;
         }
         return NO;
@@ -264,35 +265,6 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
 
 
 
-
-#pragma mark - Guest Manager delegate
-
-
-- (void)guestsReceivedForEvent:(Event *)event {
-    
-}
-
-- (void)didReceiveGuests:(NSArray *)guests {
-
-    // Remove HUD
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
-    
-    // cache guest list from WS for specific social type key.
-    NSLog(@"Did Receive Guests!");
-    //[self.delegate setGuestListFullDictWithArray:guests forKey:slType];
-    [self setGuestFullListForSlType:[guests mutableCopy]];
-    
-    // Should only have to send this message the first time it loads.
-    // Subsequent calls are cached.
-    [self.delegate receivedGuestFullList:[self guestFullListForSlType] forKey:slTypeString];
-    [self.tableView reloadData];
-}
-
-
--(void)retrievingGuestsFailedWithError:(NSError *)error {}
-
-
-
 #pragma mark - fetch methods
 - (void)fetchGuestListTableContent
 {
@@ -305,7 +277,7 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
 //        [event setGuestList:guestFullListForSlType];
 //        NSArray *attendeeListForSlType = (NSArray *)[self.guestListAttendeeDict objectForKey:slTypeString];
         
-        [self setselectedIndicesFromArray:[self guestAttendeeListForSlType] WithArray:[self guestFullListForSlType]];
+        [self setSelectedIndicesFromArray:[self guestAttendeeListForSlType] WithArray:[self guestFullListForSlType]];
     
         
         [self setPopoverTitleWithString:slTypeString];
@@ -380,6 +352,38 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
 -(void)setPopoverTitleWithString:(NSString *)title {
     self.title = [NSString stringWithFormat:@"Guests - %@", title];
 }
+
+
+#pragma mark - Guest Manager delegate
+
+
+- (void)guestsReceivedForEvent:(Event *)event {
+    
+}
+
+- (void)didReceiveGuests:(NSArray *)guests {
+    
+    // Remove HUD
+    [CommonUtilities hideProgressHUD:self.view];
+    
+    // cache guest list from WS for specific social type key.
+    NSLog(@"Did Receive Guests!");
+    //[self.delegate setGuestListFullDictWithArray:guests forKey:slType];
+    [self setGuestFullListForSlType:[guests mutableCopy]];
+    
+    // Should only have to send this message the first time it loads.
+    // Subsequent calls are cached.
+    [self.delegate receivedGuestFullList:[self guestFullListForSlType] forKey:slTypeString];
+    
+    [self setSelectedIndicesFromArray:[self guestAttendeeListForSlType] WithArray:[self guestFullListForSlType]];
+    [self setPopoverTitleWithString:slTypeString];
+    
+    [self.tableView reloadData];
+}
+
+
+-(void)retrievingGuestsFailedWithError:(NSError *)error {}
+
 
 
 @end
