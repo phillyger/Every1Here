@@ -98,7 +98,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [CommonUtilities hideProgressHUD:self.view];
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -164,6 +164,7 @@
 #pragma mark - EventManagerDelegate
 
 - (void)didReceiveEvents:(NSArray *)events {
+    
     if ([self.dataSource isKindOfClass: [EventListTableDataSource class]]) {
         if ([events count] > 1) {
             [(EventListTableDataSource *)dataSource setEvents:[(EventListTableDataSource *)dataSource sortEventArray:events]];
@@ -175,6 +176,7 @@
     [(EventListTableDataSource *)dataSource buildEventDict];
     
     [tableView reloadData];
+    [CommonUtilities hideProgressHUD:self.view];
 }
 
 - (void)retrievingEventsFailedWithError:(NSError *)error {

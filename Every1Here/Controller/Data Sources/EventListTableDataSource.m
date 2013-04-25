@@ -8,6 +8,7 @@
 
 #import "EventListTableDataSource.h"
 #import "EventCell.h"
+#import "EventHeader.h"
 #import "Event.h"
 #import "Group.h"
 #import "Venue.h"
@@ -28,7 +29,7 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
     NSArray *events;
 }
 @synthesize eventCell;
-@synthesize eventDict;
+@synthesize sections;
 @synthesize sectionHeaderTitleList;
 
 
@@ -48,9 +49,19 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
             
 }
 
+
+
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return self.sectionHeaderTitleList[section];
+    
+    //-------------------------------------------------------
+    // Implemented a unique sorting mechanism for Event Section
+    // Titles. Format: #|Title
+    // In order to remove the # from displaying we extract the
+    // second component separated by the |
+    //-------------------------------------------------------
+    return [self.sectionHeaderTitleList[section] componentsSeparatedByString: @"|"][1];
 
 }
 
@@ -66,7 +77,7 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
     
 //    NSParameterAssert(section == 0);
 
-    NSArray *eventsOnThisDay = [self.eventDict objectForKey:self.sectionHeaderTitleList[section]];
+    NSArray *eventsOnThisDay = [self.sections objectForKey:self.sectionHeaderTitleList[section]];
     return [eventsOnThisDay count];
     
 }
@@ -74,7 +85,7 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
 
 - (Event *)eventForIndexPath:(NSIndexPath *)indexPath {
     NSString *sectionName = sectionHeaderTitleList[indexPath.section];
-    Event *event = [eventDict[sectionName] objectAtIndex:indexPath.row];
+    Event *event = [sections[sectionName] objectAtIndex:indexPath.row];
     return event;
 }
 
@@ -92,42 +103,34 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
     UITableViewCell *cell = nil;
     if ([events count]) {
          NSString *sectionName = sectionHeaderTitleList[indexPath.section];
-        Event *event = [eventDict[sectionName] objectAtIndex:indexPath.row];
-//        eventCell = [aTableView dequeueReusableCellWithIdentifier: eventCellReuseIdentifier];
+        Event *event = [sections[sectionName] objectAtIndex:indexPath.row];
         eventCell = [aTableView dequeueReusableCellWithIdentifier:eventCellReuseIdentifier forIndexPath:indexPath];
 
-//        if (!eventCell) {
-//            
-//            [self.eventCellNib instantiateWithOwner:self options:nil];
-//        }
+        // START NEW
+        if (![eventCell.backgroundView isKindOfClass:[EventCell class]]) {
+            eventCell.backgroundView = [[EventCell alloc] init];
+        }
+        
+        if (![eventCell.selectedBackgroundView isKindOfClass:[EventCell class]]) {
+            eventCell.selectedBackgroundView = [[EventCell alloc] init];
+        }
+        // END NEW
+        
         
         if (dateFormatter == nil) {
             dateFormatter = [[NSDateFormatter alloc] init];
             [self configureEventCellDateFormatter:dateFormatter];
             
         }
-        
 
-        
         eventCell.titleLabel.text = [event name];
         Group *thisGroup = (Group *)[event group];
         eventCell.groupLabel.text = thisGroup.name;
-        //        Venue *thisVenue = (Venue *)[[self eventForIndexPath: indexPath] venue];
-        //        eventCell.groupLabel.text = thisGroup.name;
+
         
         NSString *formattedDateString = [dateFormatter stringFromDate:[event startDateTime]];
-        
-        
         NSArray *datetimeArray = [formattedDateString componentsSeparatedByString: @"|"];
-        //    for (NSString *n in datetimeArray) {
-        //        NSLog(@"%@", n );
-        //    }
-        
         NSArray *dateArray =[datetimeArray[0] componentsSeparatedByString: @"-"];
-        
-        //    for (NSString *k in dateArray) {
-        //        NSLog(@"%@", k );
-        //    }
         
         // Setup the Detail and Text labels with the Event's values
         eventCell.dayLabel.text = [dateArray[0] uppercaseString];
@@ -135,6 +138,13 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
         eventCell.dateLabel.text = dateArray[2];
         eventCell.starttimeLabel.text = datetimeArray[1];
 
+        eventCell.textLabel.backgroundColor = [UIColor clearColor]; // NEW
+        eventCell.dayLabel.backgroundColor = [UIColor clearColor]; // NEW
+        eventCell.monthLabel.backgroundColor = [UIColor clearColor]; // NEW
+        eventCell.dateLabel.backgroundColor = [UIColor clearColor]; // NEW
+        eventCell.starttimeLabel.backgroundColor = [UIColor clearColor]; // NEWLabel
+        eventCell.titleLabel.backgroundColor = [UIColor clearColor]; // NEWLabel
+        eventCell.groupLabel.backgroundColor = [UIColor clearColor]; // NEWLabel
         
         cell = eventCell;
         eventCell = nil;
@@ -153,46 +163,84 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
 
 - (void)buildEventDict {
     
-    NSArray *sectionHeaderTitleUpcomingFullList = @[@"Today",
-                                            @"Tomorrow"
-                                            @"In Two Days",
-                                            @"Later This Week",
-                                            @"Next Week",
-                                            @"In Two Weeks",
-                                            @"In Three Weeks",
-                                            @"Later"];
+    NSArray *sectionHeaderTitleUpcomingArray = @[
+                                            
+                                            @{@"title":@"Today",
+                                              @"index": @0},
+                                            @{@"title":@"Tomorrow",
+                                              @"index": @1},
+                                            @{@"title":@"In Two Days",
+                                              @"index": @2},
+                                            @{@"title":@"Later This Week",
+                                              @"index": @3},
+                                            @{@"title":@"Next Week",
+                                              @"index": @4},
+                                            @{@"title":@"In Two Weeks",
+                                              @"index": @5},
+                                            @{@"title":@"In Three Weeks",
+                                              @"index": @6},
+                                            @{@"title":@"Next Month",
+                                              @"index": @7},
+                                            @{@"title":@"In Two Monthsy",
+                                              @"index": @8},
+                                            @{@"title":@"In The Future...",
+                                              @"index": @9},
+         
+                                            
+                                        ];
+                                                       
+    NSArray *sectionHeaderTitlePastArray = @[
+                                                 
+                                             @{@"title":@"Today",
+                                               @"index": @0},
+                                             @{@"title":@"Yesterday",
+                                               @"index": @1},
+                                             @{@"title":@"Two Days Ago",
+                                               @"index": @2},
+                                             @{@"title":@"Earlier This Week",
+                                               @"index": @3},
+                                             @{@"title":@"Last Week",
+                                               @"index": @4},
+                                             @{@"title":@"Two Weeks Ago",
+                                               @"index": @5},
+                                             @{@"title":@"Three Weeks Ago",
+                                               @"index": @6},
+                                             @{@"title":@"Last Month",
+                                               @"index": @7},
+                                             @{@"title":@"Two Months Ago",
+                                               @"index": @8},
+                                             @{@"title":@"In The Past...",
+                                               @"index": @9},
+                                                 
+                                                 ];
     
-    
-    NSArray *sectionHeaderTitlePastFullList = @[@"Today",
-                                                @"Yesterday",
-                                                @"Two Days Ago",
-                                            @"Earlier This Week",
-                                            @"Last Week",
-                                            @"Two Weeks Ago",
-                                            @"Three Weeks Ago",
-                                            @"Earlier"];
+
     
     sectionHeaderTitleList = [[NSMutableArray alloc] init];
-    eventDict = [[NSMutableDictionary alloc] init];
+    sections = [[NSMutableDictionary alloc] init];
     
     NSDate *dateBeginningOfThisDay = [self dateAtBeginningOfDayForDate:[NSDate date]];
-    
-    
+
     [events enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         Event *event = obj;
-        NSArray *sectionHeaderTitleFullList = [[event status] isEqualToString:@"upcoming"] ? sectionHeaderTitleUpcomingFullList : sectionHeaderTitlePastFullList;
         
-        NSString *sectionHeaderTitle = [self categorizeEventStartDate:[event startDateTime]
+        
+        // TODO: Implement better design approach to hardcoding status in.
+        
+        NSArray *sectionHeaderTitleArray = [[event status] isEqualToString:@"upcoming"] ? sectionHeaderTitleUpcomingArray : sectionHeaderTitlePastArray;
+        
+        NSDictionary *sectionHeaderDict = [self categorizeEventStartDate:[event startDateTime]
                                                         usingBaseDate:dateBeginningOfThisDay
-                                                            withArray:sectionHeaderTitleFullList];
+                                                            withArray:sectionHeaderTitleArray];
         
+        NSString *key = [ NSString stringWithFormat:@"%@|%@", [sectionHeaderDict[@"index"] stringValue], sectionHeaderDict[@"title"] ];
         // If we don't yet have an array to hold the events for this day, create one
-        NSMutableArray *eventsOnThisDay = [self.eventDict objectForKey:sectionHeaderTitle];
+        NSMutableArray *eventsOnThisDay = [self.sections objectForKey:key];
         if (eventsOnThisDay == nil) {
             eventsOnThisDay = [NSMutableArray array];
             
             // Use the section header title as dictionary key to later retrieve the event list this day
-            [self.eventDict setObject:eventsOnThisDay forKey:sectionHeaderTitle];
+            [self.sections setObject:eventsOnThisDay forKey:key];
         }
         
         // Add the event to the list for this day
@@ -200,15 +248,65 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
         
     }];
     
-    // Create a sorted list of days
-    self.sectionHeaderTitleList = [self.eventDict allKeys];
+
     
+    NSArray *unsortedSections = [self.sections allKeys];
+    
+    self.sectionHeaderTitleList = [unsortedSections sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return [obj1 compare:obj2];
+}];
+    
+
     
 }
+//
+//- (NSString *)categorizeEventStartDate:(NSDate *)eventStartDate usingBaseDate:(NSDate *)baseDate withArray:(NSArray*)sectionHeaderTitles {
+//    
+//    NSString *thisSectionHeaderTitle = nil;
+//    NSInteger daysOffset = [self numberOfDaysBetweenBaseDate:baseDate offsetDate:eventStartDate];
+//    
+//    // Ensure that we are using the absolute value.
+//    switch (ABS(daysOffset)) {
+//        case 0:
+//            thisSectionHeaderTitle = sectionHeaderTitles[0];
+//            break;
+//        case 1:
+//            thisSectionHeaderTitle = sectionHeaderTitles[1];
+//            break;
+//        case 2:
+//            thisSectionHeaderTitle = sectionHeaderTitles[2];
+//            break;
+//        case 3 ... 7:
+//            thisSectionHeaderTitle = sectionHeaderTitles[3];
+//            break;
+//        case 8 ... 14:
+//            thisSectionHeaderTitle = sectionHeaderTitles[4];
+//            break;
+//        case 15 ... 25:
+//            thisSectionHeaderTitle = sectionHeaderTitles[5];
+//            break;
+//        case 26 ... 31:
+//            thisSectionHeaderTitle = sectionHeaderTitles[6];
+//            break;
+//        case 32 ... 62:
+//            thisSectionHeaderTitle = sectionHeaderTitles[7];
+//            break;
+//        case 63 ... 93:
+//            thisSectionHeaderTitle = sectionHeaderTitles[8];
+//            break;
+//        default:
+//            thisSectionHeaderTitle = sectionHeaderTitles[9];
+//            break;
+//    }
+//    
+//    return thisSectionHeaderTitle;
+//    
+//}
 
-- (NSString *)categorizeEventStartDate:(NSDate *)eventStartDate usingBaseDate:(NSDate *)baseDate withArray:(NSArray*)sectionHeaderTitles {
+
+- (NSDictionary *)categorizeEventStartDate:(NSDate *)eventStartDate usingBaseDate:(NSDate *)baseDate withArray:(NSArray*)sectionHeaderTitles {
     
-    NSString *thisSectionHeaderTitle = nil;
+    NSDictionary *thisSectionHeaderTitle = [[NSDictionary alloc] init];
     NSInteger daysOffset = [self numberOfDaysBetweenBaseDate:baseDate offsetDate:eventStartDate];
     
     // Ensure that we are using the absolute value.
@@ -231,11 +329,17 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
         case 15 ... 25:
             thisSectionHeaderTitle = sectionHeaderTitles[5];
             break;
-        case 26 ... 33:
+        case 26 ... 31:
             thisSectionHeaderTitle = sectionHeaderTitles[6];
             break;
-        default:
+        case 32 ... 62:
             thisSectionHeaderTitle = sectionHeaderTitles[7];
+            break;
+        case 63 ... 93:
+            thisSectionHeaderTitle = sectionHeaderTitles[8];
+            break;
+        default:
+            thisSectionHeaderTitle = sectionHeaderTitles[9];
             break;
     }
     
@@ -354,6 +458,14 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
     NSInteger daysOffset = [components day];
     
     return daysOffset;
+}
+
+
+-(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    EventHeader * header = [[EventHeader alloc] init];
+    header.titleLabel.text = [self tableView: tableView titleForHeaderInSection:section];
+    return header;
 }
 
 

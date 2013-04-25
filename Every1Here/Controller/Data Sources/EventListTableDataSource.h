@@ -15,7 +15,7 @@
 
 @property (strong) IBOutlet EventCell *eventCell;
 @property (strong, nonatomic) NSArray *sectionHeaderTitleList;
-@property (strong, nonatomic) NSMutableDictionary *eventDict;
+@property (strong, nonatomic) NSMutableDictionary *sections;
 
 - (void)setEvents:(NSArray *)events;
 - (NSArray *)sortEventArray:(NSArray *)events;

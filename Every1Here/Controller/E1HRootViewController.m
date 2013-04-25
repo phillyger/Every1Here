@@ -9,6 +9,7 @@
 #import "E1HRootViewController.h"
 #import "EventSegmentedControlViewController.h"
 #import "BaseViewController.h"
+#import "CommonUtilities.h"
 
 @interface E1HRootViewController ()
 @property (nonatomic, weak) EventSegmentedControlViewController *eventSegmentedControlViewController;
@@ -55,6 +56,7 @@
         NSLog(@"Tapped Segmented Control");
         self.eventSegmentedControlViewController =
         segue.destinationViewController;
+        
     }
     else if ([segue.identifier isEqualToString:@"eventList"])
     {

@@ -10,6 +10,7 @@
 #import "HMSegmentedControl.h"
 #import "EventListViewController.h"
 #import "E1HAppDelegate.h"
+#import "CommonUtilities.h"
 
 @interface EventSegmentedControlViewController ()
 @property (nonatomic) HMSegmentedControl *segmentedControl;
@@ -70,7 +71,7 @@
 - (void)segmentedControlChangedValue:(HMSegmentedControl *)aSegmentedControl {
 	NSLog(@"Selected index %i (via UIControlEventValueChanged)", aSegmentedControl.selectedSegmentIndex);
     
-    
+    [CommonUtilities showProgressHUD:self.parentViewController.view];
     switch (aSegmentedControl.selectedSegmentIndex) {
         case 0:
             [(EventListViewController*)self.currentViewController setEventStatus:@"upcoming"];
@@ -91,7 +92,7 @@
     E1HAppDelegate *appDelegate = (E1HAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     [self.eventListViewController fetchEventContentForOrgId:appDelegate.parseDotComAccountOrgId withStatus:[self.eventListViewController eventStatus]];
-
+    [CommonUtilities hideProgressHUD:self.parentViewController.view];
     
 }
 
