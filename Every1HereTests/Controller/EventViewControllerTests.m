@@ -1,6 +1,6 @@
 //
-//  AnseoViewControllerTests.m
-//  Anseo
+//  E1HViewControllerTests.m
+//  E1H
 //
 //  Created by Ger O'Sullivan on 2/8/13.
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
@@ -8,10 +8,9 @@
 
 #import "EventViewControllerTests.h"
 #import "EventListViewController.h"
-#import "PastEventListViewController.h"
 #import "EventListTableDataSource.h" 
 #import "MemberListTableDataSource.h"
-#import "AnseoObjectConfiguration.h"
+#import "E1HObjectConfiguration.h"
 #import "TestObjectConfiguration.h"
 #import "MockParseDotComManager.h"
 //#import "MockMeetupDotComManager.h"
@@ -21,34 +20,34 @@
 #import "Venue.h"
 #import "Address.h"
 
-static const char *notificationKey = "AnseoViewControllerTestsAssociatedNotificationKey";
+static const char *notificationKey = "E1HViewControllerTestsAssociatedNotificationKey";
 
 @implementation BaseViewController (TestNotificationDelivery)
 
 
-- (void)anseoControllerTests_userDidSelectEventNotification: (NSNotification *)note {
+- (void)E1HControllerTests_userDidSelectEventNotification: (NSNotification *)note {
     objc_setAssociatedObject(self, notificationKey, note, OBJC_ASSOCIATION_RETAIN);
 }
 
-//- (void)anseoControllerTests_userDidSelectMemberNotification: (NSNotification *)note {
+//- (void)E1HControllerTests_userDidSelectMemberNotification: (NSNotification *)note {
 //    objc_setAssociatedObject(self, notificationKey, note, OBJC_ASSOCIATION_RETAIN);
 //}
 
 
 @end
 
-static const char *viewDidAppearKey = "AnseoViewControllerTestsViewWillAppearKey";
-static const char *viewWillDisappearKey = "AnseoViewControllerTestsViewWillDisappearKey";
-static const char *viewWillAppearKey = "AnseoViewControllerTestsViewWillAppearKey";
+static const char *viewDidAppearKey = "E1HViewControllerTestsViewWillAppearKey";
+static const char *viewWillDisappearKey = "E1HViewControllerTestsViewWillDisappearKey";
+static const char *viewWillAppearKey = "E1HViewControllerTestsViewWillAppearKey";
 
 @implementation UIViewController (TestSuperclassCalled)
 
-- (void)anseoViewControllerTests_viewDidAppear: (BOOL)animated {
+- (void)E1HViewControllerTests_viewDidAppear: (BOOL)animated {
     NSNumber *parameter = [NSNumber numberWithBool: animated];
     objc_setAssociatedObject(self, viewDidAppearKey, parameter, OBJC_ASSOCIATION_RETAIN);
 }
 
-- (void)anseoViewControllerTests_viewWillDisappear: (BOOL)animated {
+- (void)E1HViewControllerTests_viewWillDisappear: (BOOL)animated {
     NSNumber *parameter = [NSNumber numberWithBool: animated];
     objc_setAssociatedObject(self, viewWillDisappearKey, parameter, OBJC_ASSOCIATION_RETAIN);
 }
@@ -63,11 +62,11 @@ static const char *viewWillAppearKey = "AnseoViewControllerTestsViewWillAppearKe
 {
     BaseViewController *viewController;
     EventListViewController *upcomingViewController;
-    PastEventListViewController *pastViewController;
+    EventListViewController *pastViewController;
     UITableView *tableView;
     id <UITableViewDataSource, UITableViewDelegate> dataSource;
     UINavigationController *navController;
-    AnseoObjectConfiguration *objectConfiguration;
+    E1HObjectConfiguration *objectConfiguration;
     TestObjectConfiguration *testConfiguration;
     MockParseDotComManager *parseDotComManager;
 //    MockMeetupDotComManager *meetupDotComManager;
@@ -88,7 +87,7 @@ static const char *viewWillAppearKey = "AnseoViewControllerTestsViewWillAppearKe
 - (void)setUp {
     viewController = [[BaseViewController alloc] init];
     upcomingViewController = [[EventListViewController alloc] init];
-    pastViewController = [[PastEventListViewController alloc] init];
+    pastViewController = [[EventListViewController alloc] init];
     tableView = [[UITableView alloc] init];
     upcomingViewController.tableView = tableView;
     
@@ -99,13 +98,13 @@ static const char *viewWillAppearKey = "AnseoViewControllerTestsViewWillAppearKe
     objc_removeAssociatedObjects(viewController);
     
     realViewDidAppear = @selector(viewDidAppear:);
-    testViewDidAppear = @selector(anseoViewControllerTests_viewDidAppear:);
+    testViewDidAppear = @selector(E1HViewControllerTests_viewDidAppear:);
     [EventViewControllerTests swapInstanceMethodsForClass: [UIViewController class]
                                                  selector: realViewDidAppear
                                               andSelector: testViewDidAppear];
 
     realViewWillDisappear = @selector(viewWillDisappear:);
-    testViewWillDisappear = @selector(anseoViewControllerTests_viewWillDisappear:);
+    testViewWillDisappear = @selector(E1HViewControllerTests_viewWillDisappear:);
     [EventViewControllerTests swapInstanceMethodsForClass: [UIViewController class]
                                                  selector: realViewWillDisappear
                                               andSelector: testViewWillDisappear];
@@ -116,10 +115,10 @@ static const char *viewWillAppearKey = "AnseoViewControllerTestsViewWillAppearKe
     
 
     realUserDidSelectEvent = @selector(userDidSelectEventNotification:);
-    testUserDidSelectEvent = @selector(anseoControllerTests_userDidSelectEventNotification:);
+    testUserDidSelectEvent = @selector(E1HControllerTests_userDidSelectEventNotification:);
     
     navController = [[UINavigationController alloc] initWithRootViewController: viewController];
-    objectConfiguration = [[AnseoObjectConfiguration alloc] init];
+    objectConfiguration = [[E1HObjectConfiguration alloc] init];
     viewController.objectConfiguration = objectConfiguration;
     testConfiguration = [[TestObjectConfiguration alloc] init];
     parseDotComManager = [[MockParseDotComManager alloc] init];
@@ -150,12 +149,12 @@ static const char *viewWillAppearKey = "AnseoViewControllerTestsViewWillAppearKe
 
 - (void)testViewControllerHasATableProperty {
     objc_property_t tableViewProperty = class_getProperty([viewController class], "tableView");
-    STAssertTrue(tableViewProperty != NULL, @"AnseoViewController needs a table view.");
+    STAssertTrue(tableViewProperty != NULL, @"E1HViewController needs a table view.");
 }
 
 - (void)testViewControllerHasADataSourceProperty {
     objc_property_t dataSourceProperty = class_getProperty([viewController class], "dataSource");
-    STAssertTrue(dataSourceProperty != NULL, @"AnseoViewController needs a data source.");
+    STAssertTrue(dataSourceProperty != NULL, @"E1HViewController needs a data source.");
 }
 
 //
@@ -223,7 +222,7 @@ static const char *viewWillAppearKey = "AnseoViewControllerTestsViewWillAppearKe
 //    [viewController userDidSelectEventNotification: nil];
 //    UIViewController *currentTopVC = navController.topViewController;
 //    STAssertFalse([currentTopVC isEqual: viewController], @"New view controller should be pushed onto the stack");
-//    STAssertTrue([currentTopVC isKindOfClass: [EventViewController class]], @"New view controller should be a AnseoViewController");
+//    STAssertTrue([currentTopVC isKindOfClass: [EventViewController class]], @"New view controller should be a E1HViewController");
 //}
 
 

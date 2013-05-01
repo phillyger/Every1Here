@@ -1,6 +1,6 @@
 //
 //  UpcomingEventsViewController.m
-//  Anseo
+//  E1H
 //
 //  Created by Ger O'Sullivan on 2/20/13.
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
@@ -48,6 +48,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
+    UIImageView * background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"white-iphone-4-wallpaper.jpg"]];
+    self.tableView.backgroundView = background;
     
     self.objectConfiguration = [[E1HObjectConfiguration alloc] init];
     EventListTableDataSource *eventDataSource = [[EventListTableDataSource alloc] init];

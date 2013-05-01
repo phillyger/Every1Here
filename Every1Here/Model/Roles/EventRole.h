@@ -29,6 +29,7 @@ typedef NS_OPTIONS(NSUInteger, TMEventRoles) {
     NSArray *meetingRoleBindToFields;
     NSDictionary *meetingRoleDict;
     NSDictionary *meetingRoleIconDict;
+    NSDictionary *meetingRoleCellColorHueDict;
     
 }
 
@@ -40,5 +41,6 @@ typedef NS_OPTIONS(NSUInteger, TMEventRoles) {
 - (NSDictionary *)mapFieldsToIconsMedium;
 - (NSDictionary *)mapFieldsToIconsSmall;
 - (NSDictionary *)mapFieldsToRoles;
+- (NSDictionary *)mapFieldsToCellColorHue;
 
 @end

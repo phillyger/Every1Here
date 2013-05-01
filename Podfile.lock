@@ -3,11 +3,13 @@ PODS:
 - AFNetworking (1.2.0)
 - BlockAlertsAnd-ActionSheets (1.0.0)
 - FPPopover (1.4.1)
+- Facebook-iOS-SDK (3.5.0)
 - HMSegmentedControl (1.2.0)
 - MBProgressHUD (0.6)
 - OCMock (2.0.1)
 - OHHTTPStubs (1.1.1)
-- Parse (1.2.5)
+- Parse (1.2.5): 
+  - Facebook-iOS-SDK (~> 3.2)
 - QuickDialog (0.7)
 
 DEPENDENCIES: 
@@ -24,6 +26,7 @@ DEPENDENCIES:
 - OCMock
 - OHHTTPStubs
 - Parse (~> 1.2.5)
+- Parse (~> 1.2.5)
 - QuickDialog
 - QuickDialog
 
@@ -31,9 +34,10 @@ SPEC CHECKSUMS:
   AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
   BlockAlertsAnd-ActionSheets: 9fef02b82589a5592263a6d105234220c0c32dce
   FPPopover: 0289b796c031d8f27bd221d93d282ffe23619893
+  Facebook-iOS-SDK: df5c04b1927e1a535733192857f8e5b9774407d1
   HMSegmentedControl: 826084e59fce20866aaa23f30ed50677210eb669
   MBProgressHUD: 9b55a90566fb5d07df0602f6fd9fa04510ad5d52
-  Parse: 0b6e9f2d7200c12e02bca003bfff1feca22452fd
+  Parse: 12163c5f75ecc4be61d173ee42405dc513bf4ac7
   QuickDialog: 66329ef69be6d6f85d6b1cbb2ea57eb904a2c5a7
   OCMock: 77a9c4c57af6bf258a537d34cf09abf422affede
   OHHTTPStubs: cb1cef742f2fba18b192fb92ede52a69cf3a04d5

@@ -1,6 +1,6 @@
 //
 //  AFNParseDotComCommunicatorTests.m
-//  Anseo
+//  E1H
 //
 //  Created by Ger O'Sullivan on 2/5/13.
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
@@ -14,10 +14,12 @@
 #import "MockParseDotComManager.h"
 #import "OCMock.h"
 #import "MemberBuilder.h"
+#import "GuestBuilder.h"
 #import "EventBuilder.h"
 #import "TestSemaphor.h"
 #import "User.h"
 #import "Event.h"
+#import "AFHTTPRequestOperation.h"
 
 
 @implementation AFNParseDotComCommunicatorTests
@@ -30,6 +32,7 @@
     NSString *_jsonStringPastEvents;
     NSString *_jsonStringMembers;
     MemberBuilder *memberBuilder;
+    GuestBuilder *guestBuilder;
     EventBuilder *eventBuilder;
     
     InspectableParseDotComCommunicator *communicator;
@@ -38,6 +41,10 @@
     FakeURLResponse *fourOhFourResponse;
     NSData *receivedData;
     NSMutableString *baseURLString;
+    NSNumber *orgId;
+    NSString *status;
+    ActionTypes actionType;
+    NSString *namedClass;
     
 
 
@@ -128,21 +135,66 @@
     NSString *semaphoreKey = @"membersLoaded";
     
     // now call the stubbed out client, by calling the real method //
-    [mockParseDotComCommunicator downloadMembersForGroupName:@"Panorama Toastmasters"
-                                                   errorHandler:^(NSError *error) {
-                                                       [[TestSemaphor sharedInstance] lift:semaphoreKey];
-                                                   }
-                                                 successHandler:^(NSDictionary *objectNotation) {
+    [mockParseDotComCommunicator downloadUsersForEvent:event
+                                         forActionType:actionType
+                                         forNamedClass:namedClass
+                                           errorHandler:^(NSError *error) {
+                                               [[TestSemaphor sharedInstance] lift:semaphoreKey];
+                                           }
+                                        successBatchHandler:^(NSArray *operations) {
                                                      
                                                      // this will allow the test to continue by lifting the semaphore key
                                                      // and satisfying the running loop that is waiting on it to lift
+                                            
+                                            NSError *error = nil;
+                                            NSArray *userList;
+                                            SocialNetworkType slType = NONE;
+                                            
+                                            
+                                            
+                                            __block NSDictionary *userDict;
+                                            __block NSDictionary *attendanceDict;
+                                            
+                                            [operations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                                                AFHTTPRequestOperation *ro = obj;
+                                                NSData *jsonData = [ro responseData];
+                                                NSDictionary *jsonObject=[NSJSONSerialization
+                                                                          JSONObjectWithData:jsonData
+                                                                          options:NSJSONReadingMutableLeaves
+                                                                          error:nil];
+                                                
+                                                NSArray *results = (NSArray*)[jsonObject objectForKey:@"results"];
+                                                if (results.count > 0) {
+                                                    if ([results[0] objectForKey:@"eventRoles"]) {
+                                                        // contains attendance key
+                                                        attendanceDict = jsonObject;
+                                                    } else {
+                                                        // contains member key
+                                                        userDict = jsonObject;
+                                                    }
+                                                } 
+                                                //NSLog(@"jsonObject is %@",jsonObject);
+                                            }];
+                                            
+                                            
+                                            id userBuilder = ([namedClass isEqualToString:@"Member"] ? memberBuilder : guestBuilder);
+                                            
+                                            if (userDict && attendanceDict) {
+                                                
+                                                userList = [userBuilder usersFromJSON:userDict withAttendance:attendanceDict withEventId:eventId socialNetworkType:slType error:&error];
+                                            } else if (userDict && !attendanceDict){
+                                                userList = [userBuilder usersFromJSON:userDict withAttendance:nil withEventId:eventId socialNetworkType:slType error:&error];
+                                            } else if (!userDict && !attendanceDict){
+                                                //        userList = [userBuilder usersFromJSON:nil withAttendance:nil withEventId:eventId socialNetworkType:slType error:&error];
+                                            }
+
+                                            
                                                     
-                                                     _members = [memberBuilder membersFromJSON:objectNotation error:nil];
+                                                     _members = [memberBuilder usersFromJSON:<#(NSDictionary *)#> withAttendance:<#(NSDictionary *)#> withEventId:<#(NSString *)#> socialNetworkType:<#(SocialNetworkType)#> error:<#(NSError *__autoreleasing *)#>];
                                                      
                                                      
                                                      [[TestSemaphor sharedInstance] lift:semaphoreKey];
                                                  } ];
-
 
 
     [[TestSemaphor sharedInstance] waitForKey:semaphoreKey];

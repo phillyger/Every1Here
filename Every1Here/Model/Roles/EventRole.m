@@ -29,6 +29,7 @@
         meetingRoleBindToFields = [[NSArray alloc] init];
         meetingRoleDict = [[NSDictionary alloc] init];
         meetingRoleIconDict = [[NSDictionary alloc] init];
+        meetingRoleCellColorHueDict = [[NSDictionary alloc] init]; 
         
         meetingRoleBindToFields = @[@"isSpeaker",
                                     @"isToastmaster",
@@ -121,6 +122,21 @@
                             meetingRoleBindToFields[8]:@"icon-ahcounter-16x16.png"  };
     
     return meetingRoleIconDict;
+}
+
+- (NSDictionary *)mapFieldsToCellColorHue {
+    meetingRoleCellColorHueDict = @{meetingRoleBindToFields[0]:@0.0,
+                            meetingRoleBindToFields[1]:@0.13,
+                            meetingRoleBindToFields[2]:@0.26,
+                            meetingRoleBindToFields[3]:@0.39,
+                            meetingRoleBindToFields[4]:@0.52,
+                            meetingRoleBindToFields[5]:@0.65,
+                            meetingRoleBindToFields[6]:@0.78,
+                            meetingRoleBindToFields[7]:@0.91,
+                            meetingRoleBindToFields[8]:@1.00
+                            };
+    
+    return meetingRoleCellColorHueDict;
 }
 
 @end

@@ -1,13 +1,13 @@
 //
-//  AnseoObjectConfigurationTests.m
-//  Anseo
+//  E1HObjectConfigurationTests.m
+//  E1H
 //
 //  Created by Ger O'Sullivan on 2/14/13.
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
 //
 
 #import "E1HObjectConfigurationTests.h"
-#import "AnseoObjectConfiguration.h"
+#import "E1HObjectConfiguration.h"
 #import "ParseDotComManager.h"
 #import "ParseDotComCommunicator.h"
 #import "MeetupDotComManager.h"
@@ -18,11 +18,11 @@
 @implementation E1HObjectConfigurationTests
 
 {
-    AnseoObjectConfiguration *configuration;
+    E1HObjectConfiguration *configuration;
 }
 
 - (void)setUp {
-    configuration = [[AnseoObjectConfiguration alloc] init];
+    configuration = [[E1HObjectConfiguration alloc] init];
 }
 
 - (void)tearDown {

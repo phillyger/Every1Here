@@ -15,6 +15,7 @@ target :Every1HereTests do
 	pod 'FPPopover'
 	pod 'BlockAlertsAnd-ActionSheets'
 	pod 'QuickDialog'
+	pod 'Parse', '~> 1.2.5'
 end
 
 target :OHHTTPStubsUnitTests do

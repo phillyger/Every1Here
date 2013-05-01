@@ -16,6 +16,7 @@
     NSArray *meetingRoleKeys;
     NSDictionary *meetingRoleDict;
     NSDictionary *meetingRoleIconDict;
+    NSDictionary *meetingRoleCellColorHueDict;
     EventRole *thisEventRole;
     
     NSNumber *postEventRoles;
@@ -126,11 +127,18 @@
 
 
 -(void) cell:(UITableViewCell *)cell willAppearForElement:(QElement *)element atIndexPath:(NSIndexPath *)indexPath{
-    //    cell.backgroundColor = [UIColor colorWithRed:0.9582 green:0.9104 blue:0.7991 alpha:1.0000];
     
-    //    if ([element isKindOfClass:[QEntryElement class]] || [element isKindOfClass:[QButtonElement class]]){
-    //        cell.textLabel.textColor = [UIColor colorWithRed:0.6033 green:0.2323 blue:0.0000 alpha:1.0000];
-    //    }
+    
+       if ([element isKindOfClass:[QBooleanElement class]] && [[element key] hasPrefix:@"is"]){
+               NSLog(@"key: %@", [element key]);
+//           cell.backgroundColor = indexPath.row % 2 ? [UIColor colorWithRed:0.9582 green:0.9104 blue:0.7991 alpha:1.0000] : [UIColor whiteColor];
+           cell.backgroundColor =  [UIColor colorWithHue:[[meetingRoleCellColorHueDict valueForKey:[element key]] floatValue]
+                      saturation:0.7
+                      brightness:0.7
+                           alpha:0.70];
+           
+            cell.textLabel.textColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+        }
 }
 
 
@@ -199,8 +207,12 @@
     
     meetingRoleDict = [[NSDictionary alloc] init];
     meetingRoleIconDict = [[NSDictionary alloc] init];
+    meetingRoleCellColorHueDict = [[NSDictionary alloc] init];
+    
     meetingRoleDict = [[[self userToEdit] getRole:@"EventRole"] mapFieldsToRoles];
     meetingRoleIconDict = [[[self userToEdit] getRole:@"EventRole"] mapFieldsToIconsMedium];
+    
+    meetingRoleCellColorHueDict= [[[self userToEdit] getRole:@"EventRole"] mapFieldsToCellColorHue];
     
     
     [meetingRoleDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {

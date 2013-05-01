@@ -160,4 +160,19 @@
     [MBProgressHUD hideHUDForView:view animated:YES];
 }
 
+
+/*---------------------------------------------------------------------------
+ * Compares two dates to see if they are within the same week
+ *--------------------------------------------------------------------------*/
++ (BOOL) weekIsEqual:(NSDate *)date and:(NSDate *)otherDate {
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    
+    unsigned unitFlags = NSYearForWeekOfYearCalendarUnit | NSWeekOfYearCalendarUnit;
+    NSDateComponents *dateComponents      = [gregorian components:unitFlags fromDate:date];
+    NSDateComponents *otherDateComponents = [gregorian components:unitFlags fromDate:otherDate];
+    
+    gregorian = nil;
+    return [dateComponents weekOfYear] == [otherDateComponents weekOfYear] && [dateComponents yearForWeekOfYear] == [otherDateComponents yearForWeekOfYear];
+}
+
 @end

@@ -103,13 +103,6 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                lastName:(NSString *)aLastName;
 
 
-- (id)initWithFirstName:(NSString *)aFirstName
-               lastName:(NSString *)aLastName
-         avatarLocation:(NSString *)anAvatarLocation
-               objectId:(NSString *)anObjectId
-                 userId:(NSString *)aUserId
-                eventId:(NSString *)anEventId;
-
 - (id)initWithDisplayName:(NSString *)aDisplayName
            avatarLocation:(NSString *)location
                  objectId:(NSString *)anObjectId

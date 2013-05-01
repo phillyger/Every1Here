@@ -1,6 +1,6 @@
 //
 //  EmptyTableViewDataSource.m
-//  Anseo
+//  E1H
 //
 //  Created by Ger O'Sullivan on 2/8/13.
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
@@ -12,6 +12,7 @@
 #import "Event.h"
 #import "Group.h"
 #import "Venue.h"
+#import "CommonUtilities.h"
 
 static NSString *eventCellReuseIdentifier = @"eventCell";
 
@@ -100,6 +101,7 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
 //    NSParameterAssert([indexPath section] == 0);
 //    NSParameterAssert([indexPath row] < [events count]);
     static NSDateFormatter *dateFormatter = nil;
+    
     UITableViewCell *cell = nil;
     if ([events count]) {
          NSString *sectionName = sectionHeaderTitleList[indexPath.section];
@@ -137,6 +139,7 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
         eventCell.monthLabel.text = [dateArray[1] uppercaseString];
         eventCell.dateLabel.text = dateArray[2];
         eventCell.starttimeLabel.text = datetimeArray[1];
+        
 
         eventCell.textLabel.backgroundColor = [UIColor clearColor]; // NEW
         eventCell.dayLabel.backgroundColor = [UIColor clearColor]; // NEW
@@ -308,6 +311,7 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
     
     NSDictionary *thisSectionHeaderTitle = [[NSDictionary alloc] init];
     NSInteger daysOffset = [self numberOfDaysBetweenBaseDate:baseDate offsetDate:eventStartDate];
+    BOOL weekIsEqual = false;
     
     // Ensure that we are using the absolute value.
     switch (ABS(daysOffset)) {
@@ -321,18 +325,24 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
             thisSectionHeaderTitle = sectionHeaderTitles[2];
             break;
         case 3 ... 7:
-            thisSectionHeaderTitle = sectionHeaderTitles[3];
+            weekIsEqual = [CommonUtilities weekIsEqual:baseDate and:eventStartDate];
+            if (weekIsEqual) {
+                thisSectionHeaderTitle = sectionHeaderTitles[3];
+            } else {
+                thisSectionHeaderTitle = sectionHeaderTitles[4];
+            }
+            
             break;
         case 8 ... 14:
             thisSectionHeaderTitle = sectionHeaderTitles[4];
             break;
-        case 15 ... 25:
+        case 15 ... 21:
             thisSectionHeaderTitle = sectionHeaderTitles[5];
             break;
-        case 26 ... 31:
+        case 22 ... 28:
             thisSectionHeaderTitle = sectionHeaderTitles[6];
             break;
-        case 32 ... 62:
+        case 29 ... 62:
             thisSectionHeaderTitle = sectionHeaderTitles[7];
             break;
         case 63 ... 93:

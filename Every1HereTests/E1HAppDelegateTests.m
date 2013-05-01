@@ -1,27 +1,27 @@
 //
-//  AnseoAppDelegateTests.m
-//  Anseo
+//  E1HAppDelegateTests.m
+//  E1H
 //
 //  Created by Ger O'Sullivan on 2/12/13.
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
 //
 
 #import "E1HAppDelegateTests.h"
-#import "AnseoAppDelegate.h"
+#import "E1HAppDelegate.h"
 #import "BaseViewController.h"
 #import "EventListTableDataSource.h"
 
 @implementation E1HAppDelegateTests {
     UIWindow *window;
     UINavigationController *navigationController;
-    AnseoAppDelegate *appDelegate;
+    E1HAppDelegate *appDelegate;
     BOOL didFinishLaunchingWithOptionsReturn;
 }
 
 - (void)setUp {
     window = [[UIWindow alloc] init];
     navigationController = [[UINavigationController alloc] init];
-    appDelegate = [[AnseoAppDelegate alloc] init];
+    appDelegate = [[E1HAppDelegate alloc] init];
     appDelegate.window = window;
 
 //    appDelegate.navigationController = navigationController;
@@ -35,17 +35,17 @@
 }
 
 
-//- (void)testWindowHasRootNavigationControllerAfterApplicationLaunch {
-//    STAssertEqualObjects(window.rootViewController, navigationController, @"App delegate's navigation controller should be the root VC");
-//}
+- (void)testWindowHasRootNavigationControllerAfterApplicationLaunch {
+    STAssertEqualObjects(window.rootViewController, navigationController, @"App delegate's navigation controller should be the root VC");
+}
 //
 //- (void)testAppDidFinishLaunchingReturnsYES {
 //    STAssertTrue(didFinishLaunchingWithOptionsReturn, @"Method should return YES");
 //}
 
-//- (void)testNavigationControllerShowsAnAnseoViewController {
+//- (void)testNavigationControllerShowsAnE1HViewController {
 //    id visibleViewController = appDelegate.navigationController.topViewController;
-//    STAssertTrue([visibleViewController isKindOfClass: [AnseoViewController class]], @"Views in this app are supplied by BrowseOverflowViewControllers");
+//    STAssertTrue([visibleViewController isKindOfClass: [E1HViewController class]], @"Views in this app are supplied by BrowseOverflowViewControllers");
 //}
 //
 //- (void)testFirstViewControllerHasAEventTableDataSource {
@@ -54,7 +54,7 @@
 //}
 
 //- (void)testEventListIsNotEmptyOnAppLaunch {
-//    id <UITableViewDataSource> dataSource = [(AnseoViewController *)[appDelegate.navigationController topViewController] dataSource];
+//    id <UITableViewDataSource> dataSource = [(E1HViewController *)[appDelegate.navigationController topViewController] dataSource];
 //    STAssertFalse([dataSource tableView: nil numberOfRowsInSection: 0] == 0, @"There should be some rows to display");
 //}
 

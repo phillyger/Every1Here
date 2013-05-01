@@ -16,7 +16,7 @@
 + (NSString *)fetchUriEndPointFromPListForNamedClass:(NSString *)namedClass;
 + (NSString *)serializeRequestParmetersWithDictionary:(NSDictionary *)dict;
 + (NSString *) convertUserTypeToNamedClass:(UserTypes)userType;
-
++ (BOOL) weekIsEqual:(NSDate *)date and:(NSDate *)otherDate;
 
 +(void)showProgressHUD:(UIView *)view;
 +(void)hideProgressHUD:(UIView *)view;
