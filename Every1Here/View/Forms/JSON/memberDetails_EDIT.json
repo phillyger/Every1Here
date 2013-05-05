@@ -16,10 +16,10 @@
                  
                  { "title": "Meeting Roles", "elements":[
                                {"type":"QBooleanElement", "key":"isSpeaker", "title":"Speaker", "boolValue":0},
-                               {"type":"QBooleanElement", "key":"isTableTopicsSpeaker", "title":"Table Topics Speaker", "boolValue":0},
                                {"type":"QBooleanElement", "key":"isToastmaster", "title":"Toastmaster", "boolValue":0},
-                               {"type":"QBooleanElement", "key":"isGeneralEvaluator", "title":"General Evaluator", "boolValue":0},
                                {"type":"QBooleanElement", "key":"isEvaluator", "title":"Evaluator", "boolValue":0},
+                               {"type":"QBooleanElement", "key":"isGeneralEvaluator", "title":"General Evaluator", "boolValue":0},
+                               {"type":"QBooleanElement", "key":"isTableTopicsSpeaker", "title":"Table Topics Speaker", "boolValue":0},
                                {"type":"QBooleanElement", "key":"isTableTopicsMaster", "title":"Table Topics Master", "boolValue":0},
                                {"type":"QBooleanElement", "key":"isTimer", "title":"Timer", "boolValue":0},
                                {"type":"QBooleanElement", "key":"isGrammarian", "title":"Grammarian", "boolValue":0},

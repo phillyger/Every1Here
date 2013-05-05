@@ -184,7 +184,7 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
                                               @"index": @6},
                                             @{@"title":@"Next Month",
                                               @"index": @7},
-                                            @{@"title":@"In Two Monthsy",
+                                            @{@"title":@"In Two Months",
                                               @"index": @8},
                                             @{@"title":@"In The Future...",
                                               @"index": @9},
@@ -324,7 +324,7 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
         case 2:
             thisSectionHeaderTitle = sectionHeaderTitles[2];
             break;
-        case 3 ... 7:
+        case 3 ... 9:
             weekIsEqual = [CommonUtilities weekIsEqual:baseDate and:eventStartDate];
             if (weekIsEqual) {
                 thisSectionHeaderTitle = sectionHeaderTitles[3];
@@ -333,19 +333,16 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
             }
             
             break;
-        case 8 ... 14:
-            thisSectionHeaderTitle = sectionHeaderTitles[4];
-            break;
-        case 15 ... 21:
+        case 10 ... 14:
             thisSectionHeaderTitle = sectionHeaderTitles[5];
             break;
-        case 22 ... 28:
+        case 15 ... 22:
             thisSectionHeaderTitle = sectionHeaderTitles[6];
             break;
-        case 29 ... 62:
+        case 23 ... 35:
             thisSectionHeaderTitle = sectionHeaderTitles[7];
             break;
-        case 63 ... 93:
+        case 36 ... 63:
             thisSectionHeaderTitle = sectionHeaderTitles[8];
             break;
         default:

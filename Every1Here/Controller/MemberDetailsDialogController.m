@@ -218,11 +218,11 @@
     [meetingRoleDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 //        NSLog(@"key %@: value %d", key, [obj integerValue]);
         __weak QBooleanElement *thisElement = (QBooleanElement *)[self.root elementWithKey: key];
-        thisElement.onValueChanged = ^(QRootElement *el){
+//        thisElement.onValueChanged = ^(QRootElement *el){
 //            NSLog(@"Flag changed");
 //            NSLog(@"%@", [thisElement numberValue]);
 //           
-        };
+//        };
         NSString *iconString = meetingRoleIconDict[key];
         [thisElement setImage:[UIImage imageNamed:iconString]];
         if (thisElement != nil) {
