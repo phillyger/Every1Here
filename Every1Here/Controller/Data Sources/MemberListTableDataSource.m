@@ -95,11 +95,22 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
         
         NSURLRequest *request = [NSURLRequest requestWithURL:user.avatarURL];
         __weak UIImageView *imageView = memberCell.avatarView;
+        
         [memberCell.avatarView setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"profile-image-placeholder.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
             imageView.image = image;
-            CALayer *layer = imageView.layer;
-            layer.masksToBounds = YES;
-            layer.cornerRadius = 10.0f;
+
+            // use the image's layer to mask the image into a circle
+            imageView.layer.cornerRadius = roundf(imageView.frame.size.width/2.0);
+            imageView.layer.masksToBounds = YES;
+
+            [imageView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+            [imageView.layer setBorderWidth:1.5f];
+            [imageView.layer setShadowColor:[UIColor blackColor].CGColor];
+            [imageView.layer setShadowOpacity:0.8];
+            [imageView.layer setShadowRadius:3.0];
+            [imageView.layer setShadowOffset:CGSizeMake(2.0, 2.0)];
+            
+
         } failure:NULL];
 
 
@@ -135,6 +146,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 - (void)avatarStoreDidUpdateContent:(NSNotification *)notification {
     [tableView reloadData];
 }
+
 
 @end
 
