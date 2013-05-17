@@ -15,17 +15,18 @@
 - (id)initWithName:(NSString *)aName
            urlName:(NSString *)aUrlName
            groupId:(NSNumber *)aGroupId
+          objectId:(NSString *)anObjectId
 {
 
     if ((self = [super init])) {
         name = [aName copy];
         urlName = [aUrlName copy];
         groupId = [aGroupId copy];
-//        objectId = [anObjectId copy];
-//        aName = nil;
-//        aGroupId = nil;
-//        aUrlName = nil;
-//        anObjectId = nil;
+        objectId = [anObjectId copy];
+        aName = nil;
+        aGroupId = nil;
+        aUrlName = nil;
+        anObjectId = nil;
     }
     return self;
 
@@ -33,7 +34,7 @@
 
 - (id)initWithName:(NSString *)aName urlName:(NSString *)aUrlName
 {
-    return [self initWithName:aName urlName:aUrlName groupId:nil];
+    return [self initWithName:aName urlName:aUrlName groupId:nil objectId:nil];
 }
 
 - (id)initWithName:(NSString *)aName

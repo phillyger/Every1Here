@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>userId</key>
-	<string>userId</string>
+	<string>@pointer::_User</string>
 	<key>displayName</key>
 	<string>displayName</string>
 	<key>isActive</key>

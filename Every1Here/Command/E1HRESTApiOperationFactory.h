@@ -16,6 +16,7 @@
 -(RESTApiOperation *)createOperationWithDict:(NSDictionary *)aDict forNamedClass:(NSString *)aNamedClass;
 -(RESTApiOperation *)createOperationWithId:(NSString *)anId forNamedClass:(NSString *)aNamedClass;
 -(RESTApiOperation *)createOperationWithObj:(id)anObject forNamedClass:(NSString *)aNamedClass withQuery:(NSDictionary *)aQuery;
+-(RESTApiOperation *)createOperationWithObj:(id)anObject forNamedClass:(NSString *)aNamedClass withQuery:(NSDictionary *)aQuery withIncludes:(NSArray *)includes;
 
 
 @end

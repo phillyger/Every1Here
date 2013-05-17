@@ -18,6 +18,6 @@
 
 - (id)initWithName:(NSString *)name;
 - (id)initWithName:(NSString *)name urlName:(NSString *)urlName;
-- (id)initWithName:(NSString *)name urlName:(NSString *)urlName groupId:(NSNumber *)groupId;
+- (id)initWithName:(NSString *)name urlName:(NSString *)urlName groupId:(NSNumber *)groupId objectId:(NSString *)anObjectId;
 
 @end

@@ -84,11 +84,14 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
                        @{@"$inQuery":
                        @{@"where":
                        @{@"orgId":orgId},
-                       @"className":@"Group"}}} mutableCopy];   
+                       @"className":@"Group"}}} mutableCopy];
+    
+    NSArray *includes = @[@"groupId", @"venueId"];
+    
     NSLog(@"%@", queryParameters);
     
     id fetchMemberOp= [E1HOperationFactory create:actionType];
-    RESTApiOperation *op1 = [fetchMemberOp createOperationWithObj:nil forNamedClass:namedClass withQuery:queryParameters];
+    RESTApiOperation *op1 = [fetchMemberOp createOperationWithObj:nil forNamedClass:namedClass withQuery:queryParameters withIncludes:includes];
     [operations addObject:op1];
     
     
@@ -169,11 +172,21 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     [operations addObject:usersOp];
     
     // Fetch operation to return list of Attendance
-    NSString *attendancenamedClass = [@"Attendance" mutableCopy];
-    queryParameters = [@{@"eventId" : [event valueForKey:@"objectId"]} mutableCopy];
+    NSString *attendanceNamedClass = [@"Attendance" mutableCopy];
+//    queryParameters = [@{@"eventId" : [event valueForKey:@"objectId"]} mutableCopy];
+    
+    
+    queryParameters = [@{@"eventId":
+                       @{@"__type": @"Pointer",
+                       @"className": @"Event",
+                       @"objectId": [event valueForKey:@"objectId"]}}
+                       mutableCopy];
+    
+
+    
     
     id fetchAttendanceOp= [E1HOperationFactory create:actionType];
-    RESTApiOperation *attendanceOp = [fetchAttendanceOp createOperationWithObj:event forNamedClass:attendancenamedClass withQuery:queryParameters];
+    RESTApiOperation *attendanceOp = [fetchAttendanceOp createOperationWithObj:event forNamedClass:attendanceNamedClass withQuery:queryParameters];
     [operations addObject:attendanceOp];
     
     fetchUserOp=nil;

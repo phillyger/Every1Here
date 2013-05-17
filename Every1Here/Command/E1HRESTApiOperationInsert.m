@@ -44,6 +44,9 @@
     return nil;
 }
 
+-(RESTApiOperation *)createOperationWithObj:(id)anObject forNamedClass:(NSString *)aNamedClass withQuery:(NSDictionary *)aQuery withIncludes:(NSArray *)includes {
+    return nil;
+}
 
 
 @end

@@ -30,6 +30,7 @@
     NSString *pathToPList=[[NSBundle mainBundle] pathForResource:namedClass ofType:@"plist"];
     NSDictionary *pListInfoDict = [[NSDictionary alloc] initWithContentsOfFile:pathToPList];
     NSMutableDictionary *dataDict = [[NSMutableDictionary alloc] init];
+    NSString *dataTypeToNamedClassSeparator = @"::";
     
     //-------------------------------------------------------
     // Enumerate through pList to process field types.
@@ -67,6 +68,36 @@
                 
                 [dataDict setValue:dateParams forKey:thisKey];
 
+            } else if ([thisObj hasPrefix:@"@pointer"]) {
+            
+                
+                NSString *thisObjectId = [anObject valueForKeyPath: thisKey];
+
+                if (thisObjectId != nil) {
+                    
+                    NSArray *dataTypeToNamedClass = [thisObj componentsSeparatedByString:dataTypeToNamedClassSeparator];
+                    
+                    // Ensure the namedClass attribute is present.
+                    if ([dataTypeToNamedClass count] > 1) {
+                        //-------------------------------------------------------
+                        // Set the target class to the second component attribute
+                        // i.e. @pointer::namedClass
+                        //-------------------------------------------------------
+                        NSString *thisTargetClassName = dataTypeToNamedClass[1];
+                        
+                        NSString *thisKeyPathClassName = @"className";
+                        NSString *thisKeyPathObjectId = @"objectId";
+                        NSString *thisKeyPathType = @"__type";
+                        
+                        NSDictionary *relationsParams = @{thisKeyPathType : @"Pointer",
+                                                     thisKeyPathClassName : thisTargetClassName,
+                                                     thisKeyPathObjectId : thisObjectId};
+                        
+                        [dataDict setValue:relationsParams forKey:thisKey];
+                    }
+                }
+                
+            
             } else if ([thisObj isEqualToString:@"@string"]){
                 NSURL *toStringObj = [anObject valueForKey:thisKey];
 

@@ -14,10 +14,11 @@
 + (Group *)groupFromDictionary:(NSDictionary *)groupValues
 {
     NSString *name = groupValues[@"name"];
-    NSString *urlName = groupValues[@"urlname"];
-    NSNumber *groupId = [NSNumber numberWithDouble:[groupValues[@"id"] doubleValue]];
+    NSString *urlName = groupValues[@"groupUrlName"];
+    NSString *objectId = groupValues[@"objectId"];
+NSNumber *groupId = [NSNumber numberWithDouble:[groupValues[@"groupId"] doubleValue]];
     
-    Group *group = [[Group alloc] initWithName:name urlName:urlName groupId:groupId];
+    Group *group = [[Group alloc] initWithName:name urlName:urlName groupId:groupId objectId:objectId];
     
     return group;
 }

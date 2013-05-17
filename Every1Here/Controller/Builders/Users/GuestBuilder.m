@@ -85,17 +85,18 @@
                 [attendance enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     NSDictionary *attendanceRow = (NSDictionary *)obj;
                     EventRole *thisEventRole = [user getRole:@"EventRole"];
-                    NSString *attendanceUserId = (NSString *)[attendanceRow objectForKey:@"userId"];
-                    NSString *userId = [user userId];
+                    NSString *attendanceUserId = (NSString *)[attendanceRow valueForKeyPath:@"userId.objectId"];
+                    NSString *guestUserId = [user valueForKeyPath:@"userId.objectId"];
                     //NSLog(@"userId - attendanceRow : %@ for %@", attendanceUserId, [user displayName]);
                     //NSLog(@"userId - user: %@ for %@", memberUserId, [user displayName]);
                     
-                    /**
-                     *  Traverse the list of users and set the event roles attributes accordingly.
-                     **/
-                    if ([attendanceUserId isEqualToString:userId]) {
-                        [user setAttendanceId:[attendanceRow objectForKey:@"objectId"]];
-    //                    [thisEventRole setEventRoles: [[attendanceRow objectForKey:@"eventRoles"]unsignedIntValue]];
+                    //-------------------------------------------------------
+                    //  Traverse the list of users and set the event roles
+                    //  attributes accordingly.
+                    //-------------------------------------------------------
+                    if ([attendanceUserId isEqualToString:guestUserId]) {
+                        // set User instances' Attendance ID
+                        [user setAttendanceId:[attendanceRow valueForKeyPath:@"objectId"]];
                         [thisEventRole setAttendance:TRUE];
                         [thisEventRole setGuestCount:[[attendanceRow objectForKey:@"guestCount"]unsignedIntValue]];
                     }

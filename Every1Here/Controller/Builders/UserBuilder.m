@@ -20,18 +20,26 @@
 
     User *user = nil;
     
-    NSString *firstName = [userValues valueForKey:@"firstName"];
-    NSString *lastName = [userValues valueForKey: @"lastName"];
-    NSString *objectId = [userValues valueForKey:@"objectId"];
-    NSString *userId = [userValues valueForKey:@"userId"];
-    NSString *displayName = [userValues valueForKey:@"displayName"];
+    NSString *firstName = [userValues valueForKeyPath:@"firstName"];
+    NSString *lastName = [userValues valueForKeyPath: @"lastName"];
+    NSString *objectId = [userValues valueForKeyPath:@"objectId"];
     
-//    if ([memberValues valueForKey:@"userId"]!=nil) {
-//        userId = [memberValues valueForKey:@"userId"];
-//    }
-    NSString *primaryEmail = [userValues valueForKey:@"primaryEmail"];
-    NSString *eventId = [userValues valueForKey:@"eventId"];
-    NSString *avatarLocation = [userValues valueForKey:@"avatarURL"];
+    //-------------------------------------------------------
+    // userId column is a pointer data type in Parse.
+    // "userId": [
+    //            {
+    //                "__type": "Pointer",
+    //                "className": "_User",
+    //                "objectId": "Ed1nuqPvc"
+    //            }
+    //-------------------------------------------------------
+    NSString *userId = [userValues valueForKeyPath:@"userId.objectId"];
+    NSString *displayName = [userValues valueForKeyPath:@"displayName"];
+    
+
+    NSString *primaryEmail = [userValues valueForKeyPath:@"primaryEmail"];
+    NSString *eventId = [userValues valueForKeyPath:@"eventId"];
+    NSString *avatarLocation = [userValues valueForKeyPath:@"avatarURL"];
 
     
 //    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -112,18 +120,18 @@
 
 
 + (User *)guestFromTwitterDotCom:(NSDictionary *)guestValues {
-    NSString *displayName = [guestValues objectForKey: @"name"];
-    NSString *avatarURL = guestValues[@"profile_background_image_url"];
-    NSString *eventId = guestValues[@"eventId"];
+    NSString *displayName = [guestValues valueForKeyPath: @"name"];
+    NSString *avatarURL = [guestValues valueForKeyPath:@"profile_background_image_url"];
+    NSString *eventId = [guestValues valueForKeyPath:@"eventId"];
     User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL objectId:nil userId:nil eventId:eventId slType:Twitter];
     return user;
 }
 
 
 + (User *)guestFromMeetupDotCom:(NSDictionary *)guestValues {
-    NSString *displayName = [guestValues objectForKey: @"name"];
-    NSString *avatarURL = guestValues[@"photo"][@"thumb_link"];
-    NSString *eventId = guestValues[@"eventId"];
+    NSString *displayName = [guestValues valueForKeyPath: @"name"];
+    NSString *avatarURL = [guestValues valueForKeyPath:@"photo.thumb_link"];
+    NSString *eventId = [guestValues valueForKeyPath:@"eventId"];
     User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL objectId:nil userId:nil eventId:eventId slType:Meetup];
     return user;
 }

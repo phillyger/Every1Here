@@ -17,8 +17,8 @@
     
     
     
-    NSString *eventId = attendanceValues[@"eventId"];
-    NSString *userId = attendanceValues[@"userId"];
+    NSString *eventId = [attendanceValues valueForKeyPath:@"eventId.objectId"];
+    NSString *userId = [attendanceValues valueForKeyPath:@"userId.objectId"];
     NSNumber *guestCount = [NSNumber numberWithInteger:[attendanceValues[@"guestCount"] integerValue]];
     NSNumber *eventRoles = [NSNumber numberWithInteger:[attendanceValues[@"eventRoles"] integerValue]];
         

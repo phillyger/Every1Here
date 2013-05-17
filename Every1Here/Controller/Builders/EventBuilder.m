@@ -125,7 +125,7 @@
         thisEvent.status = parsedEvent[@"status"];
         
         // Build group object
-        NSDictionary *groupValues = parsedEvent[@"group"];
+        NSDictionary *groupValues = parsedEvent[@"groupId"];
         if (groupValues != nil) {
             thisEvent.group = [GroupBuilder groupFromDictionary: groupValues];
         } else {
@@ -133,7 +133,7 @@
         }
         
         // Build venue
-        NSDictionary *venueValues = parsedEvent[@"venue"];
+        NSDictionary *venueValues = parsedEvent[@"venueId"];
         if (venueValues != nil) {
             thisEvent.venue = [VenueBuilder venueFromDictionary: venueValues];
         } else {

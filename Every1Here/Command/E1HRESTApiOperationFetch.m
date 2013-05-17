@@ -41,4 +41,21 @@
     return newRESTApiOperation;
 }
 
+
+-(RESTApiOperation *)createOperationWithObj:(id)anObject forNamedClass:(NSString *)aNamedClass withQuery:(NSDictionary *)aQuery withIncludes:(NSArray *)includes {
+    NSDictionary *thisDataDict = @{@"where" : [CommonUtilities serializeRequestParmetersWithDictionary:aQuery],
+                                   @"include": [includes componentsJoinedByString:@","]};
+
+//    NSDictionary *thisDataDict = @{@"include": @"groupdId"};
+    
+    NSMutableString *thisUriEndPoint = [[CommonUtilities fetchUriEndPointFromPListForNamedClass:aNamedClass] mutableCopy];
+    
+    NSLog(@"%@", thisDataDict);
+    
+    RESTApiOperation *newRESTApiOperation = [[RESTApiOperation alloc] initWithUriMethod:@"GET" uriPath:thisUriEndPoint data:thisDataDict];
+    
+    return newRESTApiOperation;
+    
+}
+
 @end
