@@ -84,8 +84,13 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 {
     [super viewDidLoad];
 
+    
+    NSString *backArrowString = @"\U000025C0\U0000FE0E"; //BLACK LEFT-POINTING TRIANGLE PLUS VARIATION SELECTOR
+    
+    UIBarButtonItem *dismissBttnItem = [[UIBarButtonItem alloc] initWithTitle:backArrowString style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+//    self.navigationItem.leftButtonItem = backBarButtonItem;
 
-    UIBarButtonItem *dismissBttnItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismiss)];
+//    UIBarButtonItem *dismissBttnItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismiss)];
     UIBarButtonItem *addNewMemberBttnItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewMember)];
 
     [self.navigationItem setLeftBarButtonItem: dismissBttnItem];

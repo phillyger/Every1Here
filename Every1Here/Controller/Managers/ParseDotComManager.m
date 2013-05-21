@@ -59,7 +59,8 @@
 -(void)updateAttendanceForUser:(User*)user {
     ActionTypes actionType = Update;
     
-    NSString *namedClass = @"Attendance";
+    NSString *namedClass = [user hasRole:@"GuestRole"] ? @"GuestAttendance":@"Attendance";
+
     
     [communicator updateAttendance:(User*)user
                            forNamedClass:namedClass
@@ -106,7 +107,7 @@
 - (void)deleteAttendanceForUser:(User *)user {
     ActionTypes actionType = Delete;
     
-    NSString *namedClass = @"Attendance";
+    NSString *namedClass = [user hasRole:@"GuestRole"] ? @"GuestAttendance":@"Attendance";
     
     [communicator deleteAttendance:(User*)user
                       forNamedClass:namedClass

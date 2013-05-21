@@ -13,4 +13,6 @@
 @property (strong) IBOutlet UILabel *displayNameLabel;
 @property (strong) IBOutlet UIImageView *avatarView;
 
+@property (strong) IBOutlet UIImageView * attendance;
+
 @end

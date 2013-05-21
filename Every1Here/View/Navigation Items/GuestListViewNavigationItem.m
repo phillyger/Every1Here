@@ -28,7 +28,12 @@
 //        [rightBarButtonItem setTarget:self.delegate];
 //        [rightBarButtonItem setAction:@selector(createNewGuest)];
         
-        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self.delegate action:@selector(dismissViewController)];
+//        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self.delegate action:@selector(dismissViewController)];
+        
+        NSString *backArrowString = @"\U000025C0\U0000FE0E"; //BLACK LEFT-POINTING TRIANGLE PLUS VARIATION SELECTOR
+        
+        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:backArrowString style:UIBarButtonItemStylePlain target:self.delegate action:@selector(dismissViewController)];
+        
         self.rightBarButtonItem = rightBarButtonItem;
         self.leftBarButtonItem = leftBarButtonItem;
     }

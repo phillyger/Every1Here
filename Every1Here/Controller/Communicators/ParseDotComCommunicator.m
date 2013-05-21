@@ -34,7 +34,7 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
 
 - (void)launchBatchConnectionForRequests {
     
-    [self cancelAndDiscardURLConnection];
+    //[self cancelAndDiscardURLConnection];
     
     [[AFParseDotComAPIClient sharedClient] enqueueBatchOfHTTPRequestOperationsWithRequests:fetchingURLRequestList progressBlock:^(NSUInteger numberOfCompletedOperations, NSUInteger totalNumberOfOperations) {
         NSLog(@"%lu of %lu Completed", (unsigned long)numberOfCompletedOperations, (unsigned long)totalNumberOfOperations);

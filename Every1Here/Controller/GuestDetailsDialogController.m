@@ -17,6 +17,7 @@
     EventRole *thisEventRole;
     
     NSNumber *postAttendance;
+    NSString *postPrimaryEmailAddr;
     NSString *postDisplayName;
 }
 
@@ -103,10 +104,13 @@
         if (![self isNewUser]) {
             
             [[self userToEdit] setValue:postAttendance forKeyPath:@"roles.EventRole.attendance"];
+            [[self userToEdit] setValue:postPrimaryEmailAddr forKeyPath:@"primaryEmailAddr"];
             [self computeDisplayName];
+            
         } else {
             [self.userToEdit addRole:@"GuestRole"];
             [self.userToEdit addRole:@"EventRole"];
+            [[self userToEdit] setValue:postPrimaryEmailAddr forKeyPath:@"primaryEmailAddr"];
             [self computeDisplayName];
         }
         
@@ -238,15 +242,17 @@
     
     NSNumber *preAttendance = [[self userToEdit] valueForKeyPath:@"roles.EventRole.attendance"];
     NSString *preDisplayName = [[self userToEdit] valueForKeyPath:@"displayName"];
+    NSString *prePrimaryEmailAddr = [[self userToEdit] valueForKeyPath:@"primaryEmailAddr"];
     
     postDisplayName = [self computeDisplayName];
     postAttendance = [NSNumber numberWithInt:[[(QBooleanElement *)[[self root] elementWithKey:@"attendance"] numberValue] intValue]] ;
-    
+    postPrimaryEmailAddr = [(QEntryElement *)[[self root] elementWithKey:@"primaryEmailAddr"] textValue];
     
     
     //    if ((preEventRoles != postEventRoles) || (preAttendance != postAttendance) || (preGuestCount != postGuestCount))
     if (([preAttendance boolValue] != [postAttendance boolValue])
-        || (![preDisplayName isEqualToString:postDisplayName]))
+        || (![preDisplayName isEqualToString:postDisplayName])
+        || (![prePrimaryEmailAddr isEqualToString:postPrimaryEmailAddr]))
         self.hasFormBeenEdited = TRUE;
     
 }

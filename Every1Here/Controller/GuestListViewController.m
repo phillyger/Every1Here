@@ -382,7 +382,46 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     GuestDetailsDialogController *guestDetailsController = [(GuestDetailsDialogController *)[GuestDetailsDialogController alloc] initWithRoot:root];
     guestDetailsController.userToEdit = selectedGuest;
     
+    
+    //-------------------------------------------------------
+    // KVO Receptionist pattern for handling changes to
+    // displayName field.
+    //-------------------------------------------------------
+    displayNameReceptionist = [Receptionist receptionistForKeyPath:@"displayName"
+                                                            object:selectedGuest
+                                                             queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
+                                                                 
+                                                                 
+                                                                 NSLog(@"Running DisplayName Receptionist ...");
+                                                                 NSString *oldDisplayName = [change objectForKey:NSKeyValueChangeOldKey];
+                                                                 NSString *newDisplayName = [change objectForKey:NSKeyValueChangeNewKey] ;
+                                                                 
+                                                                 if (![newDisplayName isEqualToString:oldDisplayName]) {
+                                                                     [parseDotComMgr updateUser:selectedGuest withUserType:Guest];
+                                                                 }
+                                                                 
+                                                             }];
+    
 
+    //-------------------------------------------------------
+    // KVO Receptionist pattern for handling changes to
+    // displayName field.
+    //-------------------------------------------------------
+    primaryEmailAddrReceptionist = [Receptionist receptionistForKeyPath:@"primaryEmailAddr"
+                                                            object:selectedGuest
+                                                             queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
+                                                                 
+                                                                 
+                                                                 NSLog(@"Running Primary Email Receptionist ...");
+                                                                 NSString *oldPrimaryEmailAddr = [change objectForKey:NSKeyValueChangeOldKey];
+                                                                 NSString *newPrimaryEmailAddr = [change objectForKey:NSKeyValueChangeNewKey] ;
+                                                                 
+                                                                 if (![newPrimaryEmailAddr isEqualToString:oldPrimaryEmailAddr]) {
+                                                                     [parseDotComMgr updateUser:selectedGuest withUserType:Guest];
+                                                                 }
+                                                                 
+                                                             }];
+    
     
     //-------------------------------------------------------
     // KVO Receptionist pattern for handling changes to
@@ -415,69 +454,13 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
                                                                 }
                                                                 
                                                             }];
-    
-    //-------------------------------------------------------
-    // KVO Receptionist pattern for handling changes to
-    // displayName field.
-    //-------------------------------------------------------
-    displayNameReceptionist = [Receptionist receptionistForKeyPath:@"displayName"
-                                                            object:selectedGuest
-                                                             queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
-                                                                 
-                                                                 
-                                                                 NSLog(@"Running DisplayName Receptionist ...");
-                                                                 NSString *oldDisplayName = [change objectForKey:NSKeyValueChangeOldKey];
-                                                                 NSString *newDisplayName = [change objectForKey:NSKeyValueChangeNewKey] ;
-                                                                 
-                                                                 if (![newDisplayName isEqualToString:oldDisplayName]) {
-                                                                     [parseDotComMgr updateUser:selectedGuest withUserType:Guest];
-                                                                 }
-                                                                 
-                                                             }];
-    
-    //-------------------------------------------------------
-    // KVO Receptionist pattern for handling changes to
-    // displayName field.
-    //-------------------------------------------------------
-//    firstNameReceptionist = [Receptionist receptionistForKeyPath:@"firstName"
-//                                                            object:selectedGuest
-//                                                             queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
-//                                                                 
-//                                                                 
-//                                                                 NSLog(@"Running firstName Receptionist ...");
-//                                                                 NSString *oldFirstName = [change objectForKey:NSKeyValueChangeOldKey];
-//                                                                 NSString *newFirstName = [change objectForKey:NSKeyValueChangeNewKey] ;
-//                                                                 
-//                                                                 if (![newFirstName isEqualToString:oldFirstName]) {
-//                                                                     [parseDotComMgr updateUser:selectedGuest withUserType:Guest];
-//                                                                 }
-//                                                                 
-//                                                             }];
-
-    //-------------------------------------------------------
-    // KVO Receptionist pattern for handling changes to
-    // displayName field.
-    //-------------------------------------------------------
-    primaryEmailAddrReceptionist = [Receptionist receptionistForKeyPath:@"primaryEmailAddr"
-                                                            object:selectedGuest
-                                                             queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
-                                                                 
-                                                                 
-                                                                 NSLog(@"Running DisplayName Receptionist ...");
-                                                                 NSString *oldPrimaryEmailAddr = [change objectForKey:NSKeyValueChangeOldKey];
-                                                                 NSString *newPrimaryEmailAddr = [change objectForKey:NSKeyValueChangeNewKey] ;
-                                                                 
-                                                                 if (![newPrimaryEmailAddr isEqualToString:oldPrimaryEmailAddr]) {
-                                                                     [parseDotComMgr updateUser:selectedGuest withUserType:Guest];
-                                                                 }
-                                                                 
-                                                             }];
-    
 
     guestDetailsController.completionBlock = ^(BOOL success)
     {
         if (success)
         {
+            [selectedGuest removeObserver:displayNameReceptionist forKeyPath:@"displayName"];
+            [selectedGuest removeObserver:primaryEmailAddrReceptionist forKeyPath:@"primaryEmailAddr"];
             [selectedGuest removeObserver:attendanceReceptionist forKeyPath:@"roles.EventRole.attendance"];
 
         }
@@ -621,16 +604,38 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     
 }
 
--(void)didUpdateAttendanceWithUser:(User *)selectedUser withEvent:(Event *)selectedEvent {
-    NSLog(@"Success!! We updated an existing attendance record into Parse");
+/*---------------------------------------------------------------------------
+ * Delegation callback for updating attendance record.
+ *--------------------------------------------------------------------------*/
+- (void)didUpdateAttendance {
+    NSLog(@"Success!! We updated Attendance record in Parse");
+    
+    [self.tableView reloadData];
+    
+    
+}
+
+/*---------------------------------------------------------------------------
+ * Delegation callback for deleting attendance record.
+ *--------------------------------------------------------------------------*/
+- (void)didDeleteAttendance {
+    NSLog(@"Success!! We deleted an existing Attendance record from Parse");
+    
+    
     [self.tableView reloadData];
 }
 
 
-- (void)didDeleteAttendanceForUser:(User *)selectedUser {
-    NSLog(@"Success!! We deleted an existing attendance record from Parse: %@", [selectedUser attendanceId]);
-    [self.tableView reloadData];
-}
+//-(void)didUpdateAttendanceWithUser:(User *)selectedUser withEvent:(Event *)selectedEvent {
+//    NSLog(@"Success!! We updated an existing attendance record into Parse");
+//    [self.tableView reloadData];
+//}
+//
+//
+//- (void)didDeleteAttendanceForUser:(User *)selectedUser {
+//    NSLog(@"Success!! We deleted an existing attendance record from Parse: %@", [selectedUser attendanceId]);
+//    [self.tableView reloadData];
+//}
 
 
 - (void)didInsertUserForUserType:(UserTypes)userType withOutput:(NSArray *)objectNotationList {
@@ -699,6 +704,8 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     
     
 }
+
+
 
 
 /*---------------------------------------------------------------------------

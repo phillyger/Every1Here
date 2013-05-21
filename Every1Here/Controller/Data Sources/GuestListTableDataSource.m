@@ -10,6 +10,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "GuestSummaryCell.h"
 #import "Event.h"
+#import "EventRole.h"
 #import "User.h"
 #import "AvatarStore.h"
 #import "GuestAttendeeListSection.h"
@@ -84,10 +85,10 @@ NSString *guestCellReuseIdentifier = @"guestSummaryCell";
         
         guestCell.displayNameLabel.text = user.displayName;
         
-        //        NSData *avatarData = [avatarStore dataForURL: user.avatarURL];
-        //        if (avatarData) {
-//        [guestCell.avatarView setImageWithURL:user.avatarURL placeholderImage:[UIImage imageNamed:@"profile-image-placeholder.png"]];
-        
+        [guestCell.attendance setImage:nil];
+        if ([[user getRole:@"EventRole"] isAttending]) {
+            [guestCell.attendance setImage:[UIImage imageNamed:@"imgOn"]];
+        }
         
         NSURLRequest *request = [NSURLRequest requestWithURL:user.avatarURL];
         __weak UIImageView *imageView = guestCell.avatarView;
