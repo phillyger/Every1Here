@@ -84,7 +84,7 @@
                           objectId:anObjectId
                             userId:aUserId
                            eventId:anEventId
-                            slType:NONE];
+                            slType:aSlType];
 
 }
 
