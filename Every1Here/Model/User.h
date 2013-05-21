@@ -80,6 +80,18 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
 
 - (id)init;
 
+
+- (id)initWithFirstName:(NSString *)aFirstName
+               lastName:(NSString *)aLastName
+            displayName:(NSString *)displayName
+       primaryEmailAddr:(NSString *)primaryEmailAddr
+     secondaryEmailAddr:(NSString *)secondaryEmailAddr
+         avatarLocation:(NSString *)location
+               objectId:(NSString *)anObjectId
+                 userId:(NSString *)aUserId
+                eventId:(NSString *)anEventId
+                 slType:(SocialNetworkType)aSlType;
+
 - (id)initWithFirstName:(NSString *)aFirstName
                lastName:(NSString *)aLastName
        primaryEmailAddr:(NSString *)primaryEmailAddr

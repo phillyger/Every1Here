@@ -37,6 +37,7 @@
 		284C6BEB1710FC98001855B5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 284C6BE01710F8C0001855B5 /* StoreKit.framework */; };
 		2857E7381728583600CB584F /* CommonUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 2857E7371728583600CB584F /* CommonUI.m */; };
 		2857E73B17286EAA00CB584F /* EventHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2857E73A17286EAA00CB584F /* EventHeader.m */; };
+		287772BF174BC34E00A0DF19 /* GuestAttendance.plist in Resources */ = {isa = PBXBuildFile; fileRef = 287772BE174BC34E00A0DF19 /* GuestAttendance.plist */; };
 		2885D33D171C2AE10025DBE3 /* E1H_QuickDialog_FileNames.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2885D33C171C2AE10025DBE3 /* E1H_QuickDialog_FileNames.plist */; };
 		288DF38517125838008598DA /* GuestListPopoverTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF38417125838008598DA /* GuestListPopoverTableController.m */; };
 		288DF38B17125A60008598DA /* EventListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF38917125A60008598DA /* EventListViewController.m */; };
@@ -268,6 +269,7 @@
 		2857E7371728583600CB584F /* CommonUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommonUI.m; path = CommonUI/CommonUI.m; sourceTree = "<group>"; };
 		2857E73917286EAA00CB584F /* EventHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventHeader.h; path = Every1Here/View/Sections/EventHeader.h; sourceTree = SOURCE_ROOT; };
 		2857E73A17286EAA00CB584F /* EventHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventHeader.m; path = Every1Here/View/Sections/EventHeader.m; sourceTree = SOURCE_ROOT; };
+		287772BE174BC34E00A0DF19 /* GuestAttendance.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = GuestAttendance.plist; path = "Resources/Parse ORM/GuestAttendance.plist"; sourceTree = "<group>"; };
 		2885D33C171C2AE10025DBE3 /* E1H_QuickDialog_FileNames.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = E1H_QuickDialog_FileNames.plist; sourceTree = "<group>"; };
 		288DF38317125838008598DA /* GuestListPopoverTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestListPopoverTableController.h; sourceTree = "<group>"; };
 		288DF38417125838008598DA /* GuestListPopoverTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuestListPopoverTableController.m; sourceTree = "<group>"; };
@@ -380,7 +382,7 @@
 		28B8BA37171087560095BB6F /* UserBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserBuilder.h; sourceTree = "<group>"; };
 		28B8BA38171087560095BB6F /* UserBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserBuilder.m; sourceTree = "<group>"; };
 		28B8BA3A171087560095BB6F /* GuestBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestBuilder.h; sourceTree = "<group>"; };
-		28B8BA3B171087560095BB6F /* GuestBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuestBuilder.m; sourceTree = "<group>"; };
+		28B8BA3B171087560095BB6F /* GuestBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuestBuilder.m; sourceTree = "<group>"; wrapsLines = 1; };
 		28B8BA3C171087560095BB6F /* MemberBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberBuilder.h; sourceTree = "<group>"; };
 		28B8BA3D171087560095BB6F /* MemberBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberBuilder.m; sourceTree = "<group>"; };
 		28B8BA3E171087560095BB6F /* VenueBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VenueBuilder.h; sourceTree = "<group>"; };
@@ -661,6 +663,7 @@
 				288DF39317130184008598DA /* Guest.plist */,
 				288DF39517130196008598DA /* Attendance.plist */,
 				288DF397171306AD008598DA /* Classes.plist */,
+				287772BE174BC34E00A0DF19 /* GuestAttendance.plist */,
 			);
 			name = "Parse ORM";
 			sourceTree = "<group>";
@@ -1565,6 +1568,7 @@
 				282364E61736076500C1E38D /* icon-ttm-16x16.png in Resources */,
 				282364E71736076500C1E38D /* icon-ttm-28x28.png in Resources */,
 				282364E91736082200C1E38D /* icon-tabletopics-20x20.png in Resources */,
+				287772BF174BC34E00A0DF19 /* GuestAttendance.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

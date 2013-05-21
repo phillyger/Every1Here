@@ -12,8 +12,6 @@
 	<string>primaryEmailAddr</string>
 	<key>isActive</key>
 	<string>@boolean</string>
-	<key>userId</key>
-	<string>objectId</string>
 	<key>avatarURL</key>
 	<string>@string</string>
 </dict>

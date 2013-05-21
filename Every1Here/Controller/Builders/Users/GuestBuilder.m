@@ -67,26 +67,28 @@
     NSMutableArray *results = [NSMutableArray arrayWithCapacity: [guests count]];
     for (NSDictionary *guest in guests) {
         User *user = [[User alloc] init];
+        
+        user = [UserBuilder userFromDictionary:guest socialNetworkType:slType forUserType:Guest];
         [user addRole:@"GuestRole"];
         [user addRole:@"EventRole"];
         
-        if (slType == NONE) {
+//        if (slType == NONE) {
             // Append the eventId to dictionary values
-            guestWithEventId = [guest mutableCopy];
-            [guestWithEventId setObject:eventId forKey:@"eventId"];
             
+            [user setValue:eventId forKeyPath:@"eventId"];
+        
             
-            user = [UserBuilder userFromDictionary:guestWithEventId socialNetworkType:slType forUserType:Guest];
-            
-
-
             if (attendance) {
                 
                 [attendance enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     NSDictionary *attendanceRow = (NSDictionary *)obj;
                     EventRole *thisEventRole = [user getRole:@"EventRole"];
                     NSString *attendanceUserId = (NSString *)[attendanceRow valueForKeyPath:@"userId.objectId"];
-                    NSString *guestUserId = [user valueForKeyPath:@"userId.objectId"];
+                    //-------------------------------------------------------
+                    // Guests will not implement the _User class.  Hence their
+                    // realtionship is their objectId -> Attendance::userId.objectId
+                    //-------------------------------------------------------
+                    NSString *guestUserId = [user valueForKeyPath:@"objectId"];
                     //NSLog(@"userId - attendanceRow : %@ for %@", attendanceUserId, [user displayName]);
                     //NSLog(@"userId - user: %@ for %@", memberUserId, [user displayName]);
                     
@@ -104,10 +106,7 @@
                 
                 
             }
-        } else {
-            
-            user = [UserBuilder userFromDictionary:guest socialNetworkType:slType forUserType:Guest];
-        }
+//        } 
         
         [results addObject: user];
         guestWithEventId = nil;

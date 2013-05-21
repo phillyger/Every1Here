@@ -46,14 +46,11 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     //-------------------------------------------------------
     // Uses a KVO Receptionist Pattern to manage input form handling for fields:
     // - Attendance
-    // - Event Roles
-    // - Guest Count
-    // - Display Name
     //-------------------------------------------------------
     Receptionist *attendanceReceptionist;
-    Receptionist *eventRoleReceptionist;
     Receptionist *displayNameReceptionist;
-    Receptionist *guestCountReceptionist;
+    Receptionist *primaryEmailAddrReceptionist;
+
     
     //-------------------------------------------------------
     // Dicitionary for holding the values of Quick Dialog
@@ -128,6 +125,12 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     UINib *guestCellNib = [UINib nibWithNibName:@"GuestSummaryCell" bundle:nil];
     [self.tableView registerNib:guestCellNib
          forCellReuseIdentifier:guestCellReuseIdentifier];
+    
+    //-------------------------------------------------------
+    // Register member summary cell used in table data source.
+    //-------------------------------------------------------
+    aQueue = [NSOperationQueue mainQueue];  // Question: Can these updates to attendance and event roles be handled by secondary thread.
+    
     
     // Get a handle on the selected index -  IS THERE A PATTERN I CAN USE FOR KEEPING TRACK OF SELECTED EVENT?
     EventMemberGuestTabBarController *tabBarController = (EventMemberGuestTabBarController *)[[self navigationController] tabBarController];
@@ -361,9 +364,17 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
 - (void)userDidSelectGuestListNotification:(NSNotification *)note {
     
     
-    __block BOOL doesAttendanceRecordExist = FALSE;
+
     
     selectedGuest = (User *)[note object];
+    
+    //-------------------------------------------------------
+    // Check to see if Attendance Id field has been set on
+    // selected member .
+    //-------------------------------------------------------
+    __block BOOL doesAttendanceRecordExist = [selectedGuest attendanceId]!=nil ? TRUE : FALSE;
+    
+    
     QRootElement *root =[[QRootElement alloc] initWithJSONFile:@"guestDetails_EDIT"];
     [root bindToObject:(User *)selectedGuest];
 
@@ -372,18 +383,106 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     guestDetailsController.userToEdit = selectedGuest;
     
 
+    
+    //-------------------------------------------------------
+    // KVO Receptionist pattern for handling changes to
+    // attendance field.
+    //-------------------------------------------------------
+    attendanceReceptionist = [Receptionist receptionistForKeyPath:@"roles.EventRole.attendance"
+                                                           object:selectedGuest
+                                                            queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
+                                                                
+                                                                
+                                                                NSLog(@"Running Attendance Receptionist ...");
+                                                                BOOL oldAttendance = [[change objectForKey:NSKeyValueChangeOldKey] boolValue];
+                                                                BOOL newAttendance = [[change objectForKey:NSKeyValueChangeNewKey] boolValue];
+                                                                
+                                                                
+                                                                if (newAttendance == oldAttendance) {
+                                                                    //do nothing
+                                                                    doesAttendanceRecordExist = TRUE;
+                                                                } else if (newAttendance == TRUE) {
+                                                                    doesAttendanceRecordExist = FALSE;
+                                                                    
+                                                                    [parseDotComMgr insertAttendanceForUser:selectedGuest];
+                                                                    
+                                                                    
+                                                                } else if (newAttendance == FALSE) {
+                                                                    doesAttendanceRecordExist = FALSE;
+                                                                    
+                                                                    [parseDotComMgr deleteAttendanceForUser:selectedGuest];
+                                                                    
+                                                                }
+                                                                
+                                                            }];
+    
+    //-------------------------------------------------------
+    // KVO Receptionist pattern for handling changes to
+    // displayName field.
+    //-------------------------------------------------------
+    displayNameReceptionist = [Receptionist receptionistForKeyPath:@"displayName"
+                                                            object:selectedGuest
+                                                             queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
+                                                                 
+                                                                 
+                                                                 NSLog(@"Running DisplayName Receptionist ...");
+                                                                 NSString *oldDisplayName = [change objectForKey:NSKeyValueChangeOldKey];
+                                                                 NSString *newDisplayName = [change objectForKey:NSKeyValueChangeNewKey] ;
+                                                                 
+                                                                 if (![newDisplayName isEqualToString:oldDisplayName]) {
+                                                                     [parseDotComMgr updateUser:selectedGuest withUserType:Guest];
+                                                                 }
+                                                                 
+                                                             }];
+    
+    //-------------------------------------------------------
+    // KVO Receptionist pattern for handling changes to
+    // displayName field.
+    //-------------------------------------------------------
+//    firstNameReceptionist = [Receptionist receptionistForKeyPath:@"firstName"
+//                                                            object:selectedGuest
+//                                                             queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
+//                                                                 
+//                                                                 
+//                                                                 NSLog(@"Running firstName Receptionist ...");
+//                                                                 NSString *oldFirstName = [change objectForKey:NSKeyValueChangeOldKey];
+//                                                                 NSString *newFirstName = [change objectForKey:NSKeyValueChangeNewKey] ;
+//                                                                 
+//                                                                 if (![newFirstName isEqualToString:oldFirstName]) {
+//                                                                     [parseDotComMgr updateUser:selectedGuest withUserType:Guest];
+//                                                                 }
+//                                                                 
+//                                                             }];
+
+    //-------------------------------------------------------
+    // KVO Receptionist pattern for handling changes to
+    // displayName field.
+    //-------------------------------------------------------
+    primaryEmailAddrReceptionist = [Receptionist receptionistForKeyPath:@"primaryEmailAddr"
+                                                            object:selectedGuest
+                                                             queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
+                                                                 
+                                                                 
+                                                                 NSLog(@"Running DisplayName Receptionist ...");
+                                                                 NSString *oldPrimaryEmailAddr = [change objectForKey:NSKeyValueChangeOldKey];
+                                                                 NSString *newPrimaryEmailAddr = [change objectForKey:NSKeyValueChangeNewKey] ;
+                                                                 
+                                                                 if (![newPrimaryEmailAddr isEqualToString:oldPrimaryEmailAddr]) {
+                                                                     [parseDotComMgr updateUser:selectedGuest withUserType:Guest];
+                                                                 }
+                                                                 
+                                                             }];
+    
 
     guestDetailsController.completionBlock = ^(BOOL success)
     {
         if (success)
         {
-            // This will cause the table of values to be resorted if necessary.
-//            [dataModel clearSortedItems];
+            [selectedGuest removeObserver:attendanceReceptionist forKeyPath:@"roles.EventRole.attendance"];
 
-           // [self updateTableContentsForSlType:[selectedGuest slType]];
         }
         [self dismissViewControllerAnimated:YES completion:nil];
-        selectedGuest = nil;
+//        selectedGuest = nil;
     };
     
     
@@ -486,14 +585,40 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     
 }
 
-- (void)didInsertNewAttendanceWithUser:(User *)aSelectedUser
-                             withEvent:(Event *)aSelectedEvent {
-    NSLog(@"Success!! We inserted a new attendance record into Parse");
+//- (void)didInsertNewAttendanceWithUser:(User *)aSelectedUser
+//                             withEvent:(Event *)aSelectedEvent {
+//    NSLog(@"Success!! We inserted a new attendance record into Parse");
+//    
+//    //    [parseDotComMgr updateExistingMember:aSelectedUser];
+//    
+//    [MBProgressHUD hideHUDForView:self.view animated:YES];
+//    [tableView reloadData];
+//}
+
+
+/*---------------------------------------------------------------------------
+ * Delegation callback for inserting attendance record.
+ *--------------------------------------------------------------------------*/
+- (void)didInsertAttendanceWithOutput:(NSArray *)objectNotationList {
+    NSLog(@"Success!! We inserted a new Attendance record into Parse");
     
-    //    [parseDotComMgr updateExistingMember:aSelectedUser];
+    // Expecting a single value returned after new Attendance Record Insert.
+    // objectNotationList is an array containing a single object.
+    // Update Member object with Attendance Id value.
     
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
-    [tableView reloadData];
+    [objectNotationList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        AFHTTPRequestOperation *ro = obj;
+        NSData *jsonData = [ro responseData];
+        NSDictionary *jsonObject=[NSJSONSerialization
+                                  JSONObjectWithData:jsonData
+                                  options:NSJSONReadingMutableLeaves
+                                  error:nil];
+        
+        [selectedGuest setAttendanceId:[jsonObject valueForKey:@"objectId"]];
+    }];
+    
+    [self.tableView reloadData];
+    
 }
 
 -(void)didUpdateAttendanceWithUser:(User *)selectedUser withEvent:(Event *)selectedEvent {
@@ -575,6 +700,16 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     
 }
 
+
+/*---------------------------------------------------------------------------
+ * Delegation callback for updates of an existing member
+ *--------------------------------------------------------------------------*/
+-(void)didUpdateUserForUserType:(UserTypes)userType {
+    NSString *namedClass = [CommonUtilities convertUserTypeToNamedClass:userType];
+    NSLog(@"Success!! We updated the %@ record in Parse", namedClass);
+    [self.tableView reloadData];
+    
+}
 
 
 @end

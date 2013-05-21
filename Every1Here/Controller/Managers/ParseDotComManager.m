@@ -82,7 +82,8 @@
 - (void)insertAttendanceForUser:(User *)user {
     ActionTypes actionType = Insert;
     
-    NSString *namedClass = @"Attendance";
+    
+    NSString *namedClass = [user hasRole:@"GuestRole"] ? @"GuestAttendance":@"Attendance";
     
     [communicator insertAttendance:(User*)user
                       forNamedClass:namedClass
@@ -356,7 +357,7 @@
         
         NSArray *results = (NSArray*)[jsonObject objectForKey:@"results"];
         if (results.count > 0) {
-            if ([results[0] objectForKey:@"eventRoles"]) {
+            if ([results[0] objectForKey:@"eventId"]) {
                 // contains attendance key
                 attendanceDict = jsonObject;
             } else {

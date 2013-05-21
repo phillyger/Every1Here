@@ -172,7 +172,7 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     [operations addObject:usersOp];
     
     // Fetch operation to return list of Attendance
-    NSString *attendanceNamedClass = [@"Attendance" mutableCopy];
+    NSString *attendanceNamedClass = [namedClass isEqualToString:@"Guest"] ? @"GuestAttendance" : @"Attendance";
 //    queryParameters = [@{@"eventId" : [event valueForKey:@"objectId"]} mutableCopy];
     
     

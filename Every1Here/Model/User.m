@@ -24,20 +24,25 @@
 
 
 // Designated Initializer
+
 - (id)initWithFirstName:(NSString *)aFirstName
                lastName:(NSString *)aLastName
+            displayName:(NSString *)aDisplayName
        primaryEmailAddr:(NSString *)aPrimaryEmailAddr
      secondaryEmailAddr:(NSString *)aSecondaryEmailAddr
          avatarLocation:(NSString *)location
                objectId:(NSString *)anObjectId
                  userId:(NSString *)aUserId
-                 eventId:(NSString *)anEventId
+                eventId:(NSString *)anEventId
                  slType:(SocialNetworkType)aSlType
 {
     if (self = [super initWithFirstName:aFirstName
                                lastName:aLastName]) {
-        if (nil != aFirstName && nil != aLastName) {
+
+        if ((displayName == nil) && (nil != aFirstName && nil != aLastName)) {
             displayName = [[NSString stringWithFormat:@"%@ %@", self.firstName, self.lastName] copy];
+        } else {
+            displayName = [aDisplayName copy];
         }
         
         if (location != nil)
@@ -48,6 +53,7 @@
         primaryEmailAddr = [aPrimaryEmailAddr copy];
         secondaryEmailAddr = [aSecondaryEmailAddr copy];
         
+        
         objectId = [anObjectId copy];
         userId = [aUserId copy];
         eventId = [anEventId copy];
@@ -56,6 +62,30 @@
         roles = [[NSMutableDictionary alloc] init];
     }
     return self;
+}
+
+
+- (id)initWithFirstName:(NSString *)aFirstName
+               lastName:(NSString *)aLastName
+       primaryEmailAddr:(NSString *)aPrimaryEmailAddr
+     secondaryEmailAddr:(NSString *)aSecondaryEmailAddr
+         avatarLocation:(NSString *)aLocation
+               objectId:(NSString *)anObjectId
+                 userId:(NSString *)aUserId
+                 eventId:(NSString *)anEventId
+                 slType:(SocialNetworkType)aSlType
+{
+    return [self initWithFirstName:aFirstName
+                          lastName:aLastName
+                       displayName:nil
+                  primaryEmailAddr:aPrimaryEmailAddr
+                secondaryEmailAddr:aSecondaryEmailAddr
+                    avatarLocation:aLocation
+                          objectId:anObjectId
+                            userId:aUserId
+                           eventId:anEventId
+                            slType:NONE];
+
 }
 
 - (id)initWithFirstName:(NSString *)aFirstName

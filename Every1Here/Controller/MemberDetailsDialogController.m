@@ -96,7 +96,7 @@
             [[self userToEdit] setValue:postAttendance forKeyPath:@"roles.EventRole.attendance"];
             [[self userToEdit] setValue:postGuestCount forKeyPath:@"roles.EventRole.guestCount"];
             [[self userToEdit] setValue:postEventRoles forKeyPath:@"roles.EventRole.eventRoles"];
-            [self computeDisplayName];
+//            [self computeDisplayName];
         } else {
             [self.userToEdit addRole:@"MemberRole"];
             [self.userToEdit addRole:@"EventRole"];

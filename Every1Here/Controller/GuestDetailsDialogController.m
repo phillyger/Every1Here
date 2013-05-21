@@ -14,8 +14,13 @@
 
 @interface GuestDetailsDialogController ()
 {
-        EventRole *thisEventRole;
+    EventRole *thisEventRole;
+    
+    NSNumber *postAttendance;
+    NSString *postDisplayName;
 }
+
+@property (nonatomic) BOOL hasFormBeenEdited;
 
 @end
 
@@ -32,7 +37,8 @@
     self.quickDialogTableView.styleProvider = self;
 
     thisEventRole = [[self userToEdit] getRole:@"EventRole"];
-    
+    BOOL isAttending = [[[self userToEdit] valueForKeyPath:@"roles.EventRole.attendance"] boolValue];
+    [self markUserInAttendance:isAttending];
     
     if (![self isNewUser]) {
         QPickerElement *guestCountElement = (QPickerElement *)[self.root elementWithKey:@"guestCount"];
@@ -91,40 +97,31 @@
     
     [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
     [self loading:YES];
-    if (![self isNewUser]) {
-        //        User *user = (User *)self.userToEdit;
-        //        [self.root fetchValueUsingBindingsIntoObject:self.userToEdit];
+    [self setHasFormBeenEdited];
+    if (self.hasFormBeenEdited) {
+        
+        if (![self isNewUser]) {
+            
+            [[self userToEdit] setValue:postAttendance forKeyPath:@"roles.EventRole.attendance"];
+            [self computeDisplayName];
+        } else {
+            [self.userToEdit addRole:@"GuestRole"];
+            [self.userToEdit addRole:@"EventRole"];
+            [self computeDisplayName];
+        }
         
         
-        // Set the attendance field
-        QBooleanElement *attendanceElement = (QBooleanElement *)[self.root elementWithKey: @"attendance"];
-        QPickerElement *guestCountElement = (QPickerElement *)[self.root elementWithKey:@"guestCount"];
-        
-        //[self markUserInAttendance:[attendanceElement boolValue]];
-        [thisEventRole setAttendance:[attendanceElement boolValue]];
-        [thisEventRole setGuestCount:[[guestCountElement textValue] integerValue]];
-        // Concatenate the firstName and lastName into fullName
-        
-        
-        [self setDisplayName];
-    } else {
-        [self.userToEdit addRole:@"GuestRole"];
-        [self.userToEdit addRole:@"EventRole"];
-        // Don't default to in attendance for new user.
-        //[self markUserInAttendance:TRUE];
-        //[thisEventRole setAttendance:TRUE];
-        [self setDisplayName];
+        [self.root fetchValueUsingBindingsIntoObject:self.userToEdit];
     }
     
-    [self.root fetchValueUsingBindingsIntoObject:self.userToEdit];
     [self performSelector:@selector(showDone:) withObject:self.userToEdit];
     
 
 }
 
 - (void)onCancel {
-   NSLog(@"Dismiss view controller");
-//    [self dismissViewControllerAnimated:YES completion:nil];
+    NSLog(@"Dismiss view controller");
+    
     if (self.completionBlock != nil)
 		self.completionBlock(NO);
 }
@@ -132,14 +129,11 @@
 
 - (void)showDone:(User *)user {
     [self loading:NO];
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Welcome" message:[NSString stringWithFormat: @"Hi %@, I hope you're loving QuickDialog! Here's your pass: %@, %@", user.firstName, user.lastName, user.displayName] delegate:self cancelButtonTitle:@"YES!" otherButtonTitles:nil];
-//    [alert show];
     
     if (self.completionBlock != nil)
-		self.completionBlock(YES);
+		self.completionBlock([self hasFormBeenEdited]);
     
 }
-
 
 
 -(void) cell:(UITableViewCell *)cell willAppearForElement:(QElement *)element atIndexPath:(NSIndexPath *)indexPath{
@@ -191,8 +185,15 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)markUserInAttendance:(BOOL)isAttending {
+    
+    
+    QBooleanElement *attendanceElement = (QBooleanElement *)[self.root elementWithKey: @"attendance"];
+    [attendanceElement setBoolValue:isAttending];
+    
+}
 
-- (void)setDisplayName {
+- (NSString *)computeDisplayName {
     // Transform value for Full Name field
     QEntryElement *displayNameElement = (QEntryElement *)[self.root elementWithKey:@"displayName"];
     
@@ -226,10 +227,27 @@
             lastNameString = [lastNameElement textValue];
             
             
-            NSString *fullNameString = [NSString stringWithFormat:@"%@ %@", firstNameString, lastNameString];
-            [displayNameElement setTextValue:fullNameString];
+            displayNameString = [NSString stringWithFormat:@"%@ %@", firstNameString, lastNameString];
         }
     }
+    
+    return displayNameString;
+}
+
+- (void)setHasFormBeenEdited {
+    
+    NSNumber *preAttendance = [[self userToEdit] valueForKeyPath:@"roles.EventRole.attendance"];
+    NSString *preDisplayName = [[self userToEdit] valueForKeyPath:@"displayName"];
+    
+    postDisplayName = [self computeDisplayName];
+    postAttendance = [NSNumber numberWithInt:[[(QBooleanElement *)[[self root] elementWithKey:@"attendance"] numberValue] intValue]] ;
+    
+    
+    
+    //    if ((preEventRoles != postEventRoles) || (preAttendance != postAttendance) || (preGuestCount != postGuestCount))
+    if (([preAttendance boolValue] != [postAttendance boolValue])
+        || (![preDisplayName isEqualToString:postDisplayName]))
+        self.hasFormBeenEdited = TRUE;
     
 }
 

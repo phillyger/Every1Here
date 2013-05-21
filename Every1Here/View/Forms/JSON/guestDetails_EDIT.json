@@ -10,7 +10,7 @@
                  { "elements": [
                       { "type":"QEntryElement","title":"First Name","placeholder":"First Name", "bind":"textValue:firstName", "key":"firstName"},
                       {  "type":"QEntryElement", "title":"Last Name", "placeholder":"Last Name", "key":"lastName", "bind":"textValue:lastName" },
-                      {  "type":"QLabelElement", "title":"Display Name", "key":"displayName", "bind":"value:displayName", "value":"---"}
+                       {  "type":"QEntryElement", "title":"Name", "placeholder":"Display Name", "key":"displayName", "bind":"textValue:displayName"},
                   ]},
                  
                  

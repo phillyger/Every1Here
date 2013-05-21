@@ -54,6 +54,7 @@
 
        user = [[User alloc] initWithFirstName:firstName
                                             lastName:lastName
+                                  displayName:displayName
                                     primaryEmailAddr:primaryEmail
                                   secondaryEmailAddr:nil
                                       avatarLocation:avatarLocation
@@ -72,12 +73,25 @@
         // There shouldn't be a need to add a User object for transient objects.
         userId = [objectId copy];
         
-        user = [[User alloc] initWithDisplayName:displayName
-                                 avatarLocation:avatarLocation
-                                       objectId:objectId
-                                         userId:userId
-                                        eventId:eventId
-                                         slType:slType];
+//        user = [[User alloc] initWithDisplayName:displayName
+//                                 avatarLocation:avatarLocation
+//                                       objectId:objectId
+//                                         userId:userId
+//                                        eventId:eventId
+//                                         slType:slType];
+        
+        
+        user = [[User alloc] initWithFirstName:firstName
+                                      lastName:lastName
+                                   displayName:displayName
+                              primaryEmailAddr:primaryEmail
+                            secondaryEmailAddr:nil
+                                avatarLocation:avatarLocation
+                                      objectId:objectId
+                                        userId:userId
+                                       eventId:eventId
+                                        slType:slType];
+        
     }
     
     return user;
