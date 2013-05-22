@@ -45,6 +45,7 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
 @property (nonatomic, assign, getter=isSelected) BOOL selected;
 
 - (void)setSelectedIndicesFromArray:(NSArray *)attendeeList WithArray:(NSArray *)fullGuestList;
+- (NSMutableArray *)mergeChildArray:(NSArray *)childList intoParentArray:(NSArray *)parentList withIndexSet:(NSIndexSet *)indexes;
 
 @end
 
@@ -124,6 +125,7 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     [[self guestFullListForSlType] enumerateObjectsAtIndexes:[self selectedIndices] options:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         User *user = (User *)obj;
         
+        
         NSLog(@"Selected user: %@ at index %d", [user displayName], idx );
         NSLog(@"Selected user avatar: %@ at index %d", [user avatarURL], idx );
         [newGuestAttendeeList addObject:user];
@@ -163,13 +165,15 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (void)setSelectedIndicesFromArray:(NSArray *)childList WithArray:(NSArray *)parentList {
+- (void)setSelectedIndicesFromArray:(NSArray *)childList WithArray:(NSMutableArray *)parentList {
 
     
     BOOL (^test)(id obj, NSUInteger idx, BOOL *stop);
     
+    NSArray *childListDisplayName = [childList valueForKey:@"displayName"];
+    
     test = ^(id obj, NSUInteger idx, BOOL *stop) {
-        NSArray *childListDisplayName = [childList valueForKey:@"displayName"];
+        
             if ([childListDisplayName containsObject: [(User*)obj displayName]]) {
                 return YES;
         }
@@ -184,6 +188,30 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     [self setSelectedIndices:[indexes mutableCopy]];
     [self setOnLoadIndices:[indexes mutableCopy]];
     
+}
+
+- (NSMutableArray *)mergeChildArray:(NSArray *)childList intoParentArray:(NSArray *)parentList withIndexSet:(NSIndexSet *)indexes {
+    
+    //NSMutableArray *mergedGuestList = [[NSMutableArray alloc] initWithCapacity:[parentList count]];
+    NSMutableArray *mergedGuestList = [[NSMutableArray alloc] initWithArray:parentList];
+    
+    [childList enumerateObjectsUsingBlock:^(id childListObj, NSUInteger childListIdx, BOOL *stop) {
+        [parentList enumerateObjectsAtIndexes:indexes options:NSEnumerationConcurrent usingBlock:^(id parentListObj, NSUInteger parentListIdx, BOOL *stop) {
+            NSLog(@"Child List Index: %d", childListIdx);
+            NSLog(@"Parent List Index: %d", parentListIdx);
+            NSLog(@"DisplayName Child: %@", [(User*)childListObj displayName]);
+            NSLog(@"DisplayName Parent: %@", [(User*)parentListObj displayName]);
+            if ([[(User*)childListObj displayName] isEqualToString:[(User*)parentListObj displayName]]) {
+//                parentListObj = [childListObj copy];
+//                mergedGuestList[parentListIdx]
+                [mergedGuestList replaceObjectAtIndex:parentListIdx withObject:childListObj];
+                *stop = YES;
+            }
+        }];
+    }];
+
+    
+    return mergedGuestList;
 }
 
 #pragma mark - Table view data source
@@ -278,13 +306,14 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
 //        NSArray *attendeeListForSlType = (NSArray *)[self.guestListAttendeeDict objectForKey:slTypeString];
         
         [self setSelectedIndicesFromArray:[self guestAttendeeListForSlType] WithArray:[self guestFullListForSlType]];
-    
-        
+        self.guestFullListForSlType = [self mergeChildArray:[self guestAttendeeListForSlType] intoParentArray:[self guestFullListForSlType] withIndexSet:[self selectedIndices]];
         [self setPopoverTitleWithString:slTypeString];
         
     } else {
         [self fetchGuestListFromWS];
+        
     }
+    
     
     [self.tableView reloadData];
     
@@ -376,6 +405,7 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     [self.delegate receivedGuestFullList:[self guestFullListForSlType] forKey:slTypeString];
     
     [self setSelectedIndicesFromArray:[self guestAttendeeListForSlType] WithArray:[self guestFullListForSlType]];
+    self.guestFullListForSlType =[self mergeChildArray:[self guestAttendeeListForSlType] intoParentArray:[self guestFullListForSlType] withIndexSet:[self selectedIndices]];
     [self setPopoverTitleWithString:slTypeString];
     
     [self.tableView reloadData];

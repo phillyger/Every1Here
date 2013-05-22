@@ -416,10 +416,13 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
                                                                  NSString *oldPrimaryEmailAddr = [change objectForKey:NSKeyValueChangeOldKey];
                                                                  NSString *newPrimaryEmailAddr = [change objectForKey:NSKeyValueChangeNewKey] ;
                                                                  
-                                                                 if (![newPrimaryEmailAddr isEqualToString:oldPrimaryEmailAddr]) {
-                                                                     [parseDotComMgr updateUser:selectedGuest withUserType:Guest];
+                                                                 if ((newPrimaryEmailAddr != (id)[NSNull null] && [newPrimaryEmailAddr length] > 0) &&
+                                                                     (oldPrimaryEmailAddr != (id)[NSNull null] && [oldPrimaryEmailAddr length] > 0)) {
+                                                    
+                                                                     if (![newPrimaryEmailAddr isEqualToString:oldPrimaryEmailAddr]) {
+                                                                         [parseDotComMgr updateUser:selectedGuest withUserType:Guest];
+                                                                     }
                                                                  }
-                                                                 
                                                              }];
     
     
