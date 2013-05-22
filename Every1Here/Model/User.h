@@ -69,6 +69,11 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
 @property (readonly) SocialNetworkType slType;
 
 /**
+ *  The social network through which the user connected.
+ */
+@property (readonly) NSNumber *slUserId;
+
+/**
  *  The primary email addresss
  */
 @property (copy) NSString *primaryEmailAddr;
@@ -90,7 +95,8 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                objectId:(NSString *)anObjectId
                  userId:(NSString *)aUserId
                 eventId:(NSString *)anEventId
-                 slType:(SocialNetworkType)aSlType;
+                 slType:(SocialNetworkType)aSlType
+               slUserId:(NSNumber *)aSocialNetworkUserId;
 
 - (id)initWithFirstName:(NSString *)aFirstName
                lastName:(NSString *)aLastName
@@ -100,7 +106,8 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                objectId:(NSString *)anObjectId
                  userId:(NSString *)aUserId
                 eventId:(NSString *)anEventId
-                 slType:(SocialNetworkType)aSlType;
+                 slType:(SocialNetworkType)aSlType
+               slUserId:(NSNumber *)aSocialNetworkUserId;
 
 
 
@@ -120,17 +127,19 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                  objectId:(NSString *)anObjectId
                    userId:(NSString *)aUserId
                   eventId:(NSString *)anEventId
-                   slType:(SocialNetworkType)aSlType;
+                   slType:(SocialNetworkType)aSlType
+                 slUserId:(NSNumber *)aSocialNetworkUserId;
 
-- (id)initWithDisplayName: (NSString *)aDisplayName
-         primaryEmailAddr:(NSString *)primaryEmailAddr
-       secondaryEmailAddr:(NSString *)secondaryEmailAddr
+
+- (id)initWithDisplayName:(NSString *)aDisplayName
+         primaryEmailAddr:(NSString *)aPrimaryEmailAddr
+       secondaryEmailAddr:(NSString *)aSecondaryEmailAddr
            avatarLocation:(NSString *)location
                  objectId:(NSString *)anObjectId
                    userId:(NSString *)aUserId
                   eventId:(NSString *)anEventId
-                   slType:(SocialNetworkType)aSlType;
-
+                   slType:(SocialNetworkType)aSlType
+                 slUserId:(NSNumber *)aSocialNetworkUserId;
 
 
 @end

@@ -61,13 +61,15 @@
                                             objectId:objectId
                                               userId:userId
                                             eventId:eventId
-                                              slType:NONE];
+                                              slType:NONE
+                                            slUserId:nil];
         
     } else {
         
         NSNumber *slTypeNumObj = [userValues valueForKey:@"socialNetwork"];
         NSUInteger slTypeUInteger = [slTypeNumObj unsignedIntegerValue];
         SocialNetworkType slType = [SocialNetworkUtilities formatIntegerToType:slTypeUInteger];
+        NSNumber *slUserId = [userValues valueForKey:@"socialNetworkUserId"];
         
         // set the value of userId to that on objectId for the purpose of tracking transient attendance such as Guests
         // There shouldn't be a need to add a User object for transient objects.
@@ -90,7 +92,8 @@
                                       objectId:objectId
                                         userId:userId
                                        eventId:eventId
-                                        slType:slType];
+                                        slType:slType
+                                      slUserId:slUserId];
         
     }
     
@@ -137,7 +140,8 @@
     NSString *displayName = [guestValues valueForKeyPath: @"name"];
     NSString *avatarURL = [guestValues valueForKeyPath:@"profile_background_image_url"];
     NSString *eventId = [guestValues valueForKeyPath:@"eventId"];
-    User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL objectId:nil userId:nil eventId:eventId slType:Twitter];
+    NSNumber *socialNetworkUserId = [guestValues valueForKeyPath:@"id"];
+    User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL objectId:nil userId:nil eventId:eventId slType:Twitter slUserId:socialNetworkUserId];
     return user;
 }
 
@@ -146,7 +150,8 @@
     NSString *displayName = [guestValues valueForKeyPath: @"name"];
     NSString *avatarURL = [guestValues valueForKeyPath:@"photo.thumb_link"];
     NSString *eventId = [guestValues valueForKeyPath:@"eventId"];
-    User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL objectId:nil userId:nil eventId:eventId slType:Meetup];
+    NSNumber *socialNetworkUserId = [guestValues valueForKeyPath:@"id"];
+    User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL objectId:nil userId:nil eventId:eventId slType:Meetup slUserId:socialNetworkUserId];
     return user;
 }
 

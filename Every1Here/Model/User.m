@@ -18,6 +18,7 @@
 @synthesize attendanceId;
 @synthesize displayName, avatarURL;
 @synthesize slType;
+@synthesize slUserId;
 @synthesize primaryEmailAddr, secondaryEmailAddr;
 @synthesize hasAttendanceRecord;
 @synthesize hasUserRecord;
@@ -35,6 +36,7 @@
                  userId:(NSString *)aUserId
                 eventId:(NSString *)anEventId
                  slType:(SocialNetworkType)aSlType
+               slUserId:(NSNumber *)aSocialNetworkUserId
 {
     if (self = [super initWithFirstName:aFirstName
                                lastName:aLastName]) {
@@ -49,6 +51,7 @@
             avatarURL = [[NSURL alloc] initWithString: location];
         
         slType = aSlType;
+        slUserId = aSocialNetworkUserId;
         
         primaryEmailAddr = [aPrimaryEmailAddr copy];
         secondaryEmailAddr = [aSecondaryEmailAddr copy];
@@ -74,6 +77,7 @@
                  userId:(NSString *)aUserId
                  eventId:(NSString *)anEventId
                  slType:(SocialNetworkType)aSlType
+               slUserId:(NSNumber *)aSocialNetworkUserId
 {
     return [self initWithFirstName:aFirstName
                           lastName:aLastName
@@ -84,7 +88,8 @@
                           objectId:anObjectId
                             userId:aUserId
                            eventId:anEventId
-                            slType:aSlType];
+                            slType:aSlType
+                          slUserId:aSocialNetworkUserId];
 
 }
 
@@ -102,7 +107,8 @@
                           objectId:anObjectId
                             userId:aUserId
                            eventId:anEventId
-                            slType:NONE];
+                            slType:NONE
+                          slUserId:nil];
     
 }
 
@@ -118,7 +124,8 @@
                           objectId:nil
                             userId:nil
                            eventId:anEventId
-                            slType:NONE];
+                            slType:NONE
+                          slUserId:nil];
     
 }
 
@@ -140,8 +147,10 @@
                  objectId:(NSString *)anObjectId
                    userId:(NSString *)aUserId
                   eventId:(NSString *)anEventId
-                   slType:(SocialNetworkType)aSlType{
-    return [self initWithDisplayName:aDisplayName primaryEmailAddr:nil secondaryEmailAddr:nil avatarLocation:location objectId:anObjectId userId:aUserId eventId:anEventId slType:aSlType];
+                   slType:(SocialNetworkType)aSlType
+                 slUserId:(NSNumber *)aSocialNetworkUserId
+{
+    return [self initWithDisplayName:aDisplayName primaryEmailAddr:nil secondaryEmailAddr:nil avatarLocation:location objectId:anObjectId userId:aUserId eventId:anEventId slType:aSlType slUserId:aSocialNetworkUserId];
 }
 
 
@@ -152,7 +161,9 @@
                  objectId:(NSString *)anObjectId
                    userId:(NSString *)aUserId
                   eventId:(NSString *)anEventId
-                   slType:(SocialNetworkType)aSlType{
+                   slType:(SocialNetworkType)aSlType
+                 slUserId:(NSNumber *)aSocialNetworkUserId
+{
     if ((self = [self initWithFirstName:nil
                                lastName:nil
                        primaryEmailAddr:aPrimaryEmailAddr
@@ -161,7 +172,8 @@
                                objectId:anObjectId
                                  userId:aUserId
                                 eventId:anEventId
-                                 slType:aSlType])) {
+                                 slType:aSlType
+                               slUserId:aSocialNetworkUserId])) {
         displayName = [aDisplayName copy];
         aDisplayName = nil;
     }
@@ -173,7 +185,8 @@
 // Overridden inherited Designated Initializer
 - (id)init
 {
-    return [self initWithFirstName:nil lastName:nil primaryEmailAddr:nil secondaryEmailAddr:nil avatarLocation:nil objectId:nil userId:nil eventId:nil slType:NONE];
+//    return [self initWithFirstName:nil lastName:nil primaryEmailAddr:nil secondaryEmailAddr:nil avatarLocation:nil objectId:nil userId:nil eventId:nil slType:NONE slUserId:nil];
+    return [self initWithFirstName:nil lastName:nil displayName:nil primaryEmailAddr:nil secondaryEmailAddr:nil avatarLocation:nil objectId:nil userId:nil eventId:nil slType:NONE slUserId:nil];
 }
 
 - (id)getRole:(NSString *)aSpec
