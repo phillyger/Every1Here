@@ -205,8 +205,6 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
             NSLog(@"SocialNetworkUserId Child: %@", [(User*)childListObj valueForKeyPath:kUserObjFieldToCompare]);
             NSLog(@"SocialNetworkUserId Parent: %@", [(User*)parentListObj valueForKeyPath:kUserObjFieldToCompare]);
             if ([[(User*)childListObj valueForKeyPath:kUserObjFieldToCompare] isEqualToString:[(User*)parentListObj valueForKeyPath:kUserObjFieldToCompare]]) {
-//                parentListObj = [childListObj copy];
-//                mergedGuestList[parentListIdx]
                 [mergedGuestList replaceObjectAtIndex:parentListIdx withObject:childListObj];
                 *stop = YES;
             }

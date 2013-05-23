@@ -41,7 +41,7 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     // member and event of current selection.
     //-------------------------------------------------------
     Event *selectedEvent;
-    User * selectedGuest;
+    User *selectedGuest;
     
     //-------------------------------------------------------
     // Uses a KVO Receptionist Pattern to manage input form handling for fields:
@@ -307,7 +307,7 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
 
 - (void)closeView {
     selectedEvent = nil;
-    selectedGuest = nil;
+//    selectedGuest = nil;
     //    [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -484,6 +484,7 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
         if (success)
         {
             [selectedGuest removeObserver:displayNameReceptionist forKeyPath:@"displayName"];
+            [selectedGuest removeObserver:firstNameReceptionist forKeyPath:@"firstName"];
             [selectedGuest removeObserver:primaryEmailAddrReceptionist forKeyPath:@"primaryEmailAddr"];
             [selectedGuest removeObserver:attendanceReceptionist forKeyPath:@"roles.EventRole.attendance"];
 
@@ -672,6 +673,18 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
      * b) the User op is second
      */
     
+//    [objectNotationList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//        AFHTTPRequestOperation *ro = obj;
+//        NSData *jsonData = [ro responseData];
+//        NSDictionary *jsonObject=[NSJSONSerialization
+//                                  JSONObjectWithData:jsonData
+//                                  options:NSJSONReadingMutableLeaves
+//                                  error:nil];
+//        
+//        NSLog(@"jspnObject: %@", jsonObject);
+//    }];
+    
+    
     [objectNotationList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         AFHTTPRequestOperation *ro = obj;
         NSData *jsonData = [ro responseData];
@@ -680,9 +693,16 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
                                   options:NSJSONReadingMutableLeaves
                                   error:nil];
         
-        NSLog(@"jspnObject: %@", jsonObject);
+        if (idx == 0)
+            [selectedGuest setValue:[jsonObject valueForKey:@"objectId"] forKeyPath:@"objectId"];     // Guest op
+            [selectedGuest setValue:[jsonObject valueForKey:@"objectId"] forKeyPath:@"userId"];   // User op
+        if (idx == 1)
+            [selectedGuest setValue:[jsonObject valueForKey:@"objectId"] forKeyPath:@"userId"];   // User op
     }];
     
+    [selectedGuest setValue:[selectedEvent valueForKey:@"objectId"] forKeyPath:@"eventId"];    // set Guest with eventId
+ 
+  [self fetchGuestListTableContent];
 }
 
 
