@@ -36,7 +36,7 @@
                  userId:(NSString *)aUserId
                 eventId:(NSString *)anEventId
                  slType:(SocialNetworkType)aSlType
-               slUserId:(NSNumber *)aSocialNetworkUserId
+               slUserId:(NSString *)aSocialNetworkUserId
 {
     if (self = [super initWithFirstName:aFirstName
                                lastName:aLastName]) {
@@ -51,7 +51,7 @@
             avatarURL = [[NSURL alloc] initWithString: location];
         
         slType = aSlType;
-        slUserId = aSocialNetworkUserId;
+        slUserId = [aSocialNetworkUserId copy];
         
         primaryEmailAddr = [aPrimaryEmailAddr copy];
         secondaryEmailAddr = [aSecondaryEmailAddr copy];
@@ -77,7 +77,7 @@
                  userId:(NSString *)aUserId
                  eventId:(NSString *)anEventId
                  slType:(SocialNetworkType)aSlType
-               slUserId:(NSNumber *)aSocialNetworkUserId
+               slUserId:(NSString *)aSocialNetworkUserId
 {
     return [self initWithFirstName:aFirstName
                           lastName:aLastName
@@ -148,7 +148,7 @@
                    userId:(NSString *)aUserId
                   eventId:(NSString *)anEventId
                    slType:(SocialNetworkType)aSlType
-                 slUserId:(NSNumber *)aSocialNetworkUserId
+                 slUserId:(NSString *)aSocialNetworkUserId
 {
     return [self initWithDisplayName:aDisplayName primaryEmailAddr:nil secondaryEmailAddr:nil avatarLocation:location objectId:anObjectId userId:aUserId eventId:anEventId slType:aSlType slUserId:aSocialNetworkUserId];
 }
@@ -162,7 +162,7 @@
                    userId:(NSString *)aUserId
                   eventId:(NSString *)anEventId
                    slType:(SocialNetworkType)aSlType
-                 slUserId:(NSNumber *)aSocialNetworkUserId
+                 slUserId:(NSString *)aSocialNetworkUserId
 {
     if ((self = [self initWithFirstName:nil
                                lastName:nil

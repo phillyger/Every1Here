@@ -237,6 +237,7 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
         NSMutableDictionary *parameters = [[CommonUtilities generateValueDictWithObject:(User*)obj forNamedClass:namedClass] mutableCopy];
         if ([namedClass isEqualToString:@"Guest"]) {
             [parameters setObject:[NSNumber numberWithInt:slType] forKey:@"socialNetwork"];
+            [parameters setObject:[obj valueForKeyPath:@"slUserId"] forKey:@"socialNetworkUserId"];
         }
         
         NSLog(@"%@", parameters);

@@ -71,7 +71,7 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
 /**
  *  The social network through which the user connected.
  */
-@property (readonly) NSNumber *slUserId;
+@property (readonly) NSString *slUserId;
 
 /**
  *  The primary email addresss
@@ -96,7 +96,7 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                  userId:(NSString *)aUserId
                 eventId:(NSString *)anEventId
                  slType:(SocialNetworkType)aSlType
-               slUserId:(NSNumber *)aSocialNetworkUserId;
+               slUserId:(NSString *)aSocialNetworkUserId;
 
 - (id)initWithFirstName:(NSString *)aFirstName
                lastName:(NSString *)aLastName
@@ -107,7 +107,7 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                  userId:(NSString *)aUserId
                 eventId:(NSString *)anEventId
                  slType:(SocialNetworkType)aSlType
-               slUserId:(NSNumber *)aSocialNetworkUserId;
+               slUserId:(NSString *)aSocialNetworkUserId;
 
 
 
@@ -128,7 +128,7 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                    userId:(NSString *)aUserId
                   eventId:(NSString *)anEventId
                    slType:(SocialNetworkType)aSlType
-                 slUserId:(NSNumber *)aSocialNetworkUserId;
+                 slUserId:(NSString *)aSocialNetworkUserId;
 
 
 - (id)initWithDisplayName:(NSString *)aDisplayName
@@ -139,7 +139,7 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                    userId:(NSString *)aUserId
                   eventId:(NSString *)anEventId
                    slType:(SocialNetworkType)aSlType
-                 slUserId:(NSNumber *)aSocialNetworkUserId;
+                 slUserId:(NSString *)aSocialNetworkUserId;
 
 
 @end

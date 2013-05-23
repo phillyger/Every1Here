@@ -50,6 +50,7 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     Receptionist *attendanceReceptionist;
     Receptionist *displayNameReceptionist;
     Receptionist *primaryEmailAddrReceptionist;
+    Receptionist *firstNameReceptionist;
 
     
     //-------------------------------------------------------
@@ -402,6 +403,24 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
                                                                  
                                                              }];
     
+    //-------------------------------------------------------
+    // KVO Receptionist pattern for handling changes to
+    // displayName field.
+    //-------------------------------------------------------
+    firstNameReceptionist = [Receptionist receptionistForKeyPath:@"firstName"
+                                                            object:selectedGuest
+                                                             queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
+                                                                 
+                                                                 
+                                                                 NSLog(@"Running FirstName Receptionist ...");
+                                                                 NSString *oldFirstName = [change objectForKey:NSKeyValueChangeOldKey];
+                                                                 NSString *newFirstName = [change objectForKey:NSKeyValueChangeNewKey] ;
+                                                                 
+                                                                 if (![newFirstName isEqualToString:oldFirstName]) {
+                                                                     [parseDotComMgr updateUser:selectedGuest withUserType:Guest];
+                                                                 }
+                                                                 
+                                                             }];
 
     //-------------------------------------------------------
     // KVO Receptionist pattern for handling changes to
@@ -415,8 +434,10 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
                                                                  NSLog(@"Running Primary Email Receptionist ...");
                                                                  NSString *oldPrimaryEmailAddr = [change objectForKey:NSKeyValueChangeOldKey];
                                                                  NSString *newPrimaryEmailAddr = [change objectForKey:NSKeyValueChangeNewKey] ;
+                                                                 NSLog(@"oldPrimaryEmailAddr : %@", oldPrimaryEmailAddr);
+                                                                 NSLog(@"newPrimaryEmailAddr : %@", newPrimaryEmailAddr);
                                                                  
-                                                                 if ((newPrimaryEmailAddr != (id)[NSNull null] && [newPrimaryEmailAddr length] > 0) &&
+                                                                 if ((newPrimaryEmailAddr != (id)[NSNull null] && [newPrimaryEmailAddr length] > 0) ||
                                                                      (oldPrimaryEmailAddr != (id)[NSNull null] && [oldPrimaryEmailAddr length] > 0)) {
                                                     
                                                                      if (![newPrimaryEmailAddr isEqualToString:oldPrimaryEmailAddr]) {

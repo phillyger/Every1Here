@@ -24,6 +24,9 @@
 #import "NSIndexSet+Operations.h"
 
 
+#define kUserObjFieldToCompare @"slUserId"
+
+
 static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
 
 @interface GuestListPopoverTableController ()
@@ -170,12 +173,12 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     
     BOOL (^test)(id obj, NSUInteger idx, BOOL *stop);
     
-    NSArray *childListDisplayName = [childList valueForKey:@"displayName"];
+    NSArray *childListFieldToCompare = [childList valueForKeyPath:kUserObjFieldToCompare];
     
     test = ^(id obj, NSUInteger idx, BOOL *stop) {
         
-            if ([childListDisplayName containsObject: [(User*)obj displayName]]) {
-                return YES;
+        if ([childListFieldToCompare containsObject: [(User*)obj valueForKeyPath:kUserObjFieldToCompare]]) {
+            return YES;
         }
         return NO;
     };
@@ -199,9 +202,9 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
         [parentList enumerateObjectsAtIndexes:indexes options:NSEnumerationConcurrent usingBlock:^(id parentListObj, NSUInteger parentListIdx, BOOL *stop) {
             NSLog(@"Child List Index: %d", childListIdx);
             NSLog(@"Parent List Index: %d", parentListIdx);
-            NSLog(@"DisplayName Child: %@", [(User*)childListObj displayName]);
-            NSLog(@"DisplayName Parent: %@", [(User*)parentListObj displayName]);
-            if ([[(User*)childListObj displayName] isEqualToString:[(User*)parentListObj displayName]]) {
+            NSLog(@"SocialNetworkUserId Child: %@", [(User*)childListObj valueForKeyPath:kUserObjFieldToCompare]);
+            NSLog(@"SocialNetworkUserId Parent: %@", [(User*)parentListObj valueForKeyPath:kUserObjFieldToCompare]);
+            if ([[(User*)childListObj valueForKeyPath:kUserObjFieldToCompare] isEqualToString:[(User*)parentListObj valueForKeyPath:kUserObjFieldToCompare]]) {
 //                parentListObj = [childListObj copy];
 //                mergedGuestList[parentListIdx]
                 [mergedGuestList replaceObjectAtIndex:parentListIdx withObject:childListObj];
