@@ -16,7 +16,7 @@ typedef void (^DetailViewControllerCompletionBlock)(BOOL success);
 @interface GuestDetailsDialogController : QuickDialogController <QuickDialogStyleProvider, QuickDialogEntryElementDelegate>
 
 @property (nonatomic, strong) User *userToEdit;
-@property (nonatomic, assign, getter=isNewUser) BOOL *newUser;
+@property (nonatomic, assign, getter=isNewUser) BOOL newUser;
 @property (nonatomic, copy) DetailViewControllerCompletionBlock completionBlock;
 
 

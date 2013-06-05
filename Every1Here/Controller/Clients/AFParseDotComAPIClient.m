@@ -16,8 +16,8 @@ static NSString * const kAFParseDotComAPIBaseURLString = @"https://api.parse.com
  *
  **/
 
-//static NSString * const kAFParseDotComAppIDKey = @"CzxhhRu2NJF9o1IM85xkRedx2ySoaA6G4rv4jRkc";
-//static NSString * const kAFParseDotComRESTApiKey = @"SyGe3rNcjaXOK8KAtNiXhKGwmPzpUfKo4El96P7d";
+static NSString * const kAFParseDotComAppIDKey = @"CzxhhRu2NJF9o1IM85xkRedx2ySoaA6G4rv4jRkc";
+static NSString * const kAFParseDotComRESTApiKey = @"SyGe3rNcjaXOK8KAtNiXhKGwmPzpUfKo4El96P7d";
 
 
 
@@ -25,8 +25,8 @@ static NSString * const kAFParseDotComAPIBaseURLString = @"https://api.parse.com
 *   Every1Here - DEV keys
 *
 **/
-static NSString * const kAFParseDotComAppIDKey = @"DUW4o1VHHIattNSNAeHmKCzNVWT09qB05SJV2Jzt";
-static NSString * const kAFParseDotComRESTApiKey = @"B1Z7TEH1XAQ1C4AnqxC5SZL42TdIxzOQhlkIl8Gt";
+//static NSString * const kAFParseDotComAppIDKey = @"DUW4o1VHHIattNSNAeHmKCzNVWT09qB05SJV2Jzt";
+//static NSString * const kAFParseDotComRESTApiKey = @"B1Z7TEH1XAQ1C4AnqxC5SZL42TdIxzOQhlkIl8Gt";
 
 
 
@@ -37,7 +37,7 @@ static NSString * const kAFParseDotComRESTApiKey = @"B1Z7TEH1XAQ1C4AnqxC5SZL42Td
 
 + (AFParseDotComAPIClient *)sharedClient {
     static AFParseDotComAPIClient *_sharedClient = nil;
-    static dispatch_once_t onceToken;
+     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _sharedClient = [[AFParseDotComAPIClient alloc] initWithBaseURL:[NSURL URLWithString:kAFParseDotComAPIBaseURLString]];
     });
@@ -50,7 +50,8 @@ static NSString * const kAFParseDotComRESTApiKey = @"B1Z7TEH1XAQ1C4AnqxC5SZL42Td
     if (!self) {
         return nil;
     }
-    
+
+
     [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
     [self setParameterEncoding:AFJSONParameterEncoding];
     

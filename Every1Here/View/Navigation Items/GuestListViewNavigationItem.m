@@ -23,10 +23,10 @@
         GuestNavIconView *guestNavIconView = (GuestNavIconView *)[guestNavIconNib instantiateWithOwner:self options:nil][0];
         [guestNavIconView setDelegate:self];
         [self setTitleView:guestNavIconView];
-        UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self.delegate action:@selector(createNewGuest)];
+        UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self.delegate action:@selector(addNewGuest)];
         
 //        [rightBarButtonItem setTarget:self.delegate];
-//        [rightBarButtonItem setAction:@selector(createNewGuest)];
+//        [rightBarButtonItem setAction:@selector(addNewGuest)];
         
 //        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self.delegate action:@selector(dismissViewController)];
         

@@ -30,5 +30,6 @@
 - (void)getFacebookAccount;
 - (void)getTwitterAccount;
 - (void)presentErrorWithMessage:(NSString *)errorMessage;
+- (void)setE1HAppDefaultConfig;
 
 @end

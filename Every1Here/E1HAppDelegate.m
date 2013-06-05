@@ -44,6 +44,20 @@
     // [PFFacebookUtils initializeWithApplicationId:@"your_facebook_app_id"];
     // ****************************************************************************
     
+    NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:4 * 1024 * 1024
+                                                         diskCapacity:20 * 1024 * 1024
+                                                             diskPath:nil];
+    [NSURLCache setSharedURLCache:URLCache];
+
+    [self setE1HAppDefaultConfig];
+    self.accountStore = [[ACAccountStore alloc] init];
+
+    return YES;
+
+    
+}
+
+- (void)setE1HAppDefaultConfig {
     NSString *testValue = [[NSUserDefaults standardUserDefaults] stringForKey:E1HParseDotComAccountOrgIdentifier];
 	if (testValue == nil)
 	{
@@ -64,7 +78,7 @@
         __block NSString *parseDotComAccountUserAccountPasswordDefault;
         
         [rootPrefSpecifierArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-
+            
             
             NSDictionary *prefItem = (NSDictionary *)obj;
             NSString *keyValueStr = [prefItem objectForKey:@"Key"];
@@ -78,7 +92,7 @@
 				parseDotComAccountOrgIdDefault = defaultValue;
 			} else if ([keyValueStr isEqualToString:E1HParseDotComAccountEventStatusOnLaunchIdentifier])
             {
-                       parseDotComAccountEventStatusOnLaunchDefault = defaultValue;
+                parseDotComAccountEventStatusOnLaunchDefault = defaultValue;
             } else if ([keyValueStr isEqualToString:E1HParseDotComAccountUserAccountPasswordIdentifier])
             {
                 parseDotComAccountUserAccountPasswordDefault = defaultValue;
@@ -88,7 +102,7 @@
         
         __block NSString *meetupDotComAccountGroupUrlNameDefault;
         __block NSString *twitterDotComAccountNameDefault;
-
+        
         
         [socialNetworksPrefSpecifierArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSDictionary *prefItem = (NSDictionary *)obj;
@@ -103,8 +117,8 @@
 				twitterDotComAccountNameDefault = defaultValue;
 			}
             
-        }];  
-
+        }];
+        
         // since no default values have been set (i.e. no preferences file created), create it here
 		NSDictionary *appDefaults = @{E1HParseDotComAccountGroupNameIdentifier: parseDotComAccountGroupNameDefault,
                                 E1HParseDotComAccountOrgIdentifier : parseDotComAccountOrgIdDefault,
@@ -135,13 +149,8 @@
     
     meetupDotComAccountGroupUrlName = [[NSUserDefaults standardUserDefaults] stringForKey:E1HMeetupDotComGroupUrlNameIdentifier];
     twitterDotComAccountName = [[NSUserDefaults standardUserDefaults] stringForKey:E1HMeetupDotComTwitterAccountNameIdentifier];
-    
-    self.accountStore = [[ACAccountStore alloc] init];
-
-    return YES;
-
-    
 }
+
 - (void)getFacebookAccount
 {
     // 1

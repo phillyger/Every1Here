@@ -416,8 +416,10 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
                                                                  NSString *oldFirstName = [change objectForKey:NSKeyValueChangeOldKey];
                                                                  NSString *newFirstName = [change objectForKey:NSKeyValueChangeNewKey] ;
                                                                  
-                                                                 if (![newFirstName isEqualToString:oldFirstName]) {
-                                                                     [parseDotComMgr updateUser:selectedGuest withUserType:Guest];
+                                                                 if ([oldFirstName isEqual:[NSNull null]] && [newFirstName isEqual:[NSNull null]]) {
+                                                                     if (![newFirstName isEqualToString:oldFirstName]) {
+                                                                         [parseDotComMgr updateUser:selectedGuest withUserType:Guest];
+                                                                     }
                                                                  }
                                                                  
                                                              }];
@@ -524,62 +526,135 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
 
 
 
-- (void)createNewGuest {
-    NSLog(@"Create new guest!");
+/*---------------------------------------------------------------------------
+ * Handles the creation of a new member
+ *--------------------------------------------------------------------------*/
+- (void)addNewGuest {
     
+    
+    //-------------------------------------------------------
+    // Create a new selected member instance.
+    //-------------------------------------------------------
     selectedGuest = [[User alloc] initWithFirstName:nil lastName:nil];
     [selectedGuest addRole:@"GuestRole"];
     
-    QRootElement *root =[[QRootElement alloc] initWithJSONFile:@"guestDetails_NEW"];
+    //-------------------------------------------------------
+    // QuickDialog :: Reads the JSON file to structure the
+    // member form. The form name is loads from plist.
+    //-------------------------------------------------------
+    QRootElement *root =[[QRootElement alloc] initWithJSONFile:[pListInfoDictForE1HQuickDialog valueForKey:@"guest_details_new"]];
     [root bindToObject:(User *)selectedGuest];
     
-    
+
+    //-------------------------------------------------------
+    // Initialize the destination controller with the
+    // Quick Dialog root object. Assign the Ivars for
+    // - userToEdit
+    // - newUser
+    // in destination controller
+    //-------------------------------------------------------
     GuestDetailsDialogController *guestDetailsController = [(GuestDetailsDialogController *)[GuestDetailsDialogController alloc] initWithRoot:root];
     guestDetailsController.userToEdit = selectedGuest;
     
     // Get a Listing of Guest Attendees with no social network connection (i.e. Direct);
     [self setGuestAttendeeListWithSlType:NONE];
     
-    __block NSMutableArray *newGuestAttendeeList = [[NSMutableArray alloc] init];
+    guestDetailsController.newUser = YES;
     
-    newGuestAttendeeList = (NSMutableArray *)[self guestAttendeeListForSlType];
-    NSLog(@"Pre-Block - guestAttendeeListForSlType count: %d", [[self guestAttendeeListForSlType] count]);
-
+    
+    
+    //-------------------------------------------------------
+    // On completion, if form content has changed, insert
+    // new user,
+    //-------------------------------------------------------
     guestDetailsController.completionBlock = ^(BOOL success)
     {
         if (success)
         {
-            // This will cause the table of values to be resorted if necessary.
-            //            [dataModel clearSortedItems];
             
-
+            [CommonUtilities showProgressHUD:self.view];
+            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                // insert a new user.
+                [parseDotComMgr insertUser:selectedGuest withUserType:Guest];
+                [selectedEvent addGuest:selectedGuest];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [CommonUtilities hideProgressHUD:self.view];
+                    
+                });
+            });
             
-//            NSLog(@"DisplayName: %@", [selectedGuest displayName]);
-//            NSLog(@"Name: %@ %@", [selectedGuest firstName], [selectedGuest lastName]);
-//            if ([[selectedGuest displayName] isEqualToString:@""])
-//                [(User *)selectedGuest setDisplayName:[NSString stringWithFormat: @"%@ %@",[selectedGuest firstName], [selectedGuest lastName]]];
-//            
-//             NSLog(@"In-BLock Before - guestAttendeeListForSlType count: %d", [newGuestAttendeeList count]);
-            // Add a new user to the the guestListAttendeeArray
-            if (selectedGuest != nil) {
-//                [parseDotComMgr createNewUser: selectedGuest withEvent:selectedEvent];
-//                [newGuestAttendeeList addObject:selectedGuest];
-            }
             
-
-             NSLog(@"In-BLock After - guestAttendeeListForSlType count: %d", [newGuestAttendeeList count]);
-            
-            [self updateTableContentsWithArray:newGuestAttendeeList forKey:[SocialNetworkUtilities formatTypeToString:NONE]];
         }
+        
         [self dismissViewControllerAnimated:YES completion:nil];
-         selectedGuest = nil;
+        
     };
     
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:guestDetailsController];
+    
+    
     [self presentViewController:navController animated:YES completion:nil];
     
 }
+
+
+//- (void)createNewGuest {
+//    NSLog(@"Create new guest!");
+//    
+//    selectedGuest = [[User alloc] initWithFirstName:nil lastName:nil];
+//    [selectedGuest addRole:@"GuestRole"];
+//    
+//    QRootElement *root =[[QRootElement alloc] initWithJSONFile:@"guestDetails_NEW"];
+//    [root bindToObject:(User *)selectedGuest];
+//    
+//    
+//    GuestDetailsDialogController *guestDetailsController = [(GuestDetailsDialogController *)[GuestDetailsDialogController alloc] initWithRoot:root];
+//    guestDetailsController.userToEdit = selectedGuest;
+//    
+//    // Get a Listing of Guest Attendees with no social network connection (i.e. Direct);
+//    [self setGuestAttendeeListWithSlType:NONE];
+//    
+//    __block NSMutableArray *newGuestAttendeeList = [[NSMutableArray alloc] init];
+//    
+//    newGuestAttendeeList = (NSMutableArray *)[self guestAttendeeListForSlType];
+//    NSLog(@"Pre-Block - guestAttendeeListForSlType count: %d", [[self guestAttendeeListForSlType] count]);
+//
+//    guestDetailsController.completionBlock = ^(BOOL success)
+//    {
+//        if (success)
+//        {
+//            // This will cause the table of values to be resorted if necessary.
+//            //            [dataModel clearSortedItems];
+//            
+//
+//            
+////            NSLog(@"DisplayName: %@", [selectedGuest displayName]);
+////            NSLog(@"Name: %@ %@", [selectedGuest firstName], [selectedGuest lastName]);
+////            if ([[selectedGuest displayName] isEqualToString:@""])
+////                [(User *)selectedGuest setDisplayName:[NSString stringWithFormat: @"%@ %@",[selectedGuest firstName], [selectedGuest lastName]]];
+////            
+////             NSLog(@"In-BLock Before - guestAttendeeListForSlType count: %d", [newGuestAttendeeList count]);
+//            // Add a new user to the the guestListAttendeeArray
+//            if (selectedGuest != nil) {
+////                [parseDotComMgr createNewUser: selectedGuest withEvent:selectedEvent];
+////                [newGuestAttendeeList addObject:selectedGuest];
+//            }
+//            
+//
+//             NSLog(@"In-BLock After - guestAttendeeListForSlType count: %d", [newGuestAttendeeList count]);
+//            
+//            [self updateTableContentsWithArray:newGuestAttendeeList forKey:[SocialNetworkUtilities formatTypeToString:NONE]];
+//        }
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//         selectedGuest = nil;
+//    };
+//    
+//    
+//    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:guestDetailsController];
+//    [self presentViewController:navController animated:YES completion:nil];
+//    
+//}
 
 - (void)dismissViewController {
     [self dismissViewControllerAnimated:YES completion:nil];
