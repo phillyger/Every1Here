@@ -24,6 +24,8 @@
     self = [super initWithTitle:title Value:nil] ;
     if (self) {
         _floatValue = value;
+        _minimumValue = 0.0;
+        _maximumValue = 1.0;
         self.enabled = YES;
     }
     return self;
@@ -34,6 +36,8 @@
     self = [super init];
     if (self) {
         _floatValue = value;
+        _minimumValue = 0.0;
+        _maximumValue = 1.0;
         self.enabled = YES;
     }
     return self;
@@ -55,10 +59,9 @@
 }
 
 - (void)valueChanged:(UISlider *)slider {
-   self.floatValue = slider.value;
+    self.floatValue = slider.value;
 
-    if (self.onValueChanged!=nil)
-        self.onValueChanged(self);
+    [self handleEditingChanged];
 }
 
 - (UITableViewCell *)getCellForTableView:(QuickDialogTableView *)tableView controller:(QuickDialogController *)controller {
@@ -72,6 +75,16 @@
     slider.value = _floatValue;
     cell.accessoryView = slider;
     return cell;
+}
+
+- (void)setNilValueForKey:(NSString *)key;
+{
+    if ([key isEqualToString:@"floatValue"]){
+        self.floatValue = 0;
+    }
+    else {
+        [super setNilValueForKey:key];
+    }
 }
 
 

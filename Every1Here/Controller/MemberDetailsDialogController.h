@@ -13,7 +13,7 @@
 
 typedef void (^DetailViewControllerCompletionBlock)(BOOL success);
 
-@interface MemberDetailsDialogController : QuickDialogController <QuickDialogStyleProvider, QuickDialogEntryElementDelegate>
+@interface MemberDetailsDialogController : QuickDialogController <QuickDialogEntryElementDelegate>
 
 @property (nonatomic, strong) User *userToEdit;
 @property (nonatomic, assign, getter=isNewUser) BOOL newUser;

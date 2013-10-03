@@ -63,7 +63,6 @@
     cell.textLabel.text = nil; 
     cell.detailTextLabel.text = nil; 
     cell.imageView.image = nil; 
-    cell.userInteractionEnabled = self.enabled;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.showsReorderControl = YES;
     cell.accessoryView = nil;
@@ -72,9 +71,9 @@
 }
 
 - (QTableViewCell *)getOrCreateEmptyCell:(QuickDialogTableView *)tableView {
-    QTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"QuickformElementCell%@", self.key]];
+    QTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[NSString stringWithFormat:@"QuickformElementCell%@%@", self.key, self.class]];
     if (cell == nil){
-        cell = [[QTableViewCell alloc] initWithReuseIdentifier:[NSString stringWithFormat:@"QuickformElementCell%@", self.key]];
+        cell = [[QTableViewCell alloc] initWithReuseIdentifier:[NSString stringWithFormat:@"QuickformElementCell%@%@", self.key, self.class]];
     }
     return cell;
 }

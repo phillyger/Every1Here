@@ -58,6 +58,8 @@ NSDictionary *QRootBuilderStringToTypeConversionDict;
         [target setValue:itemsTranslated forKeyPath:propertyName];
     } else if ([value isKindOfClass:[NSDictionary class]]){
         [target setValue:value forKeyPath:propertyName];
+    } else if (value == [NSNull null]) {
+        [target setValue:nil forKeyPath:propertyName];
     } else if ([value isKindOfClass:[NSObject class]]){
         [target setValue:value forKeyPath:propertyName];
     } else if (value == nil){
@@ -225,6 +227,12 @@ NSDictionary *QRootBuilderStringToTypeConversionDict;
                                                             [NSNumber numberWithInt:UIImagePickerControllerSourceTypeCamera], @"camera",
                                                             [NSNumber numberWithInt:UIImagePickerControllerSourceTypeSavedPhotosAlbum], @"savedPhotosAlbum",
                                     nil], @"source",
+
+                    [[NSDictionary alloc] initWithObjectsAndKeys:
+                            [NSNumber numberWithInt:QLabelingPolicyTrimTitle], @"trimTitle",
+                            [NSNumber numberWithInt:QLabelingPolicyTrimValue], @"trimValue",
+                            nil], @"labelingPolicy",
+
             nil];
 
 }

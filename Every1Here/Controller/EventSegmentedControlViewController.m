@@ -55,6 +55,7 @@
     [segmentedControl setFrame:CGRectMake(10, 10, 300, 44)];
     [segmentedControl addTarget:self action:@selector(segmentedControlChangedValue:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:segmentedControl];
+//    [segmentedControl sendActionsForControlEvents:UIControlEventValueChanged];
     
 }
 

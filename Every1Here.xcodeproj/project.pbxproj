@@ -655,6 +655,13 @@
 			name = CommonUI;
 			sourceTree = "<group>";
 		};
+		287DCA3E17F08C05000DF8D3 /* iPad */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = iPad;
+			sourceTree = "<group>";
+		};
 		288DF38E1713011F008598DA /* Parse ORM */ = {
 			isa = PBXGroup;
 			children = (
@@ -1342,6 +1349,7 @@
 				28B8BA86171087560095BB6F /* en.lproj */,
 				28B8E0BD171087690095BB6F /* Model */,
 				28B8E0E61710876A0095BB6F /* Resources */,
+				287DCA3E17F08C05000DF8D3 /* iPad */,
 				28B8E0ED1710876A0095BB6F /* View */,
 				28E747DF1710831200F97883 /* Supporting Files */,
 			);
@@ -1940,7 +1948,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Every1Here/Every1Here-Prefix.pch";
 				INFOPLIST_FILE = "Every1Here/Every1Here-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-framework",
@@ -1949,6 +1957,7 @@
 					SystemConfiguration,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1964,7 +1973,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Every1Here/Every1Here-Prefix.pch";
 				INFOPLIST_FILE = "Every1Here/Every1Here-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lsqlite3",
@@ -1999,6 +2008,7 @@
 					Social,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

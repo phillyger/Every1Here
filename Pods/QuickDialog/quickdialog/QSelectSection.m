@@ -22,6 +22,7 @@
     if (self) {
         self.selectedIndexes = [@[] mutableCopy];
         self.multipleAllowed = NO;
+        self.deselectAllowed = NO;
     }
 
     return self;
@@ -101,10 +102,9 @@
 
 - (void)addElement:(QElement *)element {
     [super addElement:element];
-    if ([element isMemberOfClass:[QSelectItemElement class]]){
+    if ([element isKindOfClass:[QSelectItemElement class]]){
         ((QSelectItemElement *)element).selectSection = self;
         ((QSelectItemElement *)element).index = self.elements.count-1;
-
     }
 }
 

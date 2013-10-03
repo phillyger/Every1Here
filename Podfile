@@ -1,12 +1,13 @@
-platform :ios, :deployment_target => '6.0'
+platform :ios, :deployment_target => '6.1'
 
 pod 'AFNetworking'
 pod 'MBProgressHUD'
 pod 'FPPopover'
-pod 'BlockAlertsAnd-ActionSheets'
-pod 'QuickDialog'
 pod 'HMSegmentedControl', '~> 1.2.0'
-pod 'Parse', '~> 1.2.5'
+pod 'BlockAlertsAnd-ActionSheets'
+pod 'QuickDialog', '~> 0.9'
+pod 'Parse', '~> 1.2.13'
+pod 'Facebook-iOS-SDK', '~>3.8.0'
 
 target :Every1HereTests do
 	pod 'OCMock'
@@ -14,8 +15,9 @@ target :Every1HereTests do
 	pod 'MBProgressHUD'
 	pod 'FPPopover'
 	pod 'BlockAlertsAnd-ActionSheets'
-	pod 'QuickDialog'
-	pod 'Parse', '~> 1.2.5'
+	pod 'QuickDialog', '~> 0.9'
+	pod 'Parse', '~> 1.2.13'
+	pod 'Facebook-iOS-SDK', '~>3.8.0'
 end
 
 target :OHHTTPStubsUnitTests do

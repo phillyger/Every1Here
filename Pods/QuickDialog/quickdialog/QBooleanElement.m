@@ -109,9 +109,8 @@
 
 -(void)setBoolValue:(BOOL)boolValue {
     _boolValue = boolValue;
-    if (self.onValueChanged!=nil){
-        self.onValueChanged(self);
-    }
+    
+    [self handleEditingChanged];
 }
 
 - (void)switched:(id)boolSwitch {
@@ -126,6 +125,18 @@
 		return;
     [obj setValue:[NSNumber numberWithBool:self.boolValue] forKey:_key];
 }
+
+
+- (void)setNilValueForKey:(NSString *)key;
+{
+    if ([key isEqualToString:@"boolValue"]){
+        self.boolValue = NO;
+    }
+    else {
+        [super setNilValueForKey:key];
+    }
+}
+
 
 
 @end
