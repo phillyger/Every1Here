@@ -90,6 +90,7 @@
 		289EF0501719AF00004CCD78 /* EventSegmentedControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289EF04F1719AF00004CCD78 /* EventSegmentedControlViewController.m */; };
 		289EF052171A1769004CCD78 /* PastEvents.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289EF051171A1769004CCD78 /* PastEvents.xib */; };
 		28A586191721D33900970476 /* NSIndexSet+Operations.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A586181721D33900970476 /* NSIndexSet+Operations.m */; };
+		28A83ADA1876238C00A0A8C5 /* CRNInitialsImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A83AD91876238C00A0A8C5 /* CRNInitialsImageView.m */; };
 		28B8E1151710876A0095BB6F /* NSDictionary+RWFlatten.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA25171087560095BB6F /* NSDictionary+RWFlatten.m */; };
 		28B8E1161710876A0095BB6F /* CommandBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA29171087560095BB6F /* CommandBase.m */; };
 		28B8E1171710876A0095BB6F /* E1HRESTApiOperationInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BA2C171087560095BB6F /* E1HRESTApiOperationInsert.m */; };
@@ -363,6 +364,8 @@
 		289EF051171A1769004CCD78 /* PastEvents.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PastEvents.xib; sourceTree = "<group>"; };
 		28A586171721D33900970476 /* NSIndexSet+Operations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Operations.h"; sourceTree = "<group>"; };
 		28A586181721D33900970476 /* NSIndexSet+Operations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+Operations.m"; sourceTree = "<group>"; };
+		28A83AD81876238C00A0A8C5 /* CRNInitialsImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRNInitialsImageView.h; sourceTree = "<group>"; };
+		28A83AD91876238C00A0A8C5 /* CRNInitialsImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRNInitialsImageView.m; sourceTree = "<group>"; };
 		28B8BA24171087560095BB6F /* NSDictionary+RWFlatten.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+RWFlatten.h"; sourceTree = "<group>"; };
 		28B8BA25171087560095BB6F /* NSDictionary+RWFlatten.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+RWFlatten.m"; sourceTree = "<group>"; };
 		28B8BA27171087560095BB6F /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
@@ -1099,6 +1102,8 @@
 		28B8E0ED1710876A0095BB6F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				28A83AD81876238C00A0A8C5 /* CRNInitialsImageView.h */,
+				28A83AD91876238C00A0A8C5 /* CRNInitialsImageView.m */,
 				2857E7341728577C00CB584F /* CommonUI */,
 				28B8E0EE1710876A0095BB6F /* Forms */,
 				28B8E0F41710876A0095BB6F /* Image Views */,
@@ -1718,6 +1723,7 @@
 				28B8F03B1710876C0095BB6F /* Person.m in Sources */,
 				28B8F03C1710876C0095BB6F /* RESTApiOperation.m in Sources */,
 				28B8F03D1710876C0095BB6F /* EffectiveDateRange.m in Sources */,
+				28A83ADA1876238C00A0A8C5 /* CRNInitialsImageView.m in Sources */,
 				28B8F03E1710876C0095BB6F /* EventRole.m in Sources */,
 				28B8F03F1710876C0095BB6F /* GuestRole.m in Sources */,
 				28B8F0401710876C0095BB6F /* MemberRole.m in Sources */,

@@ -12,6 +12,7 @@
 #import "Event.h"
 #import "EventRole.h"
 #import "User.h"
+#import "CRNInitialsImageView.h"
 
 #import <QuartzCore/QuartzCore.h>
 #import "AvatarStore.h"
@@ -24,6 +25,10 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
         NSDictionary *meetingRoleIconDict;
         NSDictionary *meetingRoleDict;
 }
+
+@property (nonatomic, strong) NSMutableArray *outerArray;
+@property (nonatomic, strong) NSArray *indexTitlesArray;
+
 @end
 
 @implementation MemberListTableDataSource
@@ -32,10 +37,13 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 @synthesize avatarStore;
 @synthesize tableView;
 @synthesize notificationCenter;
+@synthesize collation;
 
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
-    return [[event allMembers] count] ? :1;
+//    return [[event allMembers] count] ? :1;
+    NSArray *innerArray = [self.outerArray objectAtIndex:section];
+    return [innerArray count];
 }
 
 - (User *)memberForIndexPath:(NSIndexPath *)indexPath {
@@ -54,9 +62,16 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = nil;
     if ([[event allMembers]count]) {
-        User *user = [[event allMembers] objectAtIndex:[indexPath row]];
+//        User *user = [[event allMembers] objectAtIndex:[indexPath row]];
+        
+        
+        
         memberCell = [aTableView dequeueReusableCellWithIdentifier:memberCellReuseIdentifier forIndexPath:indexPath];
         
+        // Get the inner array for this section
+        NSArray *innerArray = [self.outerArray objectAtIndex:indexPath.section];
+        User *user = [innerArray objectAtIndex:indexPath.row];
+//        memberCell.displayNameLabel.text =
         memberCell.displayNameLabel.text = user.displayName;
         
         
@@ -96,7 +111,20 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
         NSURLRequest *request = [NSURLRequest requestWithURL:user.avatarURL];
         __weak UIImageView *imageView = memberCell.avatarView;
         
-        [memberCell.avatarView setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"profile-image-placeholder.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+
+        // Implementation example of CRNInitialsImageView
+        CRNInitialsImageView *crnImageView = [[CRNInitialsImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+        crnImageView.initialsBackgroundColor = [self randomColor];
+        crnImageView.initialsTextColor = [UIColor whiteColor];
+        crnImageView.initialsFont = [UIFont fontWithName:@"HelveticaNeue" size:18];
+//        crnImageView.useCircle = _isCircle ? TRUE : FALSE; // setting value based on UISegmentedControl
+        crnImageView.useCircle = YES;
+        crnImageView.firstName = [user firstName];
+        crnImageView.lastName = [user lastName];
+        [crnImageView drawImage];
+        
+        
+        [memberCell.avatarView setImageWithURLRequest:request placeholderImage:crnImageView.image success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
             imageView.image = image;
 
             // use the image's layer to mask the image into a circle
@@ -145,6 +173,73 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 
 - (void)avatarStoreDidUpdateContent:(NSNotification *)notification {
     [tableView reloadData];
+}
+
+- (UIColor *)randomColor {
+    CGFloat hue = (arc4random() % 128 / 256.0) + 0.25;
+    CGFloat saturation = (arc4random() % 128 / 256.0) + 0.25;
+    CGFloat brightness = (arc4random() % 128 / 256.0) + 0.25;
+    return [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
+}
+
+#pragma mark - UITableViewDelegate
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    return self.collation.sectionTitles;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSString *theLetter = [self.collation.sectionTitles objectAtIndex:section];
+    
+    if (![theLetter isEqualToString:@"#"]) {
+        NSString *titleString = [NSString stringWithFormat:
+                                 @"%@", theLetter];
+        return titleString;
+    }
+    
+    return nil;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+     return [self.collation sectionForSectionIndexTitleAtIndex:index];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    self.collation = [UILocalizedIndexedCollation currentCollation];
+    return [self.collation.sectionTitles count];
+}
+
+#pragma mark - Custom configuration of table data
+-(void)configureSectionData
+{
+ 
+    SEL selector = @selector(lastName);
+//    SEL selector = @selector(user);
+    NSUInteger sectionTitlesCount = [collation.sectionTitles count];
+    
+    self.outerArray = [NSMutableArray arrayWithCapacity:sectionTitlesCount];
+    
+    for (NSUInteger index = 0; index < sectionTitlesCount; index++) {
+        NSMutableArray *array = [NSMutableArray array];
+        [self.outerArray addObject:array];
+    }
+    
+    for (User *user in [event allMembers]) {
+        NSInteger sectionNumber = [collation sectionForObject:[user lastName] collationStringSelector:@selector(lowercaseString)];
+        
+        NSMutableArray *sectionNames = [self.outerArray objectAtIndex:sectionNumber];
+        [sectionNames addObject:user];
+    }
+    
+    for (NSUInteger index = 0; index < sectionTitlesCount; index++) {
+        NSMutableArray *namesForSection = [self.outerArray objectAtIndex:index];
+        NSArray *sortedNamesForSection = [collation sortedArrayFromArray: namesForSection collationStringSelector:selector];
+        [self.outerArray replaceObjectAtIndex:index withObject:sortedNamesForSection];
+    }
+    
 }
 
 

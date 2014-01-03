@@ -27,7 +27,7 @@
  * A façade providing access to the external Parse.com API services.
  * Application code should only use this class to get at external services innards.
  */
-@interface ParseDotComManager : NSObject
+@interface ParseDotComManager : NSObject<EventCommunicatorDelegate, MemberCommunicatorDelegate>
 
 @property (weak, nonatomic) id <EventManagerDelegate> eventDelegate;
 @property (weak, nonatomic) id <ParseDotComManagerDelegate> parseDotComDelegate;

@@ -14,6 +14,7 @@
 #import "User.h"
 #import "AvatarStore.h"
 #import "GuestAttendeeListSection.h"
+#import "CRNInitialsImageView.h"
 #import <QuartzCore/QuartzCore.h>
 
 NSString *guestCellReuseIdentifier = @"guestSummaryCell";
@@ -90,9 +91,25 @@ NSString *guestCellReuseIdentifier = @"guestSummaryCell";
             [guestCell.attendance setImage:[UIImage imageNamed:@"imgOn"]];
         }
         
+        CRNInitialsImageView *crnImageView;
+        
+        if (user!=nil) {
+            // Implementation example of CRNInitialsImageView
+            crnImageView = [[CRNInitialsImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+            crnImageView.initialsBackgroundColor = [self randomColor];
+            crnImageView.initialsTextColor = [UIColor whiteColor];
+            crnImageView.initialsFont = [UIFont fontWithName:@"HelveticaNeue" size:18];
+            //        crnImageView.useCircle = _isCircle ? TRUE : FALSE; // setting value based on UISegmentedControl
+            crnImageView.useCircle = YES;
+            crnImageView.firstName = [user firstName];
+            crnImageView.lastName = [user lastName];
+            [crnImageView drawImage];
+        }
+
+        
         NSURLRequest *request = [NSURLRequest requestWithURL:user.avatarURL];
         __weak UIImageView *imageView = guestCell.avatarView;
-        [guestCell.avatarView setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"profile-image-placeholder.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        [guestCell.avatarView setImageWithURLRequest:request placeholderImage:[crnImageView image] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
             imageView.image = image;
             
             // use the image's layer to mask the image into a circle
@@ -137,6 +154,13 @@ NSString *guestCellReuseIdentifier = @"guestSummaryCell";
 
 - (void)avatarStoreDidUpdateContent:(NSNotification *)notification {
     [tableView reloadData];
+}
+
+- (UIColor *)randomColor {
+    CGFloat hue = (arc4random() % 128 / 256.0) + 0.25;
+    CGFloat saturation = (arc4random() % 128 / 256.0) + 0.25;
+    CGFloat brightness = (arc4random() % 128 / 256.0) + 0.25;
+    return [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
 }
 
 @end

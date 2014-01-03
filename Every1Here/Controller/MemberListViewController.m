@@ -125,8 +125,10 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 
 
     if ([self.dataSource isKindOfClass: [MemberListTableDataSource class]]) {
+        [(MemberListTableDataSource *)self.dataSource setCollation:[UILocalizedIndexedCollation currentCollation]];
         [self fetchMemberListTableContent];
     }
+
     
 }
 
@@ -191,6 +193,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     self.parseDotComMgr = [objectConfiguration parseDotComManager];
     self.parseDotComMgr.parseDotComDelegate = self;
     selectedEvent = (Event *)[(MemberListTableDataSource *)self.dataSource event];
+    
     [self.parseDotComMgr fetchUsersForEvent:selectedEvent withUserType:Member];
 }
 
@@ -481,6 +484,8 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
         [selectedEvent addMember:thisUser];
     }
     
+    [(MemberListTableDataSource*)self.dataSource configureSectionData];
+
     [self.tableView reloadData];
 
 }

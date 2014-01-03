@@ -19,10 +19,14 @@
 @property (strong) AvatarStore *avatarStore;
 @property (weak) UITableView *tableView;
 @property (strong) NSNotificationCenter *notificationCenter;
+@property (nonatomic, strong) UILocalizedIndexedCollation *collation;
+
+
 
 - (void)registerForUpdatesToAvatarStore: (AvatarStore *)store;
 - (void)removeObservationOfUpdatesToAvatarStore: (AvatarStore *)store;
 - (void)avatarStoreDidUpdateContent: (NSNotification *)notification;
+- (void)configureSectionData;
 
 @end
 
