@@ -28,14 +28,6 @@
                  
                  { "title": "Attending with Guest(s)", "elements":[
                                {"type":"QPickerElement", "title":"How many?", "key":"guestCount", "items":[[0, 1, 2, 3]]}
-                               ]},
-                 
-                 { "title": "Member Information", "elements":[
-                               {"type":"QLabelElement","title":"Member Since", "value":"Jan 01, 2012"},
-                               {"type":"QBadgeElement","title":"Club Attendance", "badge":"90%"},
-                               {"type":"QBadgeElement", "title":"# of Speeches Given", "badge":"4"}
-                               
-                               
                                ]}
                  
                  ]

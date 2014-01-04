@@ -25,6 +25,7 @@
     NSString *postDisplayName;
     
 }
+@property(nonatomic)CGSize trueContentSize;
 
 //@property (nonatomic) NSInteger eventRolesChangedCount;
 @property (nonatomic) BOOL hasFormBeenEdited;
@@ -34,6 +35,16 @@
 @synthesize newUser;
 @synthesize userToEdit;
 
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if ((self = [super initWithCoder:aDecoder])) {
+        QRootElement *root =[[QRootElement alloc] init];
+
+        
+        self.root = root;
+        self.resizeWhenKeyboardPresented = YES;
+    }
+    return self;
+}
 
 - (void)setQuickDialogTableView:(QuickDialogTableView *)aQuickDialogTableView {
     [super setQuickDialogTableView:aQuickDialogTableView];
@@ -43,7 +54,12 @@
 //    self.quickDialogTableView.backgroundColor = [UIColor colorWithHue:0.1174 saturation:0.7131 brightness:0.8618 alpha:1.0000];
    
     self.quickDialogTableView.bounces = NO;
+//    self.quickDialogTableView.bounds = CGRectMake(0,0,320, 920);
+//    self.quickDialogTableView.contentSize = CGSizeMake(320, 920);
+    [self.quickDialogTableView setNeedsLayout];
+    [self.quickDialogTableView setScrollEnabled:YES];
 //    self.quickDialogTableView.styleProvider = self;
+    
     
 
     thisEventRole = [[self userToEdit] getRole:@"EventRole"];
@@ -58,10 +74,35 @@
 
     }
     
-} 
+}
+
+- (void)loadView {
+    [super loadView];
+    
+    //-------------------------------------------------------
+    // Load the Quick Dialog form names mapping.
+    //-------------------------------------------------------
+    NSString *pathToPList=[[NSBundle mainBundle] pathForResource:@"E1H_QuickDialog_FileNames" ofType:@"plist"];
+    NSDictionary *pListInfoDictForE1HQuickDialog = [[NSDictionary alloc] initWithContentsOfFile:pathToPList];
+    
+    if (self.newUser) {
+        self.root =[[QRootElement alloc] initWithJSONFile:[pListInfoDictForE1HQuickDialog valueForKey:@"member_details_new"]];
+    } else {
+        self.root =[[QRootElement alloc] initWithJSONFile:[pListInfoDictForE1HQuickDialog valueForKey:@"member_details_edit"]];
+    }
+    
+    self.quickDialogTableView = [[QuickDialogTableView alloc] initWithController:self];
+    self.view = self.quickDialogTableView;
+    
+//    self.view.frame = CGRectMake(0,0,320, 920);
+}
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+
+    
+    [self.root bindToObject:self.userToEdit];
     //    self.navigationController.navigationBar.tintColor = [UIColor orangeColor];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(onDone)];
     
@@ -71,16 +112,6 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     self.navigationController.navigationBar.tintColor = nil;
-}
-
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
 }
 
 
@@ -159,6 +190,17 @@
     
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.quickDialogTableView reloadData]; // Calculates correct contentSize
+    self.trueContentSize = self.quickDialogTableView.contentSize;
+}
+
+-(void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    self.quickDialogTableView.contentSize = self.trueContentSize;
+}
 
 - (void)viewDidLoad
 {

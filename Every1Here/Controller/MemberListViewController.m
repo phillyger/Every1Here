@@ -57,7 +57,11 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     // Queue for receptionist instances.
     //-------------------------------------------------------
     NSOperationQueue *aQueue;
-    
+
+    //-------------------------------------------------------
+    // Are we creating a new user
+    //-------------------------------------------------------
+    BOOL isNewUser;
 }
 
 @end
@@ -84,6 +88,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 {
     [super viewDidLoad];
 
+    isNewUser = NO;
     
     NSString *backArrowString = @"\U000025C0\U0000FE0E"; //BLACK LEFT-POINTING TRIANGLE PLUS VARIATION SELECTOR
     
@@ -225,8 +230,8 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     // QuickDialog :: Reads the JSON file to structure the
     // member form. The form name is loads from plist.
     //-------------------------------------------------------
-    QRootElement *root =[[QRootElement alloc] initWithJSONFile:[pListInfoDictForE1HQuickDialog valueForKey:@"member_details_edit"]];
-    [root bindToObject:(User *)selectedMember];
+//    QRootElement *root =[[QRootElement alloc] initWithJSONFile:[pListInfoDictForE1HQuickDialog valueForKey:@"member_details_edit"]];
+//    [root bindToObject:(User *)selectedMember];
     
     
     //-------------------------------------------------------
@@ -236,15 +241,15 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     // - newUser
     // in destination controller
     //-------------------------------------------------------
-    MemberDetailsDialogController *memberDetailsController = [(MemberDetailsDialogController *)[MemberDetailsDialogController alloc] initWithRoot:root];
-    memberDetailsController.userToEdit = selectedMember;
-    memberDetailsController.newUser = NO;
+//    MemberDetailsDialogController *memberDetailsController = [(MemberDetailsDialogController *)[MemberDetailsDialogController alloc] initWithRoot:root];
+//    memberDetailsController.userToEdit = selectedMember;
+//    memberDetailsController.newUser = NO;
 
     //-------------------------------------------------------
     // Check to see if Attendance Id field has been set on
     // selected member .
     //-------------------------------------------------------
-     __block BOOL doesAttendanceRecordExist = [selectedMember attendanceId]!=nil ? TRUE : FALSE;
+     __block BOOL doesAttendanceRecordExist = [selectedMember attendanceId]!=nil ? YES : NO;
     
     //-------------------------------------------------------
     // KVO Receptionist pattern for handling changes to
@@ -343,24 +348,87 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     //-------------------------------------------------------
     // On completion, ensure to remove KVO observers.
     //-------------------------------------------------------
-    memberDetailsController.completionBlock = ^(BOOL success)
-    {
-  
-        [selectedMember removeObserver:attendanceReceptionist forKeyPath:@"roles.EventRole.attendance"];
-        [selectedMember removeObserver:eventRoleReceptionist forKeyPath:@"roles.EventRole.eventRoles"];
-        [selectedMember removeObserver:displayNameReceptionist forKeyPath:@"displayName"];
-        [selectedMember removeObserver:guestCountReceptionist forKeyPath:@"roles.EventRole.guestCount"];
-
-        [self dismissViewControllerAnimated:YES completion:nil];
-    };
+//    memberDetailsController.completionBlock = ^(BOOL success)
+//    {
+//  
+//        [selectedMember removeObserver:attendanceReceptionist forKeyPath:@"roles.EventRole.attendance"];
+//        [selectedMember removeObserver:eventRoleReceptionist forKeyPath:@"roles.EventRole.eventRoles"];
+//        [selectedMember removeObserver:displayNameReceptionist forKeyPath:@"displayName"];
+//        [selectedMember removeObserver:guestCountReceptionist forKeyPath:@"roles.EventRole.guestCount"];
+//
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//    };
     
     
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:memberDetailsController];
-    [self presentViewController:navController animated:YES completion:nil];
+//    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:memberDetailsController];
+//    [self presentViewController:navController animated:YES completion:nil];
+    
+    isNewUser = NO;
+    [self performSegueWithIdentifier:@"memberSegue" sender:selectedMember];
     
     
 }
 
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"memberSegue"]) {
+        
+        UITabBarController *tabBarViewController = (UITabBarController *) [segue destinationViewController];
+        UINavigationController *navController = [[tabBarViewController viewControllers] objectAtIndex:0];
+        MemberDetailsDialogController *memberDetailsController =
+        (MemberDetailsDialogController *) [[navController viewControllers] objectAtIndex:0];
+        
+//        MemberDetailsDialogController *memberDetailsController = segue.destinationViewController;
+        
+        memberDetailsController.userToEdit = (User*)sender;
+        
+        if (isNewUser) {
+            memberDetailsController.newUser = YES;
+            //-------------------------------------------------------
+            // On completion, if form content has changed, insert
+            // new user,
+            //-------------------------------------------------------
+            memberDetailsController.completionBlock = ^(BOOL success)
+            {
+                if (success)
+                {
+                    
+                    [CommonUtilities showProgressHUD:self.view];
+                    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                        // insert a new user.
+                        [parseDotComMgr insertUser:selectedMember withUserType:Member];
+                        [selectedEvent addMember:selectedMember];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [CommonUtilities hideProgressHUD:self.view];
+                            
+                        });
+                    });
+                    
+                    
+                }
+                
+                [self dismissViewControllerAnimated:YES completion:nil];
+                
+            };
+        } else {
+            memberDetailsController.newUser = NO;
+            //-------------------------------------------------------
+            // On completion, ensure to remove KVO observers.
+            //-------------------------------------------------------
+            memberDetailsController.completionBlock = ^(BOOL success)
+            {
+                
+                [selectedMember removeObserver:attendanceReceptionist forKeyPath:@"roles.EventRole.attendance"];
+                [selectedMember removeObserver:eventRoleReceptionist forKeyPath:@"roles.EventRole.eventRoles"];
+                [selectedMember removeObserver:displayNameReceptionist forKeyPath:@"displayName"];
+                [selectedMember removeObserver:guestCountReceptionist forKeyPath:@"roles.EventRole.guestCount"];
+                
+                [self dismissViewControllerAnimated:YES completion:nil];
+            };
+        }
+    }
+}
 
 /*---------------------------------------------------------------------------
  * Handles the creation of a new member 
@@ -377,7 +445,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     // QuickDialog :: Reads the JSON file to structure the
     // member form. The form name is loads from plist.
     //-------------------------------------------------------
-    QRootElement *root =[[QRootElement alloc] initWithJSONFile:[pListInfoDictForE1HQuickDialog valueForKey:@"member_details_new"]];
+//    QRootElement *root =[[QRootElement alloc] initWithJSONFile:[pListInfoDictForE1HQuickDialog valueForKey:@"member_details_new"]];
     
 
     //-------------------------------------------------------
@@ -387,43 +455,44 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     // - newUser
     // in destination controller
     //-------------------------------------------------------
-    MemberDetailsDialogController *memberDetailsController = [(MemberDetailsDialogController *)[MemberDetailsDialogController alloc] initWithRoot:root];
-    memberDetailsController.userToEdit = selectedMember;
-    memberDetailsController.newUser = YES;
+//    MemberDetailsDialogController *memberDetailsController = [(MemberDetailsDialogController *)[MemberDetailsDialogController alloc] initWithRoot:root];
+//    memberDetailsController.userToEdit = selectedMember;
+//    memberDetailsController.newUser = YES;
     
     
     //-------------------------------------------------------
     // On completion, if form content has changed, insert
     // new user,
     //-------------------------------------------------------
-    memberDetailsController.completionBlock = ^(BOOL success)
-    {
-        if (success)
-        {
-
-            [CommonUtilities showProgressHUD:self.view];
-            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-                // insert a new user.
-                [parseDotComMgr insertUser:selectedMember withUserType:Member];
-                [selectedEvent addMember:selectedMember];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [CommonUtilities hideProgressHUD:self.view];
-
-                });
-            });
-            
-
-        }
-        
-        [self dismissViewControllerAnimated:YES completion:nil];
-
-    };
+//    memberDetailsController.completionBlock = ^(BOOL success)
+//    {
+//        if (success)
+//        {
+//
+//            [CommonUtilities showProgressHUD:self.view];
+//            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+//                // insert a new user.
+//                [parseDotComMgr insertUser:selectedMember withUserType:Member];
+//                [selectedEvent addMember:selectedMember];
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [CommonUtilities hideProgressHUD:self.view];
+//
+//                });
+//            });
+//            
+//
+//        }
+//        
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//
+//    };
     
     
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:memberDetailsController];
+//    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:memberDetailsController];
+//    [self presentViewController:navController animated:YES completion:nil];
     
-    
-    [self presentViewController:navController animated:YES completion:nil];
+    isNewUser = YES;
+    [self performSegueWithIdentifier:@"memberSegue" sender:selectedMember];
     
 }
 
