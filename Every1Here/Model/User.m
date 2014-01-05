@@ -22,6 +22,7 @@
 @synthesize primaryEmailAddr, secondaryEmailAddr;
 @synthesize hasAttendanceRecord;
 @synthesize hasUserRecord;
+@synthesize compComm;
 
 
 // Designated Initializer
@@ -37,6 +38,7 @@
                 eventId:(NSString *)anEventId
                  slType:(SocialNetworkType)aSlType
                slUserId:(NSString *)aSocialNetworkUserId
+               compComm:(NSNumber *)aCompComm
 {
     if (self = [super initWithFirstName:aFirstName
                                lastName:aLastName]) {
@@ -60,6 +62,7 @@
         objectId = [anObjectId copy];
         userId = [aUserId copy];
         eventId = [anEventId copy];
+        compComm = [aCompComm copy];
         
         
         roles = [[NSMutableDictionary alloc] init];
@@ -78,6 +81,7 @@
                  eventId:(NSString *)anEventId
                  slType:(SocialNetworkType)aSlType
                slUserId:(NSString *)aSocialNetworkUserId
+               compComm:(NSNumber *)aCompComm
 {
     return [self initWithFirstName:aFirstName
                           lastName:aLastName
@@ -89,7 +93,8 @@
                             userId:aUserId
                            eventId:anEventId
                             slType:aSlType
-                          slUserId:aSocialNetworkUserId];
+                          slUserId:aSocialNetworkUserId
+                        compComm:aCompComm];
 
 }
 
@@ -108,7 +113,8 @@
                             userId:aUserId
                            eventId:anEventId
                             slType:NONE
-                          slUserId:nil];
+                          slUserId:nil
+                          compComm:@0];
     
 }
 
@@ -125,7 +131,8 @@
                             userId:nil
                            eventId:anEventId
                             slType:NONE
-                          slUserId:nil];
+                          slUserId:nil
+                          compComm:@0];
     
 }
 
@@ -150,7 +157,7 @@
                    slType:(SocialNetworkType)aSlType
                  slUserId:(NSString *)aSocialNetworkUserId
 {
-    return [self initWithDisplayName:aDisplayName primaryEmailAddr:nil secondaryEmailAddr:nil avatarLocation:location objectId:anObjectId userId:aUserId eventId:anEventId slType:aSlType slUserId:aSocialNetworkUserId];
+    return [self initWithDisplayName:aDisplayName primaryEmailAddr:nil secondaryEmailAddr:nil avatarLocation:location objectId:anObjectId userId:aUserId eventId:anEventId slType:aSlType slUserId:aSocialNetworkUserId compComm:@0];
 }
 
 
@@ -163,6 +170,7 @@
                   eventId:(NSString *)anEventId
                    slType:(SocialNetworkType)aSlType
                  slUserId:(NSString *)aSocialNetworkUserId
+                 compComm:(NSNumber *)aCompComm
 {
     if ((self = [self initWithFirstName:nil
                                lastName:nil
@@ -173,7 +181,8 @@
                                  userId:aUserId
                                 eventId:anEventId
                                  slType:aSlType
-                               slUserId:aSocialNetworkUserId])) {
+                               slUserId:aSocialNetworkUserId
+                               compComm:aCompComm])) {
         displayName = [aDisplayName copy];
         aDisplayName = nil;
     }
@@ -186,7 +195,7 @@
 - (id)init
 {
 //    return [self initWithFirstName:nil lastName:nil primaryEmailAddr:nil secondaryEmailAddr:nil avatarLocation:nil objectId:nil userId:nil eventId:nil slType:NONE slUserId:nil];
-    return [self initWithFirstName:nil lastName:nil displayName:nil primaryEmailAddr:nil secondaryEmailAddr:nil avatarLocation:nil objectId:nil userId:nil eventId:nil slType:NONE slUserId:nil];
+    return [self initWithFirstName:nil lastName:nil displayName:nil primaryEmailAddr:nil secondaryEmailAddr:nil avatarLocation:nil objectId:nil userId:nil eventId:nil slType:NONE slUserId:nil compComm:@0];
 }
 
 - (id)getRole:(NSString *)aSpec

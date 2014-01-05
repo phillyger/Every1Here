@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@class PICircularProgressView;
 
 @interface MemberSummaryCell : UITableViewCell
 
@@ -18,6 +18,7 @@
 @property (strong) IBOutlet UIImageView * rolesView_3;
 
 @property (strong) IBOutlet UIImageView * attendance;
+@property (weak, nonatomic) IBOutlet PICircularProgressView *progressView;
 
 - (UIImageView *)rolesViewWithOffset:(NSUInteger )offset;
 

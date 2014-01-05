@@ -13,6 +13,7 @@
 #import "EventRole.h"
 #import "User.h"
 #import "CRNInitialsImageView.h"
+#import "PICircularProgressView.h"
 
 #import <QuartzCore/QuartzCore.h>
 #import "AvatarStore.h"
@@ -53,7 +54,10 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSNotification *note = [NSNotification notificationWithName: MemberListDidSelectMemberNotification object: [self memberForIndexPath: indexPath]];
+    // Get the inner array for this section
+    NSArray *innerArray = [self.outerArray objectAtIndex:indexPath.section];
+    User *user = [innerArray objectAtIndex:indexPath.row];
+    NSNotification *note = [NSNotification notificationWithName: MemberListDidSelectMemberNotification object: user];
     [[NSNotificationCenter defaultCenter] postNotification: note];
 }
 
@@ -73,6 +77,9 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
         User *user = [innerArray objectAtIndex:indexPath.row];
 //        memberCell.displayNameLabel.text =
         memberCell.displayNameLabel.text = user.displayName;
+        
+
+        memberCell.progressView.progress = [user.compComm floatValue]/10;
         
         
         /*

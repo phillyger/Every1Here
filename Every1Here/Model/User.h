@@ -57,6 +57,10 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
  */
 @property (copy) NSString *displayName;
 
+/**
+ *   The number of speeches completed.
+ */
+@property (nonatomic) NSNumber *compComm;
 
 /**
  *  The path to the user's avatar
@@ -96,7 +100,8 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                  userId:(NSString *)aUserId
                 eventId:(NSString *)anEventId
                  slType:(SocialNetworkType)aSlType
-               slUserId:(NSString *)aSocialNetworkUserId;
+               slUserId:(NSString *)aSocialNetworkUserId
+               compComm:(NSNumber *)compComm;
 
 - (id)initWithFirstName:(NSString *)aFirstName
                lastName:(NSString *)aLastName
@@ -107,7 +112,8 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                  userId:(NSString *)aUserId
                 eventId:(NSString *)anEventId
                  slType:(SocialNetworkType)aSlType
-               slUserId:(NSString *)aSocialNetworkUserId;
+               slUserId:(NSString *)aSocialNetworkUserId
+               compComm:(NSNumber *)compComm;
 
 
 
@@ -139,7 +145,8 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                    userId:(NSString *)aUserId
                   eventId:(NSString *)anEventId
                    slType:(SocialNetworkType)aSlType
-                 slUserId:(NSString *)aSocialNetworkUserId;
+                 slUserId:(NSString *)aSocialNetworkUserId
+                 compComm:(NSNumber *)compComm;
 
 
 @end

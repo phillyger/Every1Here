@@ -40,6 +40,8 @@
     NSString *primaryEmail = [userValues valueForKeyPath:@"primaryEmail"];
     NSString *eventId = [userValues valueForKeyPath:@"eventId"];
     NSString *avatarLocation = [userValues valueForKeyPath:@"avatarURL"];
+    
+    NSNumber *compComm = [userValues valueForKey:@"compComm"];
 
     
 //    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -62,7 +64,8 @@
                                               userId:userId
                                             eventId:eventId
                                               slType:NONE
-                                            slUserId:nil];
+                                            slUserId:nil
+                                     compComm:compComm];
         
     } else {
         
@@ -93,7 +96,8 @@
                                         userId:userId
                                        eventId:eventId
                                         slType:slType
-                                      slUserId:slUserId];
+                                      slUserId:slUserId
+                                      compComm:compComm];
         
     }
     
