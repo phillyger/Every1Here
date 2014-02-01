@@ -11,6 +11,8 @@
 //#import "NotPresentState.h"
 //#import "InAttendanceState.h"
 
+@class Speech;
+
 typedef NS_OPTIONS(NSUInteger, TMEventRoles) {
     TM_None                  = 0,
     TM_Table_Topics_Speaker  = 1<<0,
@@ -35,6 +37,7 @@ typedef NS_OPTIONS(NSUInteger, TMEventRoles) {
 
 @property (nonatomic) TMEventRoles eventRoles;
 @property (nonatomic, getter = isAttending) BOOL attendance;
+@property (nonatomic) Speech *speech;
 @property (nonatomic) NSInteger guestCount;
 
 

@@ -374,8 +374,9 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 {
     if ([segue.identifier isEqualToString:@"memberSegue"]) {
         
-        UITabBarController *tabBarViewController = (UITabBarController *) [segue destinationViewController];
-        UINavigationController *navController = [[tabBarViewController viewControllers] objectAtIndex:0];
+//        UITabBarController *tabBarViewController = (UITabBarController *) [segue destinationViewController];
+//        UINavigationController *navController = [[tabBarViewController viewControllers] objectAtIndex:0];
+        UINavigationController *navController = (UINavigationController*)[segue destinationViewController];
         MemberDetailsDialogController *memberDetailsController =
         (MemberDetailsDialogController *) [[navController viewControllers] objectAtIndex:0];
         

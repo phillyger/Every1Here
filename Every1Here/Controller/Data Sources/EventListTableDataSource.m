@@ -222,7 +222,7 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
     sectionHeaderTitleList = [[NSMutableArray alloc] init];
     sections = [[NSMutableDictionary alloc] init];
     
-    NSDate *dateBeginningOfThisDay = [self dateAtBeginningOfDayForDate:[NSDate date]];
+    NSDate *dateBeginningOfThisDay = [CommonUtilities dateAtBeginningOfDayForDate:[NSDate date]];
 
     [events enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         Event *event = obj;
@@ -310,7 +310,7 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
 - (NSDictionary *)categorizeEventStartDate:(NSDate *)eventStartDate usingBaseDate:(NSDate *)baseDate withArray:(NSArray*)sectionHeaderTitles {
     
     NSDictionary *thisSectionHeaderTitle = [[NSDictionary alloc] init];
-    NSInteger daysOffset = [self numberOfDaysBetweenBaseDate:baseDate offsetDate:eventStartDate];
+    NSInteger daysOffset = [CommonUtilities numberOfDaysBetweenBaseDate:baseDate offsetDate:eventStartDate];
     BOOL weekIsEqual = false;
     
     // Ensure that we are using the absolute value.
@@ -430,42 +430,6 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
 }
 
 
-- (NSDate *)dateAtBeginningOfDayForDate:(NSDate *)inputDate
-{
-    // Use the user's current calendar and time zone
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSTimeZone *timeZone = [NSTimeZone systemTimeZone];
-    [calendar setTimeZone:timeZone];
-    
-    // Selectively convert the date components (year, month, day) of the input date
-    NSDateComponents *dateComps = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:inputDate];
-    
-    // Set the time components manually
-    [dateComps setHour:0];
-    [dateComps setMinute:0];
-    [dateComps setSecond:0];
-    
-    // Convert back
-    NSDate *beginningOfDay = [calendar dateFromComponents:dateComps];
-    return beginningOfDay;
-}
-
-- (NSInteger)numberOfDaysBetweenBaseDate:(NSDate *)baseDate offsetDate:(NSDate *)offsetDate  {
-    
-    NSDate *dateBeginningOfEventStartDay = [self dateAtBeginningOfDayForDate:offsetDate];
-    
-    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit;
-    NSDateComponents *components = [gregorianCalendar components:unitFlags
-                                                        fromDate:baseDate
-                                                          toDate:dateBeginningOfEventStartDay
-                                                         options:0];
-    gregorianCalendar= nil;
-    
-    NSInteger daysOffset = [components day];
-    
-    return daysOffset;
-}
 
 
 -(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section

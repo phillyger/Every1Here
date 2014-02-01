@@ -62,6 +62,11 @@ typedef void (^ParseDotComErrorBlock)(NSError *);
  *  User(Type) Operations (i.e. Members and Guests)
  */
 
+- (void)downloadUsersForActionType:(ActionTypes)actionType
+                     forNamedClass:(NSString *)namedClass
+                      errorHandler:(ParseDotComErrorBlock)errorBlock
+               successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+
 - (void)downloadUsersForEvent:(Event *)event
                 forActionType:(ActionTypes)actionType
                 forNamedClass:(NSString *)namedClass

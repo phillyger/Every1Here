@@ -14,6 +14,7 @@
 #import "User.h"
 #import "CRNInitialsImageView.h"
 #import "PICircularProgressView.h"
+#import "CommonUtilities.h"
 
 #import <QuartzCore/QuartzCore.h>
 #import "AvatarStore.h"
@@ -109,7 +110,12 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
             [memberCell.attendance setImage:[UIImage imageNamed:@"imgOn"]];
         }
             
+//        memberCell.latestSpeech.text = [NSString stringWithFormat:@"%@",[user latestSpeechDate]];
         
+        if ([user latestSpeechDate] != nil)
+            memberCell.latestSpeech.text = [CommonUtilities convertDaysCountToLabelWithBaseDate:[NSDate date] offsetDate:[user latestSpeechDate]];
+        else
+            memberCell.latestSpeech.text = @"";
 
 //        NSData *avatarData = [avatarStore dataForURL: user.avatarURL];
 //        if (avatarData) {
@@ -248,6 +254,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     }
     
 }
+
 
 
 @end

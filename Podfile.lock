@@ -7,11 +7,20 @@ PODS:
   - FPPopover (1.4.1)
   - HMSegmentedControl (1.2.0)
   - MBProgressHUD (0.6)
+  - MZAppearance (1.1.1)
+  - MZFormSheetController (2.3.0):
+    - MZAppearance (~> 1.1.1)
   - OCMock (2.0.1)
   - OHHTTPStubs (1.1.1)
   - Parse (1.2.13):
     - Facebook-iOS-SDK (~> 3.5)
   - QuickDialog (0.9)
+  - ReactiveCocoa (2.1.8):
+    - ReactiveCocoa/Core
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/Core (2.1.8):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.1.8)
 
 DEPENDENCIES:
   - AFNetworking
@@ -20,10 +29,12 @@ DEPENDENCIES:
   - FPPopover
   - HMSegmentedControl (~> 1.2.0)
   - MBProgressHUD
+  - MZFormSheetController
   - OCMock
   - OHHTTPStubs
   - Parse (~> 1.2.13)
   - QuickDialog (~> 0.9)
+  - ReactiveCocoa
 
 SPEC CHECKSUMS:
   AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
@@ -32,9 +43,12 @@ SPEC CHECKSUMS:
   FPPopover: 0289b796c031d8f27bd221d93d282ffe23619893
   HMSegmentedControl: 826084e59fce20866aaa23f30ed50677210eb669
   MBProgressHUD: 9b55a90566fb5d07df0602f6fd9fa04510ad5d52
+  MZAppearance: 8b02683f0019f725557ae9839ed6cab153fff669
+  MZFormSheetController: 28c4ec742c7dd8b64fbe400dbd5176bb05aa65c5
   OCMock: f0c099603f851d07f8d7f2efe26d05da721ec43f
   OHHTTPStubs: cb1cef742f2fba18b192fb92ede52a69cf3a04d5
   Parse: 71038f6c13fef880c628db7a2725bb7138ead81a
   QuickDialog: aea6a7b1a235ba0439065a45e5b124a8422f4e2c
+  ReactiveCocoa: 0db710a0afa1c627a64470e5c912a3870d4854ae
 
 COCOAPODS: 0.25.0

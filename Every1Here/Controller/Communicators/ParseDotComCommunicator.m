@@ -153,6 +153,23 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
 
 #pragma mark User(Type) Operations
 
+- (void)downloadUsersForActionType:(ActionTypes)actionType
+                forNamedClass:(NSString *)namedClass
+                 errorHandler:(ParseDotComErrorBlock)errorBlock
+          successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
+    
+    NSMutableArray *operations = [[NSMutableArray alloc] init];
+    
+    /*
+     *  Operation to return the list of users
+     */
+    RESTApiOperation *usersOp = [self getUserListOperationWithNamedClass:namedClass withActionType:actionType];
+    [operations addObject:usersOp];
+    
+    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
+     ];
+    
+}
 
 - (void)downloadUsersForEvent:(Event *)event
                 forActionType:(ActionTypes)actionType
@@ -161,41 +178,114 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
           successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
     
     
-    NSMutableDictionary *queryParameters = [[NSMutableDictionary alloc] init];
+    
     NSMutableArray *operations = [[NSMutableArray alloc] init];
     
-    // Fetch operation to return list of Members or Guests
-    queryParameters = [@{@"isActive" : [NSNumber numberWithBool:TRUE]} mutableCopy];
-    
-    id fetchUserOp= [E1HOperationFactory create:actionType];
-    RESTApiOperation *usersOp = [fetchUserOp createOperationWithObj:event forNamedClass:namedClass withQuery:queryParameters];
+
+    /*
+     *  Operation to return the list of users
+     */
+    RESTApiOperation *usersOp = [self getUserListOperationWithNamedClass:namedClass withActionType:actionType];
     [operations addObject:usersOp];
     
-    // Fetch operation to return list of Attendance
-    NSString *attendanceNamedClass = [namedClass isEqualToString:@"Guest"] ? @"GuestAttendance" : @"Attendance";
-//    queryParameters = [@{@"eventId" : [event valueForKey:@"objectId"]} mutableCopy];
-    
-    
-    queryParameters = [@{@"eventId":
-                       @{@"__type": @"Pointer",
-                       @"className": @"Event",
-                       @"objectId": [event valueForKey:@"objectId"]}}
-                       mutableCopy];
-    
-
-    
-    
-    id fetchAttendanceOp= [E1HOperationFactory create:actionType];
-    RESTApiOperation *attendanceOp = [fetchAttendanceOp createOperationWithObj:event forNamedClass:attendanceNamedClass withQuery:queryParameters];
+    RESTApiOperation *attendanceOp = [self getAttendanceListByEventOperationWithEvent:event withNamedClass:namedClass withActionType:actionType];
     [operations addObject:attendanceOp];
     
-    fetchUserOp=nil;
-    fetchAttendanceOp=nil;
+    RESTApiOperation *speechOp = [self getSpeechListByEventOperationWithEvent:event withNamedClass:namedClass withActionType:actionType];
+    [operations addObject:speechOp];
+    
     [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
      ];
     
     
 }
+
+
+- (RESTApiOperation *)getSpeechListByEventOperationWithEvent:(Event*)event withNamedClass:(NSString *)namedClass withActionType:(ActionTypes)actionType
+{
+    /*
+     *  Operation to return list of Attendanees by Event Id
+     */
+    NSMutableDictionary *queryParameters = [[NSMutableDictionary alloc] init];
+    
+    queryParameters = [@{@"eventId":
+                             @{@"__type": @"Pointer",
+                               @"className": @"Event",
+                               @"objectId": [event valueForKey:@"objectId"]}}
+                       mutableCopy];
+    
+    // If this is Guest member, return nil.
+    NSString *speechNamedClass = [namedClass isEqualToString:@"Guest"] ? nil : @"Speech";
+    
+    if (speechNamedClass == nil) {
+        return nil;
+    }
+    
+    id fetchSpeechOp= [E1HOperationFactory create:actionType];
+    RESTApiOperation *speechOp = [fetchSpeechOp createOperationWithObj:nil forNamedClass:speechNamedClass withQuery:queryParameters];
+    
+    
+    fetchSpeechOp=nil;
+    
+    return speechOp;
+    
+}
+
+
+- (RESTApiOperation *)getAttendanceListByEventOperationWithEvent:(Event*)event withNamedClass:(NSString *)namedClass withActionType:(ActionTypes)actionType
+{
+    /*
+     *  Operation to return list of Attendanees by Event Id
+     */
+    NSMutableDictionary *queryParameters = [[NSMutableDictionary alloc] init];
+    
+    NSString *attendanceNamedClass = [namedClass isEqualToString:@"Guest"] ? @"GuestAttendance" : @"Attendance";
+    
+    queryParameters = [@{@"eventId":
+                             @{@"__type": @"Pointer",
+                               @"className": @"Event",
+                               @"objectId": [event valueForKey:@"objectId"]}}
+                       mutableCopy];
+    
+    id fetchAttendanceOp= [E1HOperationFactory create:actionType];
+    RESTApiOperation *attendanceOp = [fetchAttendanceOp createOperationWithObj:nil forNamedClass:attendanceNamedClass withQuery:queryParameters];
+    
+    
+    fetchAttendanceOp=nil;
+    
+    return attendanceOp;
+
+}
+
+- (RESTApiOperation *)getUserListOperationWithNamedClass:(NSString *)namedClass withActionType:(ActionTypes)actionType
+{
+    NSMutableDictionary *queryParameters = [[NSMutableDictionary alloc] init];
+    
+    /*
+     *  First Operation
+     */
+    
+    //    NSString *unescaped = @"include=latestSpeech";
+    //    NSString *escapedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
+    //                                                                                                    NULL,
+    //                                                                                                    (__bridge CFStringRef) unescaped,
+    //                                                                                                    NULL,
+    //                                                                                                    CFSTR("!*'();:@&=+$,/?%#[]\" "),
+    //                                                                                                    kCFStringEncodingUTF8));
+    //
+    //    NSLog(@"escapedString: %@",escapedString);
+    
+    // Fetch operation to return list of Members or Guests
+    queryParameters = [@{@"isActive" : [NSNumber numberWithBool:TRUE]} mutableCopy];
+    
+    id fetchUserOp= [E1HOperationFactory create:actionType];
+    RESTApiOperation *usersOp = [fetchUserOp createOperationWithObj:nil forNamedClass:namedClass withQuery:queryParameters];
+    
+    fetchUserOp = nil;
+    
+    return usersOp;
+}
+
 
 - (void)insertUser:(User *)user forNamedClass:(NSString *)namedClass errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
     

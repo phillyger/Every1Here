@@ -206,4 +206,143 @@
     return [dateComponents weekOfYear] == [otherDateComponents weekOfYear] && [dateComponents yearForWeekOfYear] == [otherDateComponents yearForWeekOfYear];
 }
 
+
+/*---------------------------------------------------------------------------
+ * Returns a formatted date string from a NSDate object
+ *--------------------------------------------------------------------------*/
++(NSString*)transformDate:(NSDate*)date toDateFormat:(NSString*)dateFormat
+{
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:dateFormat];
+    NSString *strDate = [dateFormatter stringFromDate:date];
+    
+    return strDate;
+}
+
+
+/*---------------------------------------------------------------------------
+ * Returns a NSDate object from a NSString with a specific format
+ *--------------------------------------------------------------------------*/
++ (NSDate *)transformDateString:(NSString *)dateString fromDateFormat:(NSString *)dateFormat
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:dateFormat];
+    //    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    NSDate *date = [dateFormatter dateFromString:dateString];
+    
+    return date;
+}
+
+
+/*---------------------------------------------------------------------------
+ * Returns a NSDate object with start of day components
+ *--------------------------------------------------------------------------*/
++ (NSDate *)dateAtBeginningOfDayForDate:(NSDate *)inputDate
+{
+    // Use the user's current calendar and time zone
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSTimeZone *timeZone = [NSTimeZone systemTimeZone];
+    [calendar setTimeZone:timeZone];
+    
+    // Selectively convert the date components (year, month, day) of the input date
+    NSDateComponents *dateComps = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:inputDate];
+    
+    // Set the time components manually
+    [dateComps setHour:0];
+    [dateComps setMinute:0];
+    [dateComps setSecond:0];
+    
+    // Convert back
+    NSDate *beginningOfDay = [calendar dateFromComponents:dateComps];
+    return beginningOfDay;
+}
+
+/*---------------------------------------------------------------------------
+ * Returns the number of days between two dates.
+ *--------------------------------------------------------------------------*/
++ (NSInteger)numberOfDaysBetweenBaseDate:(NSDate *)baseDate offsetDate:(NSDate *)offsetDate  {
+    
+    NSDate *dateBeginningOfEventStartDay = [self dateAtBeginningOfDayForDate:offsetDate];
+    
+    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit;
+    NSDateComponents *components = [gregorianCalendar components:unitFlags
+                                                        fromDate:baseDate
+                                                          toDate:dateBeginningOfEventStartDay
+                                                         options:0];
+    gregorianCalendar= nil;
+    
+    NSInteger daysOffset = [components day];
+    
+    return daysOffset;
+}
+
+
++ (NSString*)convertDaysCountToLabelWithBaseDate:(NSDate *)baseDate offsetDate:(NSDate *)offsetDate
+{
+    NSInteger daysOffset = [CommonUtilities numberOfDaysBetweenBaseDate:baseDate offsetDate:offsetDate];
+    
+    NSArray *durationPastArray = @[@"Today",
+                                   @"days ago",
+                                   @"1 week ago",
+                                   @"2 weeks ago",
+                                   @"3 weeks ago",
+                                   @"4 weeks ago",
+                                   @"+1 month ago",
+                                   @"+2 months ago",
+                                   @"+3 months ago",
+                                   @"+4 months ago",
+                                   @"+5 months ago",
+                                   @"> 6 months ago"
+                                   ];
+    
+    NSString *durationLabel;
+    
+    
+    
+    switch (daysOffset * -1) {
+        case 0:
+            durationLabel = durationPastArray[0];
+            break;
+        case 1 ... 6:
+            durationLabel = [NSString stringWithFormat:@"%d %@", daysOffset, durationPastArray[1]];
+            break;
+        case 7 ... 13:
+            durationLabel = durationPastArray[2];
+            break;
+        case 14 ... 20:
+            durationLabel = durationPastArray[3];
+            break;
+        case 21 ... 27:
+            durationLabel = durationPastArray[4];
+            break;
+        case 28 ... 30:
+            durationLabel = durationPastArray[5];
+            break;
+        case 31 ... 61:
+            durationLabel = durationPastArray[6];
+            break;
+        case 62 ... 92:
+            durationLabel = durationPastArray[7];
+            break;
+        case 93 ... 123:
+            durationLabel = durationPastArray[9];
+            break;
+        case 124 ... 154:
+            durationLabel = durationPastArray[10];
+            break;
+        case 155 ... 10000:
+            durationLabel = durationPastArray[11];
+            break;
+        default:
+            break;
+    }
+    
+
+    return   durationLabel;
+    
+
+}
+
 @end

@@ -10,6 +10,8 @@
 #import "User.h"
 #import "GuestCommunicatorDelegate.h"
 
+
+
 @implementation UserBuilder
 
 
@@ -17,6 +19,7 @@
  *  Data coming from PARSE.com via RESTful API
  */
 + (User *)userFromDictionary:(NSDictionary *)userValues forUserType:(UserTypes)userType {
+
 
     User *user = nil;
     
@@ -42,6 +45,23 @@
     NSString *avatarLocation = [userValues valueForKeyPath:@"avatarURL"];
     
     NSNumber *compComm = [userValues valueForKey:@"compComm"];
+    
+    
+    
+
+        NSDateFormatter *rfc3339DateFormatter = [[NSDateFormatter alloc] init];
+        NSLocale *enUSPOSIXLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+        
+        [rfc3339DateFormatter setLocale:enUSPOSIXLocale];
+        [rfc3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'"];
+        [rfc3339DateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    
+
+    NSDate *latestSpeechDate = nil;
+    NSString *dateString = [userValues valueForKeyPath:@"latestSpeechDate.iso"];
+    if (dateString!=nil)
+       latestSpeechDate = [rfc3339DateFormatter dateFromString:dateString];
+    NSString *latestSpeechId = [userValues valueForKeyPath:@"latestSpeechId.objectId"];
 
     
 //    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -65,14 +85,17 @@
                                             eventId:eventId
                                               slType:NONE
                                             slUserId:nil
-                                     compComm:compComm];
+                                     compComm:compComm
+                                    latestSpeechDate:latestSpeechDate
+                               latestSpeechId:latestSpeechId
+                ];
         
     } else {
         
         NSNumber *slTypeNumObj = [userValues valueForKey:@"socialNetwork"];
         NSUInteger slTypeUInteger = [slTypeNumObj unsignedIntegerValue];
         SocialNetworkType slType = [SocialNetworkUtilities formatIntegerToType:slTypeUInteger];
-        NSNumber *slUserId = [userValues valueForKey:@"socialNetworkUserId"];
+        NSString *slUserId = [userValues valueForKey:@"socialNetworkUserId"];
         
         // set the value of userId to that on objectId for the purpose of tracking transient attendance such as Guests
         // There shouldn't be a need to add a User object for transient objects.
@@ -97,7 +120,10 @@
                                        eventId:eventId
                                         slType:slType
                                       slUserId:slUserId
-                                      compComm:compComm];
+                                      compComm:compComm
+                              latestSpeechDate:latestSpeechDate
+                                latestSpeechId:latestSpeechId
+                ];
         
     }
     

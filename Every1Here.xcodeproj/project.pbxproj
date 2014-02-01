@@ -203,6 +203,10 @@
 		28CA797E1710FF5E006494DF /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CA797B1710FF5E006494DF /* Default-568h@2x.png */; };
 		28CA797F1710FF5E006494DF /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CA797C1710FF5E006494DF /* Default.png */; };
 		28CA79801710FF5E006494DF /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28CA797D1710FF5E006494DF /* Default@2x.png */; };
+		28D313BE1895ACEB0020604B /* SpeakerInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D313BD1895ACEB0020604B /* SpeakerInfoViewController.m */; };
+		28D313C01895AEEF0020604B /* speakerInfo.json in Resources */ = {isa = PBXBuildFile; fileRef = 28D313BF1895AEEF0020604B /* speakerInfo.json */; };
+		28D313C21895B5030020604B /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D313C11895B5030020604B /* Accelerate.framework */; };
+		28D313C51896CD440020604B /* Speech.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D313C41896CD440020604B /* Speech.m */; };
 		28DFD0C017299D5E007FEBEA /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E747F61710831200F97883 /* SenTestingKit.framework */; };
 		28DFD0C217299D5E007FEBEA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28DFD0C117299D5E007FEBEA /* Cocoa.framework */; };
 		28DFD0CC17299D5E007FEBEA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28DFD0CA17299D5E007FEBEA /* InfoPlist.strings */; };
@@ -556,6 +560,12 @@
 		28CA797B1710FF5E006494DF /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		28CA797C1710FF5E006494DF /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		28CA797D1710FF5E006494DF /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		28D313BC1895ACEB0020604B /* SpeakerInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpeakerInfoViewController.h; sourceTree = "<group>"; };
+		28D313BD1895ACEB0020604B /* SpeakerInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpeakerInfoViewController.m; sourceTree = "<group>"; };
+		28D313BF1895AEEF0020604B /* speakerInfo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = speakerInfo.json; sourceTree = "<group>"; };
+		28D313C11895B5030020604B /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		28D313C31896CD440020604B /* Speech.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Speech.h; sourceTree = "<group>"; };
+		28D313C41896CD440020604B /* Speech.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Speech.m; sourceTree = "<group>"; };
 		28DFD0BF17299D5E007FEBEA /* OHHTTPStubsUnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OHHTTPStubsUnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		28DFD0C117299D5E007FEBEA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		28DFD0C417299D5E007FEBEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -604,6 +614,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28D313C21895B5030020604B /* Accelerate.framework in Frameworks */,
 				284C6BD11710F870001855B5 /* AudioToolbox.framework in Frameworks */,
 				284C6BE71710FB8C001855B5 /* Accounts.framework in Frameworks */,
 				284C6BEA1710FC52001855B5 /* AdSupport.framework in Frameworks */,
@@ -867,6 +878,8 @@
 				28B8BA7D171087560095BB6F /* Stores */,
 				28B8BA80171087560095BB6F /* UI */,
 				28B8BA83171087560095BB6F /* Utilities */,
+				28D313BC1895ACEB0020604B /* SpeakerInfoViewController.h */,
+				28D313BD1895ACEB0020604B /* SpeakerInfoViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1047,6 +1060,8 @@
 				28B8E0BF1710876A0095BB6F /* Address.m */,
 				288DF39C1713685C008598DA /* Attendance.h */,
 				288DF39D1713685D008598DA /* Attendance.m */,
+				28D313C31896CD440020604B /* Speech.h */,
+				28D313C41896CD440020604B /* Speech.m */,
 				288DF3AC171488D9008598DA /* Receptionist.h */,
 				288DF3AD171488DA008598DA /* Receptionist.m */,
 				28B8E0C01710876A0095BB6F /* AttendanceReceptionist.h */,
@@ -1144,6 +1159,7 @@
 				28B8E0F21710876A0095BB6F /* memberDetails_EDIT.json */,
 				28B8E0F31710876A0095BB6F /* memberDetails_NEW.json */,
 				2885D33C171C2AE10025DBE3 /* E1H_QuickDialog_FileNames.plist */,
+				28D313BF1895AEEF0020604B /* speakerInfo.json */,
 			);
 			path = JSON;
 			sourceTree = "<group>";
@@ -1325,6 +1341,7 @@
 		28E747D71710831200F97883 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				28D313C11895B5030020604B /* Accelerate.framework */,
 				284C6BD61710F895001855B5 /* MapKit.framework */,
 				284C6BD41710F88B001855B5 /* CoreLocation.framework */,
 				284C6BD21710F879001855B5 /* QuartzCore.framework */,
@@ -1563,6 +1580,7 @@
 				28B8F0A1171088F00095BB6F /* icon-timedial-20x20.png in Resources */,
 				28B8F0A2171088F00095BB6F /* icon-timedial-28x28.png in Resources */,
 				28B8F0A3171088F00095BB6F /* imgOff.png in Resources */,
+				28D313C01895AEEF0020604B /* speakerInfo.json in Resources */,
 				28B8F0A4171088F00095BB6F /* imgOn.png in Resources */,
 				28B8F0A5171088F00095BB6F /* linkedin-32x32.png in Resources */,
 				28B8F0A6171088F00095BB6F /* meetup-icon.png in Resources */,
@@ -1723,11 +1741,13 @@
 				28B8E12F1710876A0095BB6F /* MeetupDotComManager.m in Sources */,
 				28B8E1301710876A0095BB6F /* ParseDotComManager.m in Sources */,
 				28B8E1311710876A0095BB6F /* TwitterDotComManager.m in Sources */,
+				28D313C51896CD440020604B /* Speech.m in Sources */,
 				28B8E1321710876A0095BB6F /* MemberDetailsDialogController.m in Sources */,
 				28B8E1331710876A0095BB6F /* MemberListViewController.m in Sources */,
 				28B8E1341710876A0095BB6F /* AvatarStore.m in Sources */,
 				28B8E1351710876A0095BB6F /* EventMemberGuestTabBarController.m in Sources */,
 				28B8E1361710876A0095BB6F /* SocialNetworkUtilities.m in Sources */,
+				28D313BE1895ACEB0020604B /* SpeakerInfoViewController.m in Sources */,
 				28B8F0351710876C0095BB6F /* Address.m in Sources */,
 				28B8F0361710876C0095BB6F /* AttendanceReceptionist.m in Sources */,
 				28B8F0371710876C0095BB6F /* DisplayNameReceptionist.m in Sources */,

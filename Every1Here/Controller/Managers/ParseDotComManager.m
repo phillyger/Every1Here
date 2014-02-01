@@ -279,6 +279,34 @@
     
 }
 
+- (void)fetchUsersWithUserType:(UserTypes)userType withCompletionBlock:(MemberDetailsDialogControllerCompletionBlock)completionBlock;
+{
+    
+    ActionTypes actionType = Fetch;
+    
+    NSString *namedClass = [CommonUtilities convertUserTypeToNamedClass:userType];
+    
+    
+    [communicator downloadUsersForActionType:actionType
+                          forNamedClass:namedClass
+                           errorHandler:^(NSError * error){
+                               
+                               [self executingOpsFailedWithError:error
+                                                   forActionType:actionType
+                                                   forNamedClass:namedClass];
+                           }
+                    successBatchHandler:^(NSArray *operations) {
+                        [self receivedUserFetchOps:operations
+                                forActionType:actionType
+                                  forUserType:userType
+                                forNamedClass:namedClass
+                         withCompletionBlock:completionBlock
+                         ];
+                    }
+     ];
+}
+
+
 - (void)fetchUsersForEvent:(Event *)event
               withUserType:(UserTypes)userType;
 {
@@ -347,6 +375,7 @@
                         
     __block NSDictionary *userDict;
     __block NSDictionary *attendanceDict;
+    __block NSDictionary *speechDict;
 
     [operations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         AFHTTPRequestOperation *ro = obj;
@@ -358,22 +387,39 @@
         
         NSArray *results = (NSArray*)[jsonObject objectForKey:@"results"];
         if (results.count > 0) {
-            if ([results[0] objectForKey:@"eventId"]) {
-                // contains attendance key
-                attendanceDict = jsonObject;
-            } else {
+            if ([results[0] objectForKey:@"title"]) {
+                // contains speech key
+                 speechDict = jsonObject;
+            } else if([results[0] objectForKey:@"firstName"]) {
                 // contains member key
                 userDict = jsonObject;
+            } else if([results[0] objectForKey:@"eventId"]) {
+                // contains attendance key
+               attendanceDict = jsonObject;
             }
-        } 
-        //NSLog(@"jsonObject is %@",jsonObject);
+
+        }
+        
+//        if (results.count > 0) {
+//            if ([[results[0] valueForKey:@"className"] isEqualToString:@"Event"]) {
+//                // contains attendance key
+//                attendanceDict = jsonObject;
+//            } else {
+//                // contains member key
+//                userDict = jsonObject;
+//            }
+//        }
+        
+        
+        NSLog(@"jsonObject is %@",jsonObject);
     }];
     
     
     id userBuilder = ([namedClass isEqualToString:@"Member"] ? memberBuilder : guestBuilder);
     
-    if (userDict && attendanceDict) {
-        
+    if (userDict && attendanceDict && speechDict) {
+        userList = [userBuilder usersFromJSON:userDict withAttendance:attendanceDict withSpeechDict:speechDict withEventId:eventId socialNetworkType:slType error:&error];
+    } else if (userDict && attendanceDict) {
         userList = [userBuilder usersFromJSON:userDict withAttendance:attendanceDict withEventId:eventId socialNetworkType:slType error:&error];
     } else if (userDict && !attendanceDict){
         userList = [userBuilder usersFromJSON:userDict withAttendance:nil withEventId:eventId socialNetworkType:slType error:&error];
@@ -391,6 +437,52 @@
     }
 }
 
+- (void)receivedUserFetchOps:(NSArray *)operations
+               forActionType:(ActionTypes) actionType
+                 forUserType:(UserTypes)userType
+               forNamedClass:(NSString *)namedClass
+         withCompletionBlock:(MemberDetailsDialogControllerCompletionBlock)completionBlock
+{
+    NSError *error = nil;
+    NSArray *userList;
+    
+    __block NSDictionary *userDict;
+
+    
+    [operations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        AFHTTPRequestOperation *ro = obj;
+        NSData *jsonData = [ro responseData];
+        NSDictionary *jsonObject=[NSJSONSerialization
+                                  JSONObjectWithData:jsonData
+                                  options:NSJSONReadingMutableLeaves
+                                  error:nil];
+        
+
+        userDict = jsonObject;
+        
+        //NSLog(@"jsonObject is %@",jsonObject);
+    }];
+    
+    
+    id userBuilder = ([namedClass isEqualToString:@"Member"] ? memberBuilder : guestBuilder);
+    
+    if (userDict) {
+        userList = [userBuilder usersFromJSON:userDict error:&error];
+    }
+    
+    
+    if (!userList && userType != Guest) {
+        [self tellDelegateAboutExecutedOpsError:error forActionType:actionType forNamedClass:namedClass];
+        completionBlock(nil, YES);
+    }
+    else {
+        if (completionBlock!=nil) {
+            completionBlock(userList, YES);
+        }
+//        [parseDotComDelegate didFetchUsers:userList forUserType:(UserTypes)userType];
+        
+    }
+}
 
 
 #pragma mark Event Ops

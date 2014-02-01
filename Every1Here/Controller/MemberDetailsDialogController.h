@@ -12,12 +12,16 @@
 
 
 typedef void (^DetailViewControllerCompletionBlock)(BOOL success);
+typedef void (^MemberDetailsDialogControllerCompletionBlock)(NSArray *list, BOOL success);
 
 @interface MemberDetailsDialogController : QuickDialogController <QuickDialogEntryElementDelegate>
 
 @property (nonatomic, strong) User *userToEdit;
 @property (nonatomic, assign, getter=isNewUser) BOOL newUser;
 @property (nonatomic, copy) DetailViewControllerCompletionBlock completionBlock;
+@property (nonatomic, copy) MemberDetailsDialogControllerCompletionBlock successBlock;
 
+
+- (void)fetchMemberListTableContentWithCompletionBlock:(MemberDetailsDialogControllerCompletionBlock)completionBlock;
 
 @end

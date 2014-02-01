@@ -21,4 +21,11 @@
 +(void)showProgressHUD:(UIView *)view;
 +(void)hideProgressHUD:(UIView *)view;
 
++(NSString*)transformDate:(NSDate*)date toDateFormat:(NSString*)dateFormat;
++ (NSDate *)transformDateString:(NSString *)dateString fromDateFormat:(NSString *)dateFormat;
+
+
++ (NSDate *)dateAtBeginningOfDayForDate:(NSDate *)inputDate;
++ (NSInteger)numberOfDaysBetweenBaseDate:(NSDate *)baseDate offsetDate:(NSDate *)offsetDate;
++ (NSString*)convertDaysCountToLabelWithBaseDate:(NSDate *)baseDate offsetDate:(NSDate *)offsetDate;
 @end

@@ -13,6 +13,7 @@
 #import "EventManagerDelegate.h"
 #import "E1HOperationFactory.h"
 #import "User.h"
+#import "MemberDetailsDialogController.h"
 
 @class ParseDotComCommunicator;
 @class EventBuilder;
@@ -46,6 +47,7 @@
  * @param event The subject on which to find members.
  * @see ParseDotComManagerDelegate
  */
+- (void)fetchUsersWithUserType:(UserTypes)userType withCompletionBlock:(MemberDetailsDialogControllerCompletionBlock)completionBlock;
 - (void)fetchUsersForEvent: (Event *)event withUserType:(UserTypes)userType;
 
 

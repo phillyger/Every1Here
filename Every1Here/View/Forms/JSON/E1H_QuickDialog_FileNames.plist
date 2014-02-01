@@ -10,5 +10,7 @@
 	<string>memberDetails_NEW</string>
 	<key>member_details_edit</key>
 	<string>memberDetails_EDIT</string>
+	<key>speaker_info</key>
+	<string>speakerInfo</string>
 </dict>
 </plist>

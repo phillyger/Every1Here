@@ -52,6 +52,13 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
  */
 @property (nonatomic, readonly) BOOL hasAttendanceRecord; // Return YES if User has an Attendance record.
 
+
+/**
+ *   User has an Speech Info record
+ */
+//@property (nonatomic, readonly) BOOL hasSpeechInfoRecord; // Return YES if User has an Speech Info record.
+
+
 /**
  *   The display name of the user
  */
@@ -61,6 +68,17 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
  *   The number of speeches completed.
  */
 @property (nonatomic) NSNumber *compComm;
+
+/**
+ *   The date of latest speech completed.
+ */
+@property (nonatomic, copy) NSDate *latestSpeechDate;
+
+/**
+ *   The id of latest speech completed.
+ */
+@property (nonatomic, copy) NSString *latestSpeechId;
+
 
 /**
  *  The path to the user's avatar
@@ -101,7 +119,9 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                 eventId:(NSString *)anEventId
                  slType:(SocialNetworkType)aSlType
                slUserId:(NSString *)aSocialNetworkUserId
-               compComm:(NSNumber *)compComm;
+               compComm:(NSNumber *)compComm
+               latestSpeechDate:(NSDate *)latestSpeechDate
+                latestSpeechId:(NSString *)latestSpeechId;
 
 - (id)initWithFirstName:(NSString *)aFirstName
                lastName:(NSString *)aLastName
@@ -113,7 +133,9 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                 eventId:(NSString *)anEventId
                  slType:(SocialNetworkType)aSlType
                slUserId:(NSString *)aSocialNetworkUserId
-               compComm:(NSNumber *)compComm;
+               compComm:(NSNumber *)compComm
+       latestSpeechDate:(NSDate *)latestSpeechDate
+         latestSpeechId:(NSString *)latestSpeechId;
 
 
 
@@ -146,7 +168,9 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                   eventId:(NSString *)anEventId
                    slType:(SocialNetworkType)aSlType
                  slUserId:(NSString *)aSocialNetworkUserId
-                 compComm:(NSNumber *)compComm;
+                 compComm:(NSNumber *)compComm
+         latestSpeechDate:(NSDate *)latestSpeechDate
+           latestSpeechId:(NSString *)latestSpeechId;
 
 
 @end

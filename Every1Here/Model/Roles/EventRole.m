@@ -10,6 +10,7 @@
 //#import "InAttendanceState.h"
 //#import "NotPresentState.h"
 #import "AttendanceReceptionist.h"
+#import "Speech.h"
 
 @interface EventRole ()
 //{
@@ -22,6 +23,7 @@
 @synthesize eventRoles;
 @synthesize attendance;
 @synthesize guestCount;
+@synthesize speech;
 
 -(id)initWithUser:(User *)aUser effective:(EffectiveDateRange *)anEffectiveDateRange {
     if (self = [super initWithUser:aUser effective:anEffectiveDateRange]) {
@@ -29,7 +31,9 @@
         meetingRoleBindToFields = [[NSArray alloc] init];
         meetingRoleDict = [[NSDictionary alloc] init];
         meetingRoleIconDict = [[NSDictionary alloc] init];
-        meetingRoleCellColorHueDict = [[NSDictionary alloc] init]; 
+        meetingRoleCellColorHueDict = [[NSDictionary alloc] init];
+        
+        speech = [[Speech alloc] init];
         
         meetingRoleBindToFields = @[@"isSpeaker",
                                     @"isToastmaster",
@@ -41,6 +45,8 @@
                                     @"isGrammarian",
                                     @"isAhCounter"
                                     ];
+        
+        
 
     }
     return self;

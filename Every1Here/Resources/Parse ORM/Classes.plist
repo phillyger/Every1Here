@@ -16,5 +16,7 @@
 	<string>1/users</string>
 	<key>Batch</key>
 	<string>1/batch</string>
+	<key>Speech</key>
+	<string>1/classes/Speech</string>
 </dict>
 </plist>

@@ -67,6 +67,13 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="lblLatestSpeech" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kf7-NC-QQY">
+                        <rect key="frame" x="86" y="31" width="114" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </tableViewCellContentView>
             <constraints>
@@ -89,6 +96,7 @@
                 <outlet property="attendance" destination="145" id="179"/>
                 <outlet property="avatarView" destination="11" id="29"/>
                 <outlet property="displayNameLabel" destination="4" id="9"/>
+                <outlet property="latestSpeech" destination="Kf7-NC-QQY" id="rxj-kl-HPK"/>
                 <outlet property="progressView" destination="CKa-H3-HcW" id="iTC-fl-0Fi"/>
                 <outlet property="rolesView_1" destination="73" id="118"/>
                 <outlet property="rolesView_2" destination="100" id="119"/>

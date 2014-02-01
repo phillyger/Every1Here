@@ -19,6 +19,7 @@
 
 @property (strong) IBOutlet UIImageView * attendance;
 @property (weak, nonatomic) IBOutlet PICircularProgressView *progressView;
+@property (weak, nonatomic) IBOutlet UILabel *latestSpeech;
 
 - (UIImageView *)rolesViewWithOffset:(NSUInteger )offset;
 
