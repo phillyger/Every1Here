@@ -48,5 +48,9 @@
     return nil;
 }
 
+-(RESTApiOperation *)createOperationWithObj:(id)anObject forNamedClass:(NSString *)aNamedClass withQuery:(NSDictionary *)aQuery withOrder:(NSString*)orderFieldName
+{
+    return nil;
+}
 
 @end

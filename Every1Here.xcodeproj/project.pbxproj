@@ -37,6 +37,7 @@
 		284C6BEB1710FC98001855B5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 284C6BE01710F8C0001855B5 /* StoreKit.framework */; };
 		2857E7381728583600CB584F /* CommonUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 2857E7371728583600CB584F /* CommonUI.m */; };
 		2857E73B17286EAA00CB584F /* EventHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2857E73A17286EAA00CB584F /* EventHeader.m */; };
+		2872990B18A1BDFD00A9C69B /* Speech.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2872990A18A1BDFD00A9C69B /* Speech.plist */; };
 		287772BF174BC34E00A0DF19 /* GuestAttendance.plist in Resources */ = {isa = PBXBuildFile; fileRef = 287772BE174BC34E00A0DF19 /* GuestAttendance.plist */; };
 		2885D33D171C2AE10025DBE3 /* E1H_QuickDialog_FileNames.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2885D33C171C2AE10025DBE3 /* E1H_QuickDialog_FileNames.plist */; };
 		288DF38517125838008598DA /* GuestListPopoverTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288DF38417125838008598DA /* GuestListPopoverTableController.m */; };
@@ -275,6 +276,8 @@
 		2857E7371728583600CB584F /* CommonUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommonUI.m; path = CommonUI/CommonUI.m; sourceTree = "<group>"; };
 		2857E73917286EAA00CB584F /* EventHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventHeader.h; path = Every1Here/View/Sections/EventHeader.h; sourceTree = SOURCE_ROOT; };
 		2857E73A17286EAA00CB584F /* EventHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventHeader.m; path = Every1Here/View/Sections/EventHeader.m; sourceTree = SOURCE_ROOT; };
+		2872990918A1855B00A9C69B /* SpeechDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SpeechDelegate.h; sourceTree = "<group>"; };
+		2872990A18A1BDFD00A9C69B /* Speech.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Speech.plist; path = "Resources/Parse ORM/Speech.plist"; sourceTree = "<group>"; };
 		287772BE174BC34E00A0DF19 /* GuestAttendance.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = GuestAttendance.plist; path = "Resources/Parse ORM/GuestAttendance.plist"; sourceTree = "<group>"; };
 		2885D33C171C2AE10025DBE3 /* E1H_QuickDialog_FileNames.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = E1H_QuickDialog_FileNames.plist; sourceTree = "<group>"; };
 		288DF38317125838008598DA /* GuestListPopoverTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestListPopoverTableController.h; sourceTree = "<group>"; };
@@ -688,6 +691,7 @@
 				288DF39517130196008598DA /* Attendance.plist */,
 				288DF397171306AD008598DA /* Classes.plist */,
 				287772BE174BC34E00A0DF19 /* GuestAttendance.plist */,
+				2872990A18A1BDFD00A9C69B /* Speech.plist */,
 			);
 			name = "Parse ORM";
 			sourceTree = "<group>";
@@ -1004,6 +1008,7 @@
 				28B8BA79171087560095BB6F /* ParseDotComCommunicatorDelegate.h */,
 				28B8BA7A171087560095BB6F /* ParseDotComManagerDelegate.h */,
 				28B8BA7B171087560095BB6F /* RoleDelegate.h */,
+				2872990918A1855B00A9C69B /* SpeechDelegate.h */,
 				28B8BA7C171087560095BB6F /* Twitter */,
 			);
 			path = Protocols;
@@ -1541,6 +1546,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2872990B18A1BDFD00A9C69B /* Speech.plist in Resources */,
 				28E747E31710831200F97883 /* InfoPlist.strings in Resources */,
 				28B8E1371710876A0095BB6F /* InfoPlist.strings in Resources */,
 				28B8F02F1710876C0095BB6F /* MainStoryboard.storyboard in Resources */,

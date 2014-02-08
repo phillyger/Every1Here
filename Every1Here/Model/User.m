@@ -16,12 +16,14 @@
 @synthesize userId;
 @synthesize eventId;
 @synthesize attendanceId;
+@synthesize speechId;
 @synthesize displayName, avatarURL;
 @synthesize slType;
 @synthesize slUserId;
 @synthesize primaryEmailAddr, secondaryEmailAddr;
 @synthesize hasAttendanceRecord;
 @synthesize hasUserRecord;
+@synthesize hasSpeechInfoRecord;
 @synthesize compComm;
 @synthesize latestSpeechDate;
 @synthesize latestSpeechId;

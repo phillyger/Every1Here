@@ -14,6 +14,7 @@
 #import "E1HOperationFactory.h"
 #import "User.h"
 #import "MemberDetailsDialogController.h"
+#import "SpeechDelegate.h"
 
 @class ParseDotComCommunicator;
 @class EventBuilder;
@@ -30,6 +31,7 @@
  */
 @interface ParseDotComManager : NSObject<EventCommunicatorDelegate, MemberCommunicatorDelegate>
 
+@property (weak, nonatomic) id <SpeechDelegate> speechDelegate;
 @property (weak, nonatomic) id <EventManagerDelegate> eventDelegate;
 @property (weak, nonatomic) id <ParseDotComManagerDelegate> parseDotComDelegate;
 @property (strong) ParseDotComCommunicator *communicator;
@@ -47,7 +49,13 @@
  * @param event The subject on which to find members.
  * @see ParseDotComManagerDelegate
  */
-- (void)fetchUsersWithUserType:(UserTypes)userType withCompletionBlock:(MemberDetailsDialogControllerCompletionBlock)completionBlock;
+- (void)fetchUserInfoWithUserType:(UserTypes)userType
+                       withTMCCId:(NSString *)tmCCId
+              withCompletionBlock:(MemberDetailsDialogControllerCompletionBlock)completionBlock;
+
+- (void)fetchUserInfoWithUserType:(UserTypes)userType
+              withCompletionBlock:(MemberDetailsDialogControllerCompletionBlock)completionBlock;
+
 - (void)fetchUsersForEvent: (Event *)event withUserType:(UserTypes)userType;
 
 
@@ -75,7 +83,12 @@
 -(void)deleteUser:(User*)user withUserType:(UserTypes)userType;
 -(void)deleteUserList:(NSArray *)userList withUserType:(UserTypes)userType forSocialNetworkKey:(SocialNetworkType)slType;
 
-
+/*
+ * Speech Custom Methods
+ */
+-(void)updateSpeechForUser:(User*)user;
+-(void)insertSpeechForUser:(User*)user;
+-(void)deleteSpeechForUser:(User*)user;
 
 @end
 

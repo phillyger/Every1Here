@@ -12,9 +12,9 @@
 #import "BaseViewController.h"
 #import "MemberManagerDelegate.h"
 #import "ParseDotComManagerDelegate.h"
+#import "SpeechDelegate.h"
 
-
-@interface MemberListViewController :BaseViewController <MemberManagerDelegate, ParseDotComManagerDelegate>
+@interface MemberListViewController :BaseViewController <MemberManagerDelegate, ParseDotComManagerDelegate, SpeechDelegate>
 
 
 @end

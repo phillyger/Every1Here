@@ -28,6 +28,7 @@
 
 @implementation ParseDotComManager
 @synthesize eventDelegate;
+@synthesize speechDelegate;
 @synthesize parseDotComDelegate;
 @synthesize communicator;
 @synthesize eventBuilder;
@@ -52,7 +53,12 @@
     parseDotComDelegate = newDelegate;
 }
 
-
+- (void)setSpeechDelegate:(id<SpeechDelegate>)newDelegate {
+    if (newDelegate && (![newDelegate conformsToProtocol: @protocol(SpeechDelegate)])) {
+        [[NSException exceptionWithName: NSInvalidArgumentException reason: @"Delegate object does not conform to the delegate protocol" userInfo: nil] raise];
+    }
+    speechDelegate = newDelegate;
+}
 
 #pragma mark Attendance Operations
 
@@ -279,7 +285,9 @@
     
 }
 
-- (void)fetchUsersWithUserType:(UserTypes)userType withCompletionBlock:(MemberDetailsDialogControllerCompletionBlock)completionBlock;
+- (void)fetchUserInfoWithUserType:(UserTypes)userType
+                       withTMCCId:(NSString *)tmCCId
+              withCompletionBlock:(MemberDetailsDialogControllerCompletionBlock)completionBlock;
 {
     
     ActionTypes actionType = Fetch;
@@ -287,8 +295,9 @@
     NSString *namedClass = [CommonUtilities convertUserTypeToNamedClass:userType];
     
     
-    [communicator downloadUsersForActionType:actionType
+    [communicator downloadUserInfoForActionType:actionType
                           forNamedClass:namedClass
+                             withTMCCId:tmCCId
                            errorHandler:^(NSError * error){
                                
                                [self executingOpsFailedWithError:error
@@ -306,6 +315,34 @@
      ];
 }
 
+
+- (void)fetchUserInfoWithUserType:(UserTypes)userType
+              withCompletionBlock:(MemberDetailsDialogControllerCompletionBlock)completionBlock;
+{
+    
+    ActionTypes actionType = Fetch;
+    
+    NSString *namedClass = [CommonUtilities convertUserTypeToNamedClass:userType];
+    
+    
+    [communicator downloadUserInfoForActionType:actionType
+                                  forNamedClass:namedClass
+                                   errorHandler:^(NSError * error){
+                                       
+                                       [self executingOpsFailedWithError:error
+                                                           forActionType:actionType
+                                                           forNamedClass:namedClass];
+                                   }
+                            successBatchHandler:^(NSArray *operations) {
+                                [self receivedUserFetchOps:operations
+                                             forActionType:actionType
+                                               forUserType:userType
+                                             forNamedClass:namedClass
+                                       withCompletionBlock:completionBlock
+                                 ];
+                            }
+     ];
+}
 
 - (void)fetchUsersForEvent:(Event *)event
               withUserType:(UserTypes)userType;
@@ -445,8 +482,10 @@
 {
     NSError *error = nil;
     NSArray *userList;
+    NSArray *tmCCResults;
     
     __block NSDictionary *userDict;
+    __block NSDictionary *tmCCDict;
 
     
     [operations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -457,10 +496,18 @@
                                   options:NSJSONReadingMutableLeaves
                                   error:nil];
         
-
-        userDict = jsonObject;
-        
-        //NSLog(@"jsonObject is %@",jsonObject);
+        NSArray *results = (NSArray*)[jsonObject objectForKey:@"results"];
+        if (results.count > 0) {
+            if ([results[0] objectForKey:@"projectTitle"]) {
+                // contains speech key
+                tmCCDict = jsonObject;
+            } else if([results[0] objectForKey:@"firstName"]) {
+                // contains member key
+                userDict = jsonObject;
+            }
+            
+        }
+        NSLog(@"jsonObject is %@",jsonObject);
     }];
     
     
@@ -470,14 +517,19 @@
         userList = [userBuilder usersFromJSON:userDict error:&error];
     }
     
+    if (tmCCDict) {
+        tmCCResults = [tmCCDict valueForKey:@"results"];
+        
+    }
+    
     
     if (!userList && userType != Guest) {
         [self tellDelegateAboutExecutedOpsError:error forActionType:actionType forNamedClass:namedClass];
-        completionBlock(nil, YES);
+        completionBlock(nil, nil, YES);
     }
     else {
         if (completionBlock!=nil) {
-            completionBlock(userList, YES);
+            completionBlock(userList, tmCCResults, YES);
         }
 //        [parseDotComDelegate didFetchUsers:userList forUserType:(UserTypes)userType];
         
@@ -593,6 +645,97 @@
 
 
 
+#pragma mark Speech Ops
+-(void)updateSpeechForUser:(User*)user {
+    ActionTypes actionType = Update;
+    
+    NSString *namedClass = @"Speech";
+    
+    
+    [communicator updateSpeech:(User*)user
+                     forNamedClass:namedClass
+                      errorHandler:^(NSError * error){
+                          
+                          [self executingOpsFailedWithError:error
+                                              forActionType:actionType
+                                              forNamedClass:namedClass];
+                      }
+               successBatchHandler:^(NSArray *operations) {
+                   [self receivedSpeechOps:operations
+                                 forActionType:actionType
+                                 forNamedClass:namedClass
+                    ];
+               }
+     ];
+    
+}
+
+- (void)insertSpeechForUser:(User *)user {
+    ActionTypes actionType = Insert;
+    
+    
+    NSString *namedClass = @"Speech";
+    
+    [communicator insertSpeech:(User*)user
+                     forNamedClass:namedClass
+                      errorHandler:^(NSError * error){
+                          
+                          [self executingOpsFailedWithError:error
+                                              forActionType:actionType
+                                              forNamedClass:namedClass];
+                      }
+               successBatchHandler:^(NSArray *operations) {
+                   [self receivedSpeechOps:operations
+                                 forActionType:actionType
+                                 forNamedClass:namedClass
+                    ];
+               }
+     ];
+    
+}
+
+- (void)deleteSpeechForUser:(User *)user {
+    ActionTypes actionType = Delete;
+    
+    NSString *namedClass = @"Speech";
+    
+    [communicator deleteSpeech:(User*)user
+                     forNamedClass:namedClass
+                      errorHandler:^(NSError * error){
+                          
+                          [self executingOpsFailedWithError:error
+                                              forActionType:actionType
+                                              forNamedClass:namedClass];
+                      }
+               successBatchHandler:^(NSArray *operations) {
+                   [self receivedSpeechOps:operations
+                                 forActionType:actionType
+                                 forNamedClass:namedClass
+                    ];
+               }
+     ];
+    
+}
+
+-(void)receivedSpeechOps:operations
+               forActionType:(ActionTypes)actionType
+               forNamedClass:(NSString*)namedClass {
+    
+    switch (actionType) {
+        case Insert:
+            [speechDelegate didInsertSpeechWithOutput:operations];
+            break;
+        case Update:
+            [speechDelegate didUpdateSpeech];
+            break;
+        case Delete:
+            [speechDelegate didDeleteSpeech];
+            break;
+        default:
+            break;
+    }
+    
+}
 
 
 @end

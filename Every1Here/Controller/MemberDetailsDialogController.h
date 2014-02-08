@@ -10,9 +10,8 @@
 #import "QuickDialogEntryElementDelegate.h"
 #import "User.h"
 
-
 typedef void (^DetailViewControllerCompletionBlock)(BOOL success);
-typedef void (^MemberDetailsDialogControllerCompletionBlock)(NSArray *list, BOOL success);
+typedef void (^MemberDetailsDialogControllerCompletionBlock)(NSArray *list, NSArray *tmCCFields, BOOL success);
 
 @interface MemberDetailsDialogController : QuickDialogController <QuickDialogEntryElementDelegate>
 

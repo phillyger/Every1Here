@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>evaluatorId</key>
+	<dict>
+		<key>routeName</key>
+		<string>_User</string>
+		<key>dataType</key>
+		<string>@pointer</string>
+		<key>targetKeyPath</key>
+		<string>evaluatorId</string>
+		<key>sourceKeyPath</key>
+		<string>roles.EventRole.speech.evaluatorId</string>
+	</dict>
+	<key>eventId</key>
+	<dict>
+		<key>routeName</key>
+		<string>Event</string>
+		<key>dataType</key>
+		<string>@pointer</string>
+		<key>targetKeyPath</key>
+		<string>eventId</string>
+		<key>sourceKeyPath</key>
+		<string>eventId</string>
+	</dict>
+	<key>user</key>
+	<dict>
+		<key>routeName</key>
+		<string>_User</string>
+		<key>dataType</key>
+		<string>@pointer</string>
+		<key>targetKeyPath</key>
+		<string>userId</string>
+		<key>sourceKeyPath</key>
+		<string>userId</string>
+	</dict>
+	<key>hasIntro</key>
+	<dict>
+		<key>dataType</key>
+		<string>@boolean</string>
+		<key>targetKeyPath</key>
+		<string>hasIntro</string>
+		<key>sourceKeyPath</key>
+		<string>hasIntro</string>
+	</dict>
+	<key>title</key>
+	<dict>
+		<key>targetKeyPath</key>
+		<string>title</string>
+		<key>sourceKeyPath</key>
+		<string>roles.EventRole.speech.title</string>
+	</dict>
+	<key>tmCCId</key>
+	<dict>
+		<key>routeName</key>
+		<string>TM_CC</string>
+		<key>dataType</key>
+		<string>@pointer</string>
+		<key>targetKeyPath</key>
+		<string>tm_ccId</string>
+		<key>sourceKeyPath</key>
+		<string>roles.EventRole.speech.tmCCId</string>
+	</dict>
+</dict>
+</plist>

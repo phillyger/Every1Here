@@ -62,10 +62,16 @@ typedef void (^ParseDotComErrorBlock)(NSError *);
  *  User(Type) Operations (i.e. Members and Guests)
  */
 
-- (void)downloadUsersForActionType:(ActionTypes)actionType
+- (void)downloadUserInfoForActionType:(ActionTypes)actionType
                      forNamedClass:(NSString *)namedClass
+                        withTMCCId:(NSString *)tmCCId
                       errorHandler:(ParseDotComErrorBlock)errorBlock
                successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+
+- (void)downloadUserInfoForActionType:(ActionTypes)actionType
+                        forNamedClass:(NSString *)namedClass
+                         errorHandler:(ParseDotComErrorBlock)errorBlock
+                  successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
 
 - (void)downloadUsersForEvent:(Event *)event
                 forActionType:(ActionTypes)actionType
@@ -118,6 +124,26 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
 
 - (void)deleteAttendance:(User*)user
             forNamedClass:(NSString *)namedClass
+            errorHandler:(ParseDotComErrorBlock)errorBlock
+     successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+
+
+/*
+ *  Speech Operations
+ */
+
+- (void)insertSpeech:(User*)user
+           forNamedClass:(NSString *)namedClass
+            errorHandler:(ParseDotComErrorBlock)errorBlock
+     successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+
+- (void)updateSpeech:(User*)user
+           forNamedClass:(NSString *)namedClass
+            errorHandler:(ParseDotComErrorBlock)errorBlock
+     successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+
+- (void)deleteSpeech:(User*)user
+           forNamedClass:(NSString *)namedClass
             errorHandler:(ParseDotComErrorBlock)errorBlock
      successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
 

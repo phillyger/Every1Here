@@ -20,6 +20,112 @@
 
 @implementation CommonUtilities
 
+
+/*---------------------------------------------------------------------------
+ * Using the Named Class paramaters pList,
+ * generate the associated field mapping value
+ *--------------------------------------------------------------------------*/
+
++ (NSDictionary *)generateValueCustomDictWithObject:(id)anObject forNamedClass:(NSString *)namedClass {
+    
+    NSString *pathToPList=[[NSBundle mainBundle] pathForResource:namedClass ofType:@"plist"];
+    NSDictionary *pListInfoDict = [[NSDictionary alloc] initWithContentsOfFile:pathToPList];
+    NSMutableDictionary *dataDict = [[NSMutableDictionary alloc] init];
+    NSString *dataTypeToNamedClassSeparator = @"::";
+    
+    //-------------------------------------------------------
+    // Enumerate through pList to process field types.
+    // Values with prefix of '@' must be handled on case-by-case basis.
+    // Supported Types:
+    //
+    // @password    - default password for new user accounts (they will be forced to reset when first used)
+    // @boolean     - sets a boolean value
+    // @date        - sets the current date time.
+    //-------------------------------------------------------
+    
+    [pListInfoDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        //        [dataDict setObject:[anObject objectForKey:key] forKey:key];
+        
+        NSDictionary *dict = (NSDictionary*)obj;
+        
+        NSString *thisKey = key;
+        NSString *thisObj = obj;
+        
+        NSString* routeName = [dict valueForKeyPath:@"routeName"];
+        NSString* dataType = [dict valueForKeyPath:@"dataType"];
+        NSString* targetKeyPath = [dict valueForKeyPath:@"targetKeyPath"];
+        NSString* sourceKeyPath = [dict valueForKeyPath:@"sourceKeyPath"];
+        
+        if ([dataType hasPrefix:@"@"]) {
+            if ([dataType isEqualToString:@"@password"]) {
+                E1HAppDelegate *appDelegate = (E1HAppDelegate *)[[UIApplication sharedApplication] delegate];
+                
+                [dataDict setValue:appDelegate.parseDotComAccountUserAccountPassword forKeyPath:targetKeyPath];
+                
+            } else if ([dataType isEqualToString:@"@boolean"]) {
+                [dataDict setValue:[NSNumber numberWithBool:TRUE] forKey:targetKeyPath];
+                
+            } else if ([dataType isEqualToString:@"@date"]) {
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'"];
+                NSString *formattedDate = [dateFormatter stringFromDate:[NSDate date]];
+                NSString *thisKeyPathIso = @"iso";
+                NSString *thisKeyPathType = @"__type";
+                
+                NSDictionary *dateParams = @{thisKeyPathType : @"Date",
+                                             thisKeyPathIso : formattedDate};
+                
+                [dataDict setValue:dateParams forKey:targetKeyPath];
+                
+            } else if ([dataType hasPrefix:@"@pointer"]) {
+                
+                
+                NSString *thisObjectId = [anObject valueForKeyPath: sourceKeyPath];
+                
+                if (thisObjectId != nil) {
+                    
+//                    NSArray *dataTypeToNamedClass = [thisObj componentsSeparatedByString:dataTypeToNamedClassSeparator];
+                    NSString *thisTargetClassName = routeName;
+
+                    
+                    // Ensure the namedClass attribute is present.
+                    if (routeName != nil) {
+                        //-------------------------------------------------------
+                        // Set the target class to the second component attribute
+                        // i.e. @pointer::namedClass
+                        //-------------------------------------------------------
+                        
+                        NSString *thisKeyPathClassName = @"className";
+                        NSString *thisKeyPathObjectId = @"objectId";
+                        NSString *thisKeyPathType = @"__type";
+                        
+                        NSDictionary *relationsParams = @{thisKeyPathType : @"Pointer",
+                                                          thisKeyPathClassName : thisTargetClassName,
+                                                          thisKeyPathObjectId : thisObjectId};
+                        
+                        [dataDict setValue:relationsParams forKey:targetKeyPath];
+                    }
+                }
+                
+                
+            } else if ([dataType isEqualToString:@"@string"]){
+                NSURL *toStringObj = [anObject valueForKeyPath:sourceKeyPath];
+                
+                [dataDict setValue:[toStringObj absoluteString] forKeyPath:targetKeyPath];
+            }
+        } else {
+            [dataDict setValue:[anObject valueForKeyPath:sourceKeyPath] forKeyPath:targetKeyPath];
+        }
+        
+        
+    }];
+    
+    
+    return [dataDict copy];
+    
+}
+
+
 /*---------------------------------------------------------------------------
  * Using the Named Class paramaters pList, 
  * generate the associated field mapping value

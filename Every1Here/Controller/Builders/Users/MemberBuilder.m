@@ -228,7 +228,7 @@
                 //  attributes accordingly.
                 //-------------------------------------------------------
                 if ([attendanceUserId isEqualToString:memberUserId]) {
-                    // set User instances' Attendance ID
+                    // Set User instances' Attendance ID
                     [user setAttendanceId:[attendanceRow valueForKeyPath:@"objectId"]];
                     [thisEventRole setEventRoles: [[attendanceRow objectForKey:@"eventRoles"]unsignedIntValue]];
                     [thisEventRole setAttendance:TRUE];
@@ -256,6 +256,9 @@
                 //  attributes accordingly.
                 //-------------------------------------------------------
                 if ([speechUserId isEqualToString:memberUserId]) {
+                    // Set User instance Speech ID
+                    [user setSpeechId:[speechRow valueForKeyPath:@"objectId"]];
+                    
                     Speech *newSpeechInfo = [[Speech alloc] initWithTitle:[speechRow valueForKeyPath:@"title"]  eventId:[speechRow valueForKeyPath:@"eventId.objectId"] userId:[speechRow valueForKeyPath:@"userId.objectId"] tmCCId:[speechRow valueForKeyPath:@"tm_ccId.objectId"] evaluatorId:[speechRow valueForKeyPath:@"evaluatorId.objectId"] hasIntro:[[speechRow valueForKey:@"hasIntro"] boolValue]];
                     
                     // set User instances' Attendance ID

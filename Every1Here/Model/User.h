@@ -48,6 +48,11 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
 @property (copy) NSString *attendanceId;
 
 /**
+ *   Parse ObjectId associated with Speech Table
+ */
+@property (copy) NSString *speechId;
+
+/**
  *   User has an Attendance record
  */
 @property (nonatomic, readonly) BOOL hasAttendanceRecord; // Return YES if User has an Attendance record.
@@ -56,7 +61,7 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
 /**
  *   User has an Speech Info record
  */
-//@property (nonatomic, readonly) BOOL hasSpeechInfoRecord; // Return YES if User has an Speech Info record.
+@property (nonatomic, readonly) BOOL hasSpeechInfoRecord; // Return YES if User has an Speech Info record.
 
 
 /**

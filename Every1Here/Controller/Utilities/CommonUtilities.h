@@ -13,6 +13,8 @@
 @interface CommonUtilities : NSObject
 
 + (NSDictionary *)generateValueDictWithObject:(id)anObject forNamedClass:(NSString *)namedClass;
++ (NSDictionary *)generateValueCustomDictWithObject:(id)anObject forNamedClass:(NSString *)namedClass;
+
 + (NSString *)fetchUriEndPointFromPListForNamedClass:(NSString *)namedClass;
 + (NSString *)serializeRequestParmetersWithDictionary:(NSDictionary *)dict;
 + (NSString *) convertUserTypeToNamedClass:(UserTypes)userType;

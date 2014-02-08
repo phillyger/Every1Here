@@ -18,5 +18,7 @@
 	<string>1/batch</string>
 	<key>Speech</key>
 	<string>1/classes/Speech</string>
+	<key>TM_CC</key>
+	<string>1/classes/TM_CC</string>
 </dict>
 </plist>

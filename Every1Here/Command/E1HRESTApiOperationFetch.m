@@ -31,7 +31,41 @@
 
 -(RESTApiOperation *)createOperationWithObj:(id)anObject forNamedClass:(NSString *)aNamedClass withQuery:(NSDictionary *)aQuery {
     
-    NSDictionary *thisDataDict = @{@"where" : [CommonUtilities serializeRequestParmetersWithDictionary:aQuery]};
+    NSMutableDictionary *thisDataDict = [[NSMutableDictionary alloc] init];
+    
+    if (aQuery != nil) {
+//        thisDataDict = @{@"where" : [CommonUtilities serializeRequestParmetersWithDictionary:aQuery]};
+    [thisDataDict addEntriesFromDictionary:@{@"where" : [CommonUtilities serializeRequestParmetersWithDictionary:aQuery]}];
+    }
+
+    NSMutableString *thisUriEndPoint = [[CommonUtilities fetchUriEndPointFromPListForNamedClass:aNamedClass] mutableCopy];
+    
+    NSLog(@"%@", thisDataDict);
+    
+    RESTApiOperation *newRESTApiOperation = [[RESTApiOperation alloc] initWithUriMethod:@"GET" uriPath:thisUriEndPoint data:thisDataDict];
+    
+    return newRESTApiOperation;
+}
+
+
+-(RESTApiOperation *)createOperationWithObj:(id)anObject forNamedClass:(NSString *)aNamedClass withQuery:(NSDictionary *)aQuery withOrder:(NSString*)orderFieldName {
+    
+    NSMutableDictionary *thisDataDict = [[NSMutableDictionary alloc] init];
+    
+    if (aQuery != nil) {
+//        thisDataDict = [@{@"where" : [CommonUtilities serializeRequestParmetersWithDictionary:aQuery]} mutableCopy];
+        [thisDataDict addEntriesFromDictionary:@{@"where" : [CommonUtilities serializeRequestParmetersWithDictionary:aQuery]}];
+    }
+    
+    if (orderFieldName !=nil) {
+        NSDictionary *orderDict = @{@"order":orderFieldName};
+        
+        [thisDataDict addEntriesFromDictionary:orderDict];
+//        thisDataDict = [[CommonUtilities serializeRequestParmetersWithDictionary:orderDict] mutableCopy];
+        
+        
+    }
+    
     NSMutableString *thisUriEndPoint = [[CommonUtilities fetchUriEndPointFromPListForNamedClass:aNamedClass] mutableCopy];
     
     NSLog(@"%@", thisDataDict);
@@ -43,8 +77,13 @@
 
 
 -(RESTApiOperation *)createOperationWithObj:(id)anObject forNamedClass:(NSString *)aNamedClass withQuery:(NSDictionary *)aQuery withIncludes:(NSArray *)includes {
-    NSDictionary *thisDataDict = @{@"where" : [CommonUtilities serializeRequestParmetersWithDictionary:aQuery],
-                                   @"include": [includes componentsJoinedByString:@","]};
+    
+    NSDictionary *thisDataDict = [[NSDictionary alloc] init];
+    
+    if (aQuery != nil) {
+        thisDataDict = @{@"where" : [CommonUtilities serializeRequestParmetersWithDictionary:aQuery],
+                         @"include": [includes componentsJoinedByString:@","]};
+    }
 
 //    NSDictionary *thisDataDict = @{@"include": @"groupdId"};
     

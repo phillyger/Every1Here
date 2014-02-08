@@ -151,10 +151,62 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
 }
 
 
+#pragma mark Speech Operations
+
+- (void)insertSpeech:(User *)user forNamedClass:(NSString *)namedClass errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
+    
+    NSMutableArray *operations = [[NSMutableArray alloc] init];
+    NSDictionary *parameters = [CommonUtilities generateValueCustomDictWithObject:user forNamedClass:namedClass];
+    
+    id insertOp= [E1HOperationFactory create:Insert];
+    RESTApiOperation *op = [insertOp createOperationWithDict:parameters forNamedClass:namedClass];
+    [operations addObject:op];
+    
+    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
+     ];
+    
+}
+
+
+- (void)updateSpeech:(User *)user
+           forNamedClass:(NSString *)namedClass
+            errorHandler:(ParseDotComErrorBlock)errorBlock
+     successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
+    
+    NSMutableArray *operations = [[NSMutableArray alloc] init];
+    
+    id updateOp= [E1HOperationFactory create:Update];
+    RESTApiOperation *op = [updateOp createOperationWithObj:user forNamedClass:namedClass withKey:@"speechId"];
+    [operations addObject:op];
+    
+    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
+     ];
+    
+}
+
+- (void)deleteSpeech:(User *)user
+           forNamedClass:(NSString *)namedClass
+            errorHandler:(ParseDotComErrorBlock)errorBlock
+     successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
+    
+    NSMutableArray *operations = [[NSMutableArray alloc] init];
+    
+    id deleteOp= [E1HOperationFactory create:Delete];
+    RESTApiOperation *op = [deleteOp createOperationWithId:[user valueForKeyPath:@"speechId"] forNamedClass:namedClass];
+    [operations addObject:op];
+    
+    deleteOp=nil;
+    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
+     ];
+}
+
+
+
 #pragma mark User(Type) Operations
 
-- (void)downloadUsersForActionType:(ActionTypes)actionType
+- (void)downloadUserInfoForActionType:(ActionTypes)actionType
                 forNamedClass:(NSString *)namedClass
+                   withTMCCId:(NSString *)tmCCId
                  errorHandler:(ParseDotComErrorBlock)errorBlock
           successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
     
@@ -166,10 +218,79 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     RESTApiOperation *usersOp = [self getUserListOperationWithNamedClass:namedClass withActionType:actionType];
     [operations addObject:usersOp];
     
+    if (tmCCId!=nil) {
+        RESTApiOperation *tmCCOp = [self getTMCCOperationWithId:tmCCId withActionType:actionType];
+        [operations addObject:tmCCOp];
+    }
+
+    
     [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
      ];
     
 }
+
+- (void)downloadUserInfoForActionType:(ActionTypes)actionType
+                        forNamedClass:(NSString *)namedClass
+                         errorHandler:(ParseDotComErrorBlock)errorBlock
+                  successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
+    
+    NSMutableArray *operations = [[NSMutableArray alloc] init];
+    
+    /*
+     *  Operation to return the list of users
+     */
+    RESTApiOperation *usersOp = [self getUserListOperationWithNamedClass:namedClass withActionType:actionType];
+    [operations addObject:usersOp];
+    
+    RESTApiOperation *tmCCOp = [self getTMCCOperationWithActionType:actionType];
+    [operations addObject:tmCCOp];
+    
+    
+    
+    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
+     ];
+    
+}
+
+
+- (RESTApiOperation *)getTMCCOperationWithActionType:(ActionTypes)actionType
+{
+
+    
+    // The TM Competent Communicator class
+    NSString *namedClass = @"TM_CC";
+    
+    id fetchTMCCOp= [E1HOperationFactory create:actionType];
+    RESTApiOperation *speechOp = [fetchTMCCOp createOperationWithObj:nil forNamedClass:namedClass withQuery:nil withOrder:@"projectNum"];
+    
+    
+    fetchTMCCOp = nil;
+    
+    return speechOp;
+}
+
+- (RESTApiOperation *)getTMCCOperationWithId:tmCCId withActionType:(ActionTypes)actionType
+{
+    /*
+     *  Operation to return the TM CC info based up id value
+     */
+    NSMutableDictionary *queryParameters = [[NSMutableDictionary alloc] init];
+    
+    queryParameters = [@{@"objectId": tmCCId}
+                       mutableCopy];
+    
+    // If this is Guest member, return nil.
+    NSString *namedClass = @"TM_CC";
+    
+    id fetchTMCCOp= [E1HOperationFactory create:actionType];
+    RESTApiOperation *speechOp = [fetchTMCCOp createOperationWithObj:nil forNamedClass:namedClass withQuery:queryParameters];
+    
+    
+    fetchTMCCOp = nil;
+    
+    return speechOp;
+}
+
 
 - (void)downloadUsersForEvent:(Event *)event
                 forActionType:(ActionTypes)actionType
@@ -191,8 +312,11 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     RESTApiOperation *attendanceOp = [self getAttendanceListByEventOperationWithEvent:event withNamedClass:namedClass withActionType:actionType];
     [operations addObject:attendanceOp];
     
-    RESTApiOperation *speechOp = [self getSpeechListByEventOperationWithEvent:event withNamedClass:namedClass withActionType:actionType];
-    [operations addObject:speechOp];
+    if ([namedClass isEqualToString:@"Member"]) {
+        RESTApiOperation *speechOp = [self getSpeechListByEventOperationWithEvent:event withNamedClass:namedClass withActionType:actionType];
+        [operations addObject:speechOp];
+    }
+
     
     [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
      ];

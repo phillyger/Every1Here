@@ -19,6 +19,7 @@
 #import "CommonUtilities.h"
 #import "AFHTTPRequestOperation.h"
 #import "E1HObjectConfiguration.h"
+#import "EventRole.h"
 
 #import <objc/runtime.h>
 
@@ -46,6 +47,9 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     Receptionist *eventRoleReceptionist;
     Receptionist *displayNameReceptionist;
     Receptionist *guestCountReceptionist;
+    Receptionist *speechTitleReceptionist;
+    Receptionist *speechHasIntroReceptionist;
+    Receptionist *speechEvaluatorReceptionist;
     
     //-------------------------------------------------------
     // Dicitionary for holding the values of Quick Dialog
@@ -197,6 +201,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     
     self.parseDotComMgr = [objectConfiguration parseDotComManager];
     self.parseDotComMgr.parseDotComDelegate = self;
+    self.parseDotComMgr.speechDelegate = self;
     selectedEvent = (Event *)[(MemberListTableDataSource *)self.dataSource event];
     
     [self.parseDotComMgr fetchUsersForEvent:selectedEvent withUserType:Member];
@@ -252,6 +257,12 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
      __block BOOL doesAttendanceRecordExist = [selectedMember attendanceId]!=nil ? YES : NO;
     
     //-------------------------------------------------------
+    // Check to see if Attendance Id field has been set on
+    // selected member .
+    //-------------------------------------------------------
+    __block BOOL doesSpeechInfoRecordExist = [selectedMember speechId]!=nil ? YES : NO;
+    
+    //-------------------------------------------------------
     // KVO Receptionist pattern for handling changes to
     // eventRoles field.
     //-------------------------------------------------------
@@ -268,6 +279,18 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                                                                [parseDotComMgr updateAttendanceForUser:selectedMember];
 
                                                            }
+                                                       
+                                                       if (newEventRole & TM_Speaker) {
+                                                           if (doesSpeechInfoRecordExist) {
+//                                                               [parseDotComMgr updateSpeechForUser:selectedMember];
+                                                           } else {
+                                                               [parseDotComMgr insertSpeechForUser:selectedMember];
+                                                           }
+                                                       } else {
+                                                           if (doesSpeechInfoRecordExist) {
+                                                               [parseDotComMgr deleteSpeechForUser:selectedMember];
+                                                           }
+                                                       }
                                                        
                                                    }];
     
@@ -305,22 +328,46 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     
     //-------------------------------------------------------
     // KVO Receptionist pattern for handling changes to
-    // displayName field.
+    // speechTitle field.
     //-------------------------------------------------------
-    displayNameReceptionist = [Receptionist receptionistForKeyPath:@"displayName"
+    speechTitleReceptionist = [Receptionist receptionistForKeyPath:@"roles.EventRole.speech.title"
                                                            object:selectedMember
                                                             queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
-                                                                
-                                                                
-                                                                NSLog(@"Running DisplayName Receptionist ...");
-                                                                NSString *oldDisplayName = [change objectForKey:NSKeyValueChangeOldKey];
-                                                                NSString *newDisplayName = [change objectForKey:NSKeyValueChangeNewKey] ;
                                                             
-                                                                if (![newDisplayName isEqualToString:oldDisplayName]) {
-                                                                    [parseDotComMgr updateUser:selectedMember withUserType:Member];
+ 
+                                                                
+                                                                NSLog(@"Running speechTitleReceptionist Receptionist ...");
+                                                                NSString *oldSpeechTitle = [change objectForKey:NSKeyValueChangeOldKey];
+                                                                NSString *newSpeechTitle = [change objectForKey:NSKeyValueChangeNewKey] ;
+                                                            
+                                                                if (![newSpeechTitle isEqualToString:oldSpeechTitle]) {
+                                                                    if (doesSpeechInfoRecordExist)
+                                                                        [parseDotComMgr updateSpeechForUser:selectedMember];
                                                                 }
                                                                 
                                                             }];
+    
+    
+    //-------------------------------------------------------
+    // KVO Receptionist pattern for handling changes to
+    // displayName field.
+    //-------------------------------------------------------
+    displayNameReceptionist = [Receptionist receptionistForKeyPath:@"displayName"
+                                                            object:selectedMember
+                                                             queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
+                                                                 
+                                                                 
+                                                                 NSLog(@"Running DisplayName Receptionist ...");
+                                                                 NSString *oldDisplayName = [change objectForKey:NSKeyValueChangeOldKey];
+                                                                 NSString *newDisplayName = [change objectForKey:NSKeyValueChangeNewKey] ;
+                                                                 
+                                                                 if (![newDisplayName isEqualToString:oldDisplayName]) {
+                                                                     if (doesSpeechInfoRecordExist)
+                                                                         [parseDotComMgr updateUser:selectedMember withUserType:Member];
+                                                                
+                                                                 }
+                                                                 
+                                                             }];
     
     //-------------------------------------------------------
     // KVO Receptionist pattern for handling changes to
@@ -616,7 +663,24 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                      forNamedClass:(NSString *)namedClass {}
 
 
+#pragma mark - Speech Delegate
+- (void)didDeleteSpeech
+{
+    NSLog(@"Success!! We deleted Speech record in Parse");
+    [self.tableView reloadData];
+}
 
+- (void)didInsertSpeechWithOutput:(NSArray *)objectNotationList
+{
+    NSLog(@"Success!! We inserted Speech record in Parse");
+    [self.tableView reloadData];
+}
+
+- (void)didUpdateSpeech
+{
+    NSLog(@"Success!! We updated Speech record in Parse");
+    [self.tableView reloadData];
+}
 
 
 @end
