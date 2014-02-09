@@ -50,6 +50,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     Receptionist *speechTitleReceptionist;
     Receptionist *speechHasIntroReceptionist;
     Receptionist *speechEvaluatorReceptionist;
+    Receptionist *speechTMCCIdReceptionist;
     
     //-------------------------------------------------------
     // Dicitionary for holding the values of Quick Dialog
@@ -66,6 +67,12 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     // Are we creating a new user
     //-------------------------------------------------------
     BOOL isNewUser;
+    
+
+    //-------------------------------------------------------
+    // Has Speech object fields been modified
+    //-------------------------------------------------------
+    BOOL hasSpeechBeenEdited;
 }
 
 @end
@@ -93,6 +100,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     [super viewDidLoad];
 
     isNewUser = NO;
+    
     
     NSString *backArrowString = @"\U000025C0\U0000FE0E"; //BLACK LEFT-POINTING TRIANGLE PLUS VARIATION SELECTOR
     
@@ -225,6 +233,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 
 - (void)userDidSelectMemberListNotification:(NSNotification *)note {
     
+    
 
     //-------------------------------------------------------
     // The current member selected.
@@ -326,26 +335,100 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                                                             
                                                         }];
     
+    
+    
     //-------------------------------------------------------
     // KVO Receptionist pattern for handling changes to
-    // speechTitle field.
+    // speechHasIntro field.
     //-------------------------------------------------------
     speechTitleReceptionist = [Receptionist receptionistForKeyPath:@"roles.EventRole.speech.title"
                                                            object:selectedMember
                                                             queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
                                                             
- 
                                                                 
                                                                 NSLog(@"Running speechTitleReceptionist Receptionist ...");
                                                                 NSString *oldSpeechTitle = [change objectForKey:NSKeyValueChangeOldKey];
                                                                 NSString *newSpeechTitle = [change objectForKey:NSKeyValueChangeNewKey] ;
                                                             
-                                                                if (![newSpeechTitle isEqualToString:oldSpeechTitle]) {
-                                                                    if (doesSpeechInfoRecordExist)
-                                                                        [parseDotComMgr updateSpeechForUser:selectedMember];
+                                                                if ((![oldSpeechTitle isKindOfClass:[NSNull class]]) || (![newSpeechTitle isKindOfClass:[NSNull class]])) {
+                                                                    if (![newSpeechTitle isEqualToString:oldSpeechTitle]) {
+                                                                        if (doesSpeechInfoRecordExist)
+                                                                            [parseDotComMgr updateSpeechForUser:selectedMember];
+                                                                    }
                                                                 }
                                                                 
                                                             }];
+    
+    
+    //-------------------------------------------------------
+    // KVO Receptionist pattern for handling changes to
+    // speechHasIntro field.
+    //-------------------------------------------------------
+    speechHasIntroReceptionist = [Receptionist receptionistForKeyPath:@"roles.EventRole.speech.hasIntro"
+                                                               object:selectedMember
+                                                                queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
+                                                                    
+                                                                    
+                                                                    
+                                                                    NSLog(@"Running speechHasIntroReceptionist Receptionist ...");
+                                                                    NSNumber *oldSpeechHasIntro = [change objectForKey:NSKeyValueChangeOldKey];
+                                                                    NSNumber *newSpeechHasIntro = [change objectForKey:NSKeyValueChangeNewKey] ;
+                                                                    
+                                                                    if (newSpeechHasIntro != oldSpeechHasIntro) {
+                                                                        if (doesSpeechInfoRecordExist)
+                                                                            [parseDotComMgr updateSpeechForUser:selectedMember];
+                                                                    }
+                                                                    
+                                                                }];
+    
+    //-------------------------------------------------------
+    // KVO Receptionist pattern for handling changes to
+    // Evaluator field.
+    //-------------------------------------------------------
+    speechEvaluatorReceptionist = [Receptionist receptionistForKeyPath:@"roles.EventRole.speech.evaluatorId"
+                                                            object:selectedMember
+                                                             queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
+                                                                 
+                                                                 
+                                                                 
+                                                                 NSLog(@"Running speechEvaluatorReceptionist Receptionist ...");
+                                                                 NSString *oldSpeechEvaluator = [change objectForKey:NSKeyValueChangeOldKey];
+                                                                 NSString *newSpeechEvaluator = [change objectForKey:NSKeyValueChangeNewKey] ;
+                                                                 
+                                                                 if ((![oldSpeechEvaluator isKindOfClass:[NSNull class]]) || (![newSpeechEvaluator isKindOfClass:[NSNull class]])) {
+                                                                     
+                                                                     
+                                                                     if (![newSpeechEvaluator isEqualToString:oldSpeechEvaluator]) {
+                                                                         if (doesSpeechInfoRecordExist)
+                                                                             [parseDotComMgr updateSpeechForUser:selectedMember];
+                                                                     }
+                                                                 }
+                                                                 
+                                                             }];
+    
+    //-------------------------------------------------------
+    // KVO Receptionist pattern for handling changes to
+    // Evaluator field.
+    //-------------------------------------------------------
+    speechTMCCIdReceptionist = [Receptionist receptionistForKeyPath:@"roles.EventRole.speech.tmCCId"
+                                                                object:selectedMember
+                                                                 queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
+                                                                     
+                                                                     
+                                                                     
+                                                                     NSLog(@"Running speechtmCCIdReceptionist Receptionist ...");
+                                                                     NSString *oldSpeechTMCCId = [change objectForKey:NSKeyValueChangeOldKey];
+                                                                     NSString *newSpeechTMCCId = [change objectForKey:NSKeyValueChangeNewKey] ;
+                                                                     
+                                                                     if ((![oldSpeechTMCCId isKindOfClass:[NSNull class]]) || (![newSpeechTMCCId isKindOfClass:[NSNull class]])) {
+                                                                                                                                          
+                                                                         if (![newSpeechTMCCId isEqualToString:oldSpeechTMCCId]) {
+                                                                             if (doesSpeechInfoRecordExist)
+                                                                                 [parseDotComMgr updateSpeechForUser:selectedMember];
+                                                                         }
+                                                                     }
+                                                                     
+                                                                 }];
     
     
     //-------------------------------------------------------
@@ -471,6 +554,10 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                 [selectedMember removeObserver:eventRoleReceptionist forKeyPath:@"roles.EventRole.eventRoles"];
                 [selectedMember removeObserver:displayNameReceptionist forKeyPath:@"displayName"];
                 [selectedMember removeObserver:guestCountReceptionist forKeyPath:@"roles.EventRole.guestCount"];
+                [selectedMember removeObserver:speechTitleReceptionist forKeyPath:@"roles.EventRole.speech.title"];
+                [selectedMember removeObserver:speechHasIntroReceptionist forKeyPath:@"roles.EventRole.speech.hasIntro"];
+                [selectedMember removeObserver:speechEvaluatorReceptionist forKeyPath:@"roles.EventRole.speech.evaluatorId"];
+                [selectedMember removeObserver:speechTMCCIdReceptionist forKeyPath:@"roles.EventRole.speech.tmCCId"];
                 
                 [self dismissViewControllerAnimated:YES completion:nil];
             };

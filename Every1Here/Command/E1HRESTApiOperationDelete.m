@@ -59,4 +59,9 @@
     return nil;
 }
 
+-(RESTApiOperation *)createOperationWithObj:(id)anObject forNamedClass:(NSString *)aNamedClass withQuery:(NSDictionary *)aQuery withKey:(NSString *)aKey
+{
+    return nil;
+}
+
 @end

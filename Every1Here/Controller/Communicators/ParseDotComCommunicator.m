@@ -175,8 +175,11 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     
     NSMutableArray *operations = [[NSMutableArray alloc] init];
     
+     NSDictionary *aQuery = [CommonUtilities generateValueCustomDictWithObject:user forNamedClass:namedClass];
+    
+    
     id updateOp= [E1HOperationFactory create:Update];
-    RESTApiOperation *op = [updateOp createOperationWithObj:user forNamedClass:namedClass withKey:@"speechId"];
+    RESTApiOperation *op = [updateOp createOperationWithObj:user forNamedClass:namedClass withQuery:aQuery withKey:@"speechId"];
     [operations addObject:op];
     
     [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
@@ -190,6 +193,8 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
      successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
     
     NSMutableArray *operations = [[NSMutableArray alloc] init];
+    
+    
     
     id deleteOp= [E1HOperationFactory create:Delete];
     RESTApiOperation *op = [deleteOp createOperationWithId:[user valueForKeyPath:@"speechId"] forNamedClass:namedClass];
@@ -403,7 +408,7 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     queryParameters = [@{@"isActive" : [NSNumber numberWithBool:TRUE]} mutableCopy];
     
     id fetchUserOp= [E1HOperationFactory create:actionType];
-    RESTApiOperation *usersOp = [fetchUserOp createOperationWithObj:nil forNamedClass:namedClass withQuery:queryParameters];
+    RESTApiOperation *usersOp = [fetchUserOp createOperationWithObj:nil forNamedClass:namedClass withQuery:queryParameters withOrder:@"lastName"];
     
     fetchUserOp = nil;
     

@@ -28,6 +28,23 @@
     return newRESTApiOperation;
 }
 
+
+-(RESTApiOperation *)createOperationWithObj:(id)obj forNamedClass:(NSString *)aNamedClass withQuery:(NSDictionary *)aQuery withKey:(NSString *)aKey {
+    
+   
+    NSMutableString *thisUriEndPoint = [[CommonUtilities fetchUriEndPointFromPListForNamedClass:aNamedClass] mutableCopy];
+    
+    
+    
+    thisUriEndPoint = [[thisUriEndPoint stringByAppendingString:@"/"] copy];
+    thisUriEndPoint = [[thisUriEndPoint stringByAppendingString:[obj valueForKeyPath:aKey]] copy];
+    
+    RESTApiOperation *newRESTApiOperation = [[RESTApiOperation alloc] initWithUriMethod:@"PUT" uriPath:thisUriEndPoint data:aQuery];
+    
+    return newRESTApiOperation;
+}
+
+
 - (RESTApiOperation *)createOperationWithDict:(NSDictionary *)aDataDict forNamedClass:(NSString *)aNamedClass {
     
     return nil;

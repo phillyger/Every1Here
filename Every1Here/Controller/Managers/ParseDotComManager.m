@@ -424,13 +424,13 @@
         
         NSArray *results = (NSArray*)[jsonObject objectForKey:@"results"];
         if (results.count > 0) {
-            if ([results[0] objectForKey:@"title"]) {
+            if ([results[0] objectForKey:@"hasIntro"]) {
                 // contains speech key
                  speechDict = jsonObject;
             } else if([results[0] objectForKey:@"firstName"]) {
                 // contains member key
                 userDict = jsonObject;
-            } else if([results[0] objectForKey:@"eventId"]) {
+            } else if([results[0] objectForKey:@"guestCount"]) {
                 // contains attendance key
                attendanceDict = jsonObject;
             }

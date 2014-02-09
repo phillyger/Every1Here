@@ -42,7 +42,7 @@
 		<key>targetKeyPath</key>
 		<string>hasIntro</string>
 		<key>sourceKeyPath</key>
-		<string>hasIntro</string>
+		<string>roles.EventRole.speech.hasIntro</string>
 	</dict>
 	<key>title</key>
 	<dict>

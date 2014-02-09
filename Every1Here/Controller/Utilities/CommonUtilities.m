@@ -63,7 +63,8 @@
                 [dataDict setValue:appDelegate.parseDotComAccountUserAccountPassword forKeyPath:targetKeyPath];
                 
             } else if ([dataType isEqualToString:@"@boolean"]) {
-                [dataDict setValue:[NSNumber numberWithBool:TRUE] forKey:targetKeyPath];
+                BOOL thisBool = [[anObject valueForKeyPath: sourceKeyPath] boolValue];
+                [dataDict setValue:[NSNumber numberWithBool:thisBool] forKey:targetKeyPath];
                 
             } else if ([dataType isEqualToString:@"@date"]) {
                 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
