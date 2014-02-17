@@ -6,14 +6,15 @@
 //  Copyright (c) 2014 Brilliant Age. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@class AFHTTPRequestOperation;
 
 @protocol SpeechDelegate <NSObject>
 
 /**
  * The manager successfully inserted a new speech record into Parse.com.
  */
-- (void)didInsertSpeechWithOutput:(NSArray *)objectNotationList;
+//- (void)didInsertSpeechWithOutput:(NSArray *)objectNotationList;
+- (void)didInsertSpeechWithOutput:(AFHTTPRequestOperation *)operation;
 
 
 /**

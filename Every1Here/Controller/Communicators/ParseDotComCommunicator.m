@@ -50,6 +50,28 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     
 }
 
+- (void)launchSingleRequestConnection:(RESTApiOperation *)op
+                         errorHandler:(void (^)(NSError *))errorBlock
+                  successSingleHandler:(void (^)(AFHTTPRequestOperation *))successBlock {
+    
+    //[self cancelAndDiscardURLConnection];
+    
+    
+    NSMutableURLRequest *request = [[AFParseDotComAPIClient sharedClient] requestWithMethod:[op uriMethod] path:[op uriPath] parameters:[op data]];
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // Print the response body in text
+        NSLog(@"Response: %@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
+        successBlock((AFHTTPRequestOperation *)operation);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+    [operation start];
+    
+    
+}
 
 - (void)batchContentForRequests:(NSArray *)requestList
                  errorHandler:(void (^)(NSError *))errorBlock
@@ -103,17 +125,21 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
 
 #pragma mark Attendance Operations
 
-- (void)insertAttendance:(User *)user forNamedClass:(NSString *)namedClass errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
+- (void)insertAttendance:(User *)user forNamedClass:(NSString *)namedClass errorHandler:(ParseDotComErrorBlock)errorBlock successSingleHandler:(ParseDotComSingleOperationsBlock)successBlock {
     
-    NSMutableArray *operations = [[NSMutableArray alloc] init];
+//    NSMutableArray *operations = [[NSMutableArray alloc] init];
     NSDictionary *parameters = [CommonUtilities generateValueDictWithObject:user forNamedClass:namedClass];
     
     id insertOp= [E1HOperationFactory create:Insert];
     RESTApiOperation *op = [insertOp createOperationWithDict:parameters forNamedClass:namedClass];
-    [operations addObject:op];
+//    [operations addObject:op];
+//    
+//    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
+//     ];
     
-    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
-     ];
+    
+    [self launchSingleRequestConnection:op errorHandler:errorBlock successSingleHandler:successBlock];
+    
 
 }
 
@@ -153,17 +179,14 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
 
 #pragma mark Speech Operations
 
-- (void)insertSpeech:(User *)user forNamedClass:(NSString *)namedClass errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
+- (void)insertSpeech:(User *)user forNamedClass:(NSString *)namedClass errorHandler:(ParseDotComErrorBlock)errorBlock successSingleHandler:(ParseDotComSingleOperationsBlock)successBlock {
     
-    NSMutableArray *operations = [[NSMutableArray alloc] init];
     NSDictionary *parameters = [CommonUtilities generateValueCustomDictWithObject:user forNamedClass:namedClass];
     
     id insertOp= [E1HOperationFactory create:Insert];
     RESTApiOperation *op = [insertOp createOperationWithDict:parameters forNamedClass:namedClass];
-    [operations addObject:op];
-    
-    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
-     ];
+
+    [self launchSingleRequestConnection:op errorHandler:errorBlock successSingleHandler:successBlock];
     
 }
 
@@ -171,19 +194,22 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
 - (void)updateSpeech:(User *)user
            forNamedClass:(NSString *)namedClass
             errorHandler:(ParseDotComErrorBlock)errorBlock
-     successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
+     successSingleHandler:(ParseDotComSingleOperationsBlock)successBlock {
     
-    NSMutableArray *operations = [[NSMutableArray alloc] init];
+//    NSMutableArray *operations = [[NSMutableArray alloc] init];
     
      NSDictionary *aQuery = [CommonUtilities generateValueCustomDictWithObject:user forNamedClass:namedClass];
     
     
     id updateOp= [E1HOperationFactory create:Update];
     RESTApiOperation *op = [updateOp createOperationWithObj:user forNamedClass:namedClass withQuery:aQuery withKey:@"speechId"];
-    [operations addObject:op];
+//    [operations addObject:op];
+//    
+//    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
+//     ];
     
-    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
-     ];
+    [self launchSingleRequestConnection:op errorHandler:errorBlock successSingleHandler:successBlock];
+    
     
 }
 

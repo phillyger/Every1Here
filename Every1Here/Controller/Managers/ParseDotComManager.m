@@ -100,8 +100,8 @@
                                               forActionType:actionType
                                                forNamedClass:namedClass];
                       }
-               successBatchHandler:^(NSArray *operations) {
-                   [self receivedAttendanceOps:operations
+               successSingleHandler:^(AFHTTPRequestOperation *operation) {
+                   [self receivedAttendanceOp:operation
                                  forActionType:actionType
                                   forNamedClass:namedClass
                     ];
@@ -133,13 +133,33 @@
     
 }
 
--(void)receivedAttendanceOps:operations
+-(void)receivedAttendanceOps:(NSArray *)operations
+               forActionType:(ActionTypes)actionType
+               forNamedClass:(NSString*)namedClass {
+    
+    switch (actionType) {
+        case Insert:
+//            [parseDotComDelegate didInsertAttendanceWithOutput:operations];
+            break;
+        case Update:
+            [parseDotComDelegate didUpdateAttendance];
+            break;
+        case Delete:
+            [parseDotComDelegate didDeleteAttendance];
+            break;
+        default:
+            break;
+    }
+    
+}
+
+-(void)receivedAttendanceOp:(AFHTTPRequestOperation *)operation
                forActionType:(ActionTypes)actionType
                 forNamedClass:(NSString*)namedClass {
     
     switch (actionType) {
         case Insert:
-            [parseDotComDelegate didInsertAttendanceWithOutput:operations];
+            [parseDotComDelegate didInsertAttendanceWithOutput:operation];
             break;
         case Update:
             [parseDotComDelegate didUpdateAttendance];
@@ -653,15 +673,15 @@
     
     
     [communicator updateSpeech:(User*)user
-                     forNamedClass:namedClass
+                     forNamedClass:(NSString*)namedClass
                       errorHandler:^(NSError * error){
                           
                           [self executingOpsFailedWithError:error
                                               forActionType:actionType
                                               forNamedClass:namedClass];
                       }
-               successBatchHandler:^(NSArray *operations) {
-                   [self receivedSpeechOps:operations
+               successSingleHandler:^(AFHTTPRequestOperation *operation) {
+                   [self receivedSpeechOp:operation
                                  forActionType:actionType
                                  forNamedClass:namedClass
                     ];
@@ -684,8 +704,8 @@
                                               forActionType:actionType
                                               forNamedClass:namedClass];
                       }
-               successBatchHandler:^(NSArray *operations) {
-                   [self receivedSpeechOps:operations
+               successSingleHandler:^(AFHTTPRequestOperation *operation) {
+                   [self receivedSpeechOp:operation
                                  forActionType:actionType
                                  forNamedClass:namedClass
                     ];
@@ -717,7 +737,7 @@
     
 }
 
--(void)receivedSpeechOps:operations
+-(void)receivedSpeechOps:(NSArray*)operations
                forActionType:(ActionTypes)actionType
                forNamedClass:(NSString*)namedClass {
     
@@ -737,6 +757,25 @@
     
 }
 
+-(void)receivedSpeechOp:(AFHTTPRequestOperation *)operation
+           forActionType:(ActionTypes)actionType
+           forNamedClass:(NSString*)namedClass {
+    
+    switch (actionType) {
+        case Insert:
+            [speechDelegate didInsertSpeechWithOutput:operation];
+            break;
+        case Update:
+            [speechDelegate didUpdateSpeech];
+            break;
+        case Delete:
+            [speechDelegate didDeleteSpeech];
+            break;
+        default:
+            break;
+    }
+    
+}
 
 @end
 

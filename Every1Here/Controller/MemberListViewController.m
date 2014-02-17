@@ -697,27 +697,52 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 /*---------------------------------------------------------------------------
  * Delegation callback for inserting attendance record.
  *--------------------------------------------------------------------------*/
-- (void)didInsertAttendanceWithOutput:(NSArray *)objectNotationList {
+//- (void)didInsertAttendanceWithOutput:(NSArray *)objectNotationList {
+//    NSLog(@"Success!! We inserted a new Attendance record into Parse");
+//    
+//    // Expecting a single value returned after new Attendance Record Insert.
+//    // objectNotationList is an array containing a single object.
+//    // Update Member object with Attendance Id value.
+//    
+//    [objectNotationList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//        AFHTTPRequestOperation *ro = obj;
+//        NSData *jsonData = [ro responseData];
+//        NSDictionary *jsonObject=[NSJSONSerialization
+//                                  JSONObjectWithData:jsonData
+//                                  options:NSJSONReadingMutableLeaves
+//                                  error:nil];
+//        
+//        [selectedMember setAttendanceId:[jsonObject valueForKey:@"objectId"]];
+//    }];
+//    
+//    [self.tableView reloadData];
+//    
+//}
+
+
+- (void)didInsertAttendanceWithOutput:(AFHTTPRequestOperation *)operation {
     NSLog(@"Success!! We inserted a new Attendance record into Parse");
     
     // Expecting a single value returned after new Attendance Record Insert.
     // objectNotationList is an array containing a single object.
     // Update Member object with Attendance Id value.
     
-    [objectNotationList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        AFHTTPRequestOperation *ro = obj;
-        NSData *jsonData = [ro responseData];
-        NSDictionary *jsonObject=[NSJSONSerialization
+
+    AFHTTPRequestOperation *ro = operation;
+    NSData *jsonData = [ro responseData];
+    NSDictionary *jsonObject=[NSJSONSerialization
                                   JSONObjectWithData:jsonData
                                   options:NSJSONReadingMutableLeaves
                                   error:nil];
         
-        [selectedMember setAttendanceId:[jsonObject valueForKey:@"objectId"]];
-    }];
+    [selectedMember setAttendanceId:[jsonObject valueForKey:@"objectId"]];
+
     
     [self.tableView reloadData];
     
 }
+
+
 
 /*---------------------------------------------------------------------------
  * Delegation callback for updating attendance record.
@@ -757,9 +782,24 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     [self.tableView reloadData];
 }
 
-- (void)didInsertSpeechWithOutput:(NSArray *)objectNotationList
+- (void)didInsertSpeechWithOutput:(AFHTTPRequestOperation *)operation
 {
+    
     NSLog(@"Success!! We inserted Speech record in Parse");
+    
+
+    AFHTTPRequestOperation *ro = operation;
+    NSData *jsonData = [ro responseData];
+    NSDictionary *jsonObject=[NSJSONSerialization
+                              JSONObjectWithData:jsonData
+                              options:NSJSONReadingMutableLeaves
+                              error:nil];
+    
+    NSLog(@"[jsonObject: objectId]- %@x", [jsonObject valueForKey:@"objectId"]);
+    [selectedMember setSpeechId:[jsonObject valueForKey:@"objectId"]];
+
+    
+    
     [self.tableView reloadData];
 }
 

@@ -11,7 +11,7 @@
 #import "User.h"
 @class Event;
 @class User;
-
+@class AFHTTPRequestOperation;
 
 /**
  * The delegate protocol for the ParseDotComManager class.
@@ -51,7 +51,8 @@
 /**
  * The manager successfully inserted a new Member or Guest Attendance record into Parse.com.
  */
-- (void)didInsertAttendanceWithOutput:(NSArray *)objectNotationList;
+//- (void)didInsertAttendanceWithOutput:(NSArray *)objectNotationList;
+- (void)didInsertAttendanceWithOutput:(AFHTTPRequestOperation *)operation;
 
 
 /**

@@ -15,10 +15,11 @@
 #import "User.h"
 
 @class Event;
-
+@class AFHTTPRequestOperation;
 
 typedef void (^ParseDotComObjectNotationBlock)(NSDictionary *);
 typedef void (^ParseDotComBatchOperationsBlock)(NSArray *);
+typedef void (^ParseDotComSingleOperationsBlock)(AFHTTPRequestOperation *);
 typedef void (^ParseDotComErrorBlock)(NSError *);
 
 @interface ParseDotComCommunicator : NSObject {
@@ -38,6 +39,7 @@ typedef void (^ParseDotComErrorBlock)(NSError *);
     void (^errorHandler)(NSError *);
     void (^successHandler)(NSDictionary *);
     void (^successBatchHandler)(NSArray *);
+    void (^successSingleHandler)(NSArray *);
 }
 
 
@@ -115,7 +117,7 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
 - (void)insertAttendance:(User*)user
             forNamedClass:(NSString *)namedClass
             errorHandler:(ParseDotComErrorBlock)errorBlock
-     successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+     successSingleHandler:(ParseDotComSingleOperationsBlock)successBlock;
 
 - (void)updateAttendance:(User*)user
             forNamedClass:(NSString *)namedClass
@@ -135,12 +137,12 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
 - (void)insertSpeech:(User*)user
            forNamedClass:(NSString *)namedClass
             errorHandler:(ParseDotComErrorBlock)errorBlock
-     successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+     successSingleHandler:(ParseDotComSingleOperationsBlock)successBlock;
 
 - (void)updateSpeech:(User*)user
            forNamedClass:(NSString *)namedClass
             errorHandler:(ParseDotComErrorBlock)errorBlock
-     successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+     successSingleHandler:(ParseDotComSingleOperationsBlock)successBlock;
 
 - (void)deleteSpeech:(User*)user
            forNamedClass:(NSString *)namedClass
