@@ -138,7 +138,7 @@
 		28B8F03B1710876C0095BB6F /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8E0CB1710876A0095BB6F /* Person.m */; };
 		28B8F03C1710876C0095BB6F /* RESTApiOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8E0CD1710876A0095BB6F /* RESTApiOperation.m */; };
 		28B8F03D1710876C0095BB6F /* EffectiveDateRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8E0D01710876A0095BB6F /* EffectiveDateRange.m */; };
-		28B8F03E1710876C0095BB6F /* EventRole.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8E0D21710876A0095BB6F /* EventRole.m */; };
+		28B8F03E1710876C0095BB6F /* EventRoleDefault.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8E0D21710876A0095BB6F /* EventRoleDefault.m */; };
 		28B8F03F1710876C0095BB6F /* GuestRole.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8E0D41710876A0095BB6F /* GuestRole.m */; };
 		28B8F0401710876C0095BB6F /* MemberRole.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8E0D61710876A0095BB6F /* MemberRole.m */; };
 		28B8F0411710876C0095BB6F /* UserRole.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8E0D81710876A0095BB6F /* UserRole.m */; };
@@ -149,7 +149,7 @@
 		28B8F0461710876C0095BB6F /* Venue.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8E0E31710876A0095BB6F /* Venue.m */; };
 		28B8F04D1710876C0095BB6F /* guestDetails_EDIT.json in Resources */ = {isa = PBXBuildFile; fileRef = 28B8E0F01710876A0095BB6F /* guestDetails_EDIT.json */; };
 		28B8F04E1710876C0095BB6F /* guestDetails_NEW.json in Resources */ = {isa = PBXBuildFile; fileRef = 28B8E0F11710876A0095BB6F /* guestDetails_NEW.json */; };
-		28B8F04F1710876C0095BB6F /* memberDetails_EDIT.json in Resources */ = {isa = PBXBuildFile; fileRef = 28B8E0F21710876A0095BB6F /* memberDetails_EDIT.json */; };
+		28B8F04F1710876C0095BB6F /* memberDetails_Default_EDIT.json in Resources */ = {isa = PBXBuildFile; fileRef = 28B8E0F21710876A0095BB6F /* memberDetails_Default_EDIT.json */; };
 		28B8F0501710876C0095BB6F /* memberDetails_NEW.json in Resources */ = {isa = PBXBuildFile; fileRef = 28B8E0F31710876A0095BB6F /* memberDetails_NEW.json */; };
 		28B8F0511710876C0095BB6F /* GuestNavIconImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8E0F61710876A0095BB6F /* GuestNavIconImageView.m */; };
 		28B8F0521710876C0095BB6F /* GuestListViewNavigationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8E0F91710876A0095BB6F /* GuestListViewNavigationItem.m */; };
@@ -221,6 +221,10 @@
 		28E747F91710831200F97883 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E747DA1710831200F97883 /* Foundation.framework */; };
 		28E748011710831200F97883 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28E747FF1710831200F97883 /* InfoPlist.strings */; };
 		28E748041710831200F97883 /* Every1HereTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E748031710831200F97883 /* Every1HereTests.m */; };
+		28ECB92418B541D200286B4A /* ParseDotComPaths.plist in Resources */ = {isa = PBXBuildFile; fileRef = 28ECB92318B541D200286B4A /* ParseDotComPaths.plist */; };
+		28F2C30318B3A930009087B3 /* EventRoleBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F2C30218B3A930009087B3 /* EventRoleBase.m */; };
+		28F2C30618B3B134009087B3 /* EventRoleSpeechContest.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F2C30518B3B134009087B3 /* EventRoleSpeechContest.m */; };
+		28F2C30818B3C5A1009087B3 /* memberDetails_Speech_Contest_EDIT.json in Resources */ = {isa = PBXBuildFile; fileRef = 28F2C30718B3C5A1009087B3 /* memberDetails_Speech_Contest_EDIT.json */; };
 		28FCE673171089A6009A233B /* fc-webicon-facebook-s.png in Resources */ = {isa = PBXBuildFile; fileRef = 28FCE671171089A6009A233B /* fc-webicon-facebook-s.png */; };
 		28FCE674171089A6009A233B /* profile-image-placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 28FCE672171089A6009A233B /* profile-image-placeholder.png */; };
 		7FE8CC9CB8494DE295CF1A8F /* libPods-OHHTTPStubsUnitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6F57BF21A6F41D8A6B736BC /* libPods-OHHTTPStubsUnitTests.a */; };
@@ -479,8 +483,8 @@
 		28B8E0CD1710876A0095BB6F /* RESTApiOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESTApiOperation.m; sourceTree = "<group>"; };
 		28B8E0CF1710876A0095BB6F /* EffectiveDateRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EffectiveDateRange.h; sourceTree = "<group>"; };
 		28B8E0D01710876A0095BB6F /* EffectiveDateRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EffectiveDateRange.m; sourceTree = "<group>"; };
-		28B8E0D11710876A0095BB6F /* EventRole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventRole.h; sourceTree = "<group>"; };
-		28B8E0D21710876A0095BB6F /* EventRole.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventRole.m; sourceTree = "<group>"; };
+		28B8E0D11710876A0095BB6F /* EventRoleDefault.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventRoleDefault.h; sourceTree = "<group>"; };
+		28B8E0D21710876A0095BB6F /* EventRoleDefault.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventRoleDefault.m; sourceTree = "<group>"; };
 		28B8E0D31710876A0095BB6F /* GuestRole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestRole.h; sourceTree = "<group>"; };
 		28B8E0D41710876A0095BB6F /* GuestRole.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuestRole.m; sourceTree = "<group>"; };
 		28B8E0D51710876A0095BB6F /* MemberRole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberRole.h; sourceTree = "<group>"; };
@@ -499,7 +503,7 @@
 		28B8E0E31710876A0095BB6F /* Venue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Venue.m; sourceTree = "<group>"; };
 		28B8E0F01710876A0095BB6F /* guestDetails_EDIT.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = guestDetails_EDIT.json; sourceTree = "<group>"; };
 		28B8E0F11710876A0095BB6F /* guestDetails_NEW.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = guestDetails_NEW.json; sourceTree = "<group>"; };
-		28B8E0F21710876A0095BB6F /* memberDetails_EDIT.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = memberDetails_EDIT.json; sourceTree = "<group>"; };
+		28B8E0F21710876A0095BB6F /* memberDetails_Default_EDIT.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = memberDetails_Default_EDIT.json; sourceTree = "<group>"; };
 		28B8E0F31710876A0095BB6F /* memberDetails_NEW.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = memberDetails_NEW.json; sourceTree = "<group>"; };
 		28B8E0F51710876A0095BB6F /* GuestNavIconImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestNavIconImageView.h; sourceTree = "<group>"; };
 		28B8E0F61710876A0095BB6F /* GuestNavIconImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GuestNavIconImageView.m; sourceTree = "<group>"; };
@@ -593,6 +597,12 @@
 		28E748001710831200F97883 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		28E748021710831200F97883 /* Every1HereTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Every1HereTests.h; sourceTree = "<group>"; };
 		28E748031710831200F97883 /* Every1HereTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Every1HereTests.m; sourceTree = "<group>"; };
+		28ECB92318B541D200286B4A /* ParseDotComPaths.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ParseDotComPaths.plist; path = "Resources/Parse ORM/ParseDotComPaths.plist"; sourceTree = "<group>"; };
+		28F2C30118B3A930009087B3 /* EventRoleBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventRoleBase.h; sourceTree = "<group>"; };
+		28F2C30218B3A930009087B3 /* EventRoleBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventRoleBase.m; sourceTree = "<group>"; };
+		28F2C30418B3B134009087B3 /* EventRoleSpeechContest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventRoleSpeechContest.h; sourceTree = "<group>"; };
+		28F2C30518B3B134009087B3 /* EventRoleSpeechContest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventRoleSpeechContest.m; sourceTree = "<group>"; };
+		28F2C30718B3C5A1009087B3 /* memberDetails_Speech_Contest_EDIT.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = memberDetails_Speech_Contest_EDIT.json; sourceTree = "<group>"; };
 		28FCE671171089A6009A233B /* fc-webicon-facebook-s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fc-webicon-facebook-s.png"; sourceTree = "<group>"; };
 		28FCE672171089A6009A233B /* profile-image-placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "profile-image-placeholder.png"; sourceTree = "<group>"; };
 		430016B9A7F64C0897DDD6CD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -692,6 +702,7 @@
 				288DF397171306AD008598DA /* Classes.plist */,
 				287772BE174BC34E00A0DF19 /* GuestAttendance.plist */,
 				2872990A18A1BDFD00A9C69B /* Speech.plist */,
+				28ECB92318B541D200286B4A /* ParseDotComPaths.plist */,
 			);
 			name = "Parse ORM";
 			sourceTree = "<group>";
@@ -1098,14 +1109,18 @@
 			children = (
 				28B8E0CF1710876A0095BB6F /* EffectiveDateRange.h */,
 				28B8E0D01710876A0095BB6F /* EffectiveDateRange.m */,
-				28B8E0D11710876A0095BB6F /* EventRole.h */,
-				28B8E0D21710876A0095BB6F /* EventRole.m */,
 				28B8E0D31710876A0095BB6F /* GuestRole.h */,
 				28B8E0D41710876A0095BB6F /* GuestRole.m */,
 				28B8E0D51710876A0095BB6F /* MemberRole.h */,
 				28B8E0D61710876A0095BB6F /* MemberRole.m */,
 				28B8E0D71710876A0095BB6F /* UserRole.h */,
 				28B8E0D81710876A0095BB6F /* UserRole.m */,
+				28B8E0D11710876A0095BB6F /* EventRoleDefault.h */,
+				28B8E0D21710876A0095BB6F /* EventRoleDefault.m */,
+				28F2C30118B3A930009087B3 /* EventRoleBase.h */,
+				28F2C30218B3A930009087B3 /* EventRoleBase.m */,
+				28F2C30418B3B134009087B3 /* EventRoleSpeechContest.h */,
+				28F2C30518B3B134009087B3 /* EventRoleSpeechContest.m */,
 			);
 			path = Roles;
 			sourceTree = "<group>";
@@ -1159,9 +1174,10 @@
 		28B8E0EF1710876A0095BB6F /* JSON */ = {
 			isa = PBXGroup;
 			children = (
+				28F2C30718B3C5A1009087B3 /* memberDetails_Speech_Contest_EDIT.json */,
 				28B8E0F01710876A0095BB6F /* guestDetails_EDIT.json */,
 				28B8E0F11710876A0095BB6F /* guestDetails_NEW.json */,
-				28B8E0F21710876A0095BB6F /* memberDetails_EDIT.json */,
+				28B8E0F21710876A0095BB6F /* memberDetails_Default_EDIT.json */,
 				28B8E0F31710876A0095BB6F /* memberDetails_NEW.json */,
 				2885D33C171C2AE10025DBE3 /* E1H_QuickDialog_FileNames.plist */,
 				28D313BF1895AEEF0020604B /* speakerInfo.json */,
@@ -1552,13 +1568,14 @@
 				28B8F02F1710876C0095BB6F /* MainStoryboard.storyboard in Resources */,
 				28B8F04D1710876C0095BB6F /* guestDetails_EDIT.json in Resources */,
 				28B8F04E1710876C0095BB6F /* guestDetails_NEW.json in Resources */,
-				28B8F04F1710876C0095BB6F /* memberDetails_EDIT.json in Resources */,
+				28B8F04F1710876C0095BB6F /* memberDetails_Default_EDIT.json in Resources */,
 				28B8F0501710876C0095BB6F /* memberDetails_NEW.json in Resources */,
 				28B8F0561710876C0095BB6F /* EventCell.xib in Resources */,
 				28B8F0581710876C0095BB6F /* GuestSelectedCell.xib in Resources */,
 				28B8F05A1710876C0095BB6F /* GuestSummaryCell.xib in Resources */,
 				28B8F05C1710876C0095BB6F /* MemberSummaryCell.xib in Resources */,
 				28B8F086171088F00095BB6F /* 140-gradhat.png in Resources */,
+				28F2C30818B3C5A1009087B3 /* memberDetails_Speech_Contest_EDIT.json in Resources */,
 				28B8F087171088F00095BB6F /* 163-glasses-1.png in Resources */,
 				28B8F088171088F00095BB6F /* 17-bar-chart.png in Resources */,
 				28B8F089171088F00095BB6F /* facebook-32x32.png in Resources */,
@@ -1577,6 +1594,7 @@
 				28B8F096171088F00095BB6F /* icon-globe-16x16.png in Resources */,
 				28B8F097171088F00095BB6F /* icon-globe-20x20.png in Resources */,
 				28B8F098171088F00095BB6F /* icon-globe-28x28.png in Resources */,
+				28ECB92418B541D200286B4A /* ParseDotComPaths.plist in Resources */,
 				28B8F099171088F00095BB6F /* icon-mic-16x16.png in Resources */,
 				28B8F09A171088F00095BB6F /* icon-mic-20x20.png in Resources */,
 				28B8F09B171088F00095BB6F /* icon-mic-28x28.png in Resources */,
@@ -1763,8 +1781,9 @@
 				28B8F03B1710876C0095BB6F /* Person.m in Sources */,
 				28B8F03C1710876C0095BB6F /* RESTApiOperation.m in Sources */,
 				28B8F03D1710876C0095BB6F /* EffectiveDateRange.m in Sources */,
+				28F2C30618B3B134009087B3 /* EventRoleSpeechContest.m in Sources */,
 				28A83ADA1876238C00A0A8C5 /* CRNInitialsImageView.m in Sources */,
-				28B8F03E1710876C0095BB6F /* EventRole.m in Sources */,
+				28B8F03E1710876C0095BB6F /* EventRoleDefault.m in Sources */,
 				28B8F03F1710876C0095BB6F /* GuestRole.m in Sources */,
 				28B8F0401710876C0095BB6F /* MemberRole.m in Sources */,
 				28B8F0411710876C0095BB6F /* UserRole.m in Sources */,
@@ -1798,6 +1817,7 @@
 				288DF3AE171488DB008598DA /* Receptionist.m in Sources */,
 				28051A601717101700195BA6 /* E1HRESTApiOperationFetch.m in Sources */,
 				289EF04D1719AD43004CCD78 /* E1HRootViewController.m in Sources */,
+				28F2C30318B3A930009087B3 /* EventRoleBase.m in Sources */,
 				289EF0501719AF00004CCD78 /* EventSegmentedControlViewController.m in Sources */,
 				28A586191721D33900970476 /* NSIndexSet+Operations.m in Sources */,
 				2857E7381728583600CB584F /* CommonUI.m in Sources */,

@@ -10,7 +10,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "GuestSummaryCell.h"
 #import "Event.h"
-#import "EventRole.h"
+#import "EventRoleDefault.h"
 #import "User.h"
 #import "AvatarStore.h"
 #import "GuestAttendeeListSection.h"

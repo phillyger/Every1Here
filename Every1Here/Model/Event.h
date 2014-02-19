@@ -93,6 +93,11 @@
 @property NSNumber *headcount;
 
 /**
+ * A headcount for this event.
+ */
+@property NSDictionary *type;
+
+/**
  * sorted Social Network Types - readonly to outside world.
  */
 @property (nonatomic, strong, readonly)NSArray *sortedSocialNetworkTypes;

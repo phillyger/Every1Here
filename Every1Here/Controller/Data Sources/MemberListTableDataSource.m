@@ -10,7 +10,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "MemberSummaryCell.h"
 #import "Event.h"
-#import "EventRole.h"
+#import "EventRoleDefault.h"
 #import "User.h"
 #import "CRNInitialsImageView.h"
 #import "PICircularProgressView.h"

@@ -192,6 +192,7 @@
          successBatchHandler:^(NSArray *operations) {
              [self receivedUserOps:operations
                        withEventId:nil
+                    withEventCode:nil
                      forActionType:actionType
                        forUserType:userType
                       forNamedClass:namedClass
@@ -218,6 +219,7 @@
              successBatchHandler:^(NSArray *operations) {
                  [self receivedUserOps:operations
                            withEventId:nil
+                         withEventCode:nil
                          forActionType:actionType
                            forUserType:userType
                          forNamedClass:namedClass
@@ -244,6 +246,7 @@
          successBatchHandler:^(NSArray *operations) {
              [self receivedUserOps:operations
                        withEventId:nil
+                    withEventCode:nil
                      forActionType:actionType
                        forUserType:userType
                       forNamedClass:namedClass
@@ -270,6 +273,7 @@
          successBatchHandler:^(NSArray *operations) {
              [self receivedUserOps:operations
                        withEventId:nil
+                     withEventCode:nil
                      forActionType:actionType
                        forUserType:userType
                      forNamedClass:namedClass
@@ -296,6 +300,7 @@
          successBatchHandler:^(NSArray *operations) {
              [self receivedUserOps:operations
                        withEventId:nil
+                     withEventCode:nil
                      forActionType:actionType
                        forUserType:userType
                      forNamedClass:namedClass
@@ -385,6 +390,7 @@
                       successBatchHandler:^(NSArray *operations) {
                           [self receivedUserOps:operations
                                             withEventId:[event objectId]
+                                          withEventCode:[event valueForKeyPath:@"type.code"]
                                           forActionType:actionType
                                         forUserType:userType
                            forNamedClass:namedClass
@@ -395,6 +401,7 @@
 
 - (void)receivedUserOps:(NSArray *)operations
                  withEventId:(NSString *)eventId
+                withEventCode:(NSNumber *)eventCode
                forActionType:(ActionTypes) actionType
                  forUserType:(UserTypes)userType
                 forNamedClass:(NSString *)namedClass
@@ -407,7 +414,7 @@
             [parseDotComDelegate didUpdateUserForUserType:userType];
             break;
         case Fetch:
-            [self receivedUserFetchOps:operations withEventId:eventId forActionType:actionType forUserType:userType forNamedClass:namedClass];
+            [self receivedUserFetchOps:operations withEventId:eventId withEventCode:eventCode forActionType:actionType forUserType:userType forNamedClass:namedClass];
             break;
         case Delete:
             [parseDotComDelegate didDeleteAttendance];
@@ -420,6 +427,7 @@
 
 - (void)receivedUserFetchOps:(NSArray *)operations
                  withEventId:(NSString *)eventId
+               withEventCode:(NSNumber *)eventCode
                forActionType:(ActionTypes) actionType
                 forUserType:(UserTypes)userType
                  forNamedClass:(NSString *)namedClass
@@ -442,15 +450,21 @@
                                                     options:NSJSONReadingMutableLeaves
                                                     error:nil];
         
+        
+        NSLog(@"ro.request : %@", [[[ro request] URL] absoluteString]);
+        
+        NSString *routeNamed = [CommonUtilities fetchNamedClassClassFromUriEndPoint:[[[ro request] URL] absoluteString]];
+        
         NSArray *results = (NSArray*)[jsonObject objectForKey:@"results"];
         if (results.count > 0) {
-            if ([results[0] objectForKey:@"hasIntro"]) {
+        
+            if ([routeNamed isEqualToString:@"Speech"]) {
                 // contains speech key
                  speechDict = jsonObject;
-            } else if([results[0] objectForKey:@"firstName"]) {
+            } else if([routeNamed isEqualToString:@"Member"] || [routeNamed isEqualToString:@"Guest"]) {
                 // contains member key
                 userDict = jsonObject;
-            } else if([results[0] objectForKey:@"guestCount"]) {
+            } else if([routeNamed isEqualToString:@"Attendance"] || [routeNamed isEqualToString:@"GuestAttendance"]) {
                 // contains attendance key
                attendanceDict = jsonObject;
             }
@@ -468,18 +482,18 @@
 //        }
         
         
-        NSLog(@"jsonObject is %@",jsonObject);
+//        NSLog(@"jsonObject is %@",jsonObject);
     }];
     
     
     id userBuilder = ([namedClass isEqualToString:@"Member"] ? memberBuilder : guestBuilder);
     
     if (userDict && attendanceDict && speechDict) {
-        userList = [userBuilder usersFromJSON:userDict withAttendance:attendanceDict withSpeechDict:speechDict withEventId:eventId socialNetworkType:slType error:&error];
+        userList = [userBuilder usersFromJSON:userDict withAttendance:attendanceDict withSpeechDict:speechDict withEventId:eventId withEventCode:eventCode socialNetworkType:slType error:&error];
     } else if (userDict && attendanceDict) {
-        userList = [userBuilder usersFromJSON:userDict withAttendance:attendanceDict withEventId:eventId socialNetworkType:slType error:&error];
+        userList = [userBuilder usersFromJSON:userDict withAttendance:attendanceDict withEventId:eventId withEventCode:eventCode socialNetworkType:slType error:&error];
     } else if (userDict && !attendanceDict){
-        userList = [userBuilder usersFromJSON:userDict withAttendance:nil withEventId:eventId socialNetworkType:slType error:&error];
+        userList = [userBuilder usersFromJSON:userDict withAttendance:nil withEventId:eventId withEventCode:eventCode socialNetworkType:slType error:&error];
     } else if (!userDict && !attendanceDict){
 //        userList = [userBuilder usersFromJSON:nil withAttendance:nil withEventId:eventId socialNetworkType:slType error:&error];
     }
@@ -493,6 +507,9 @@
         
     }
 }
+
+
+
 
 - (void)receivedUserFetchOps:(NSArray *)operations
                forActionType:(ActionTypes) actionType

@@ -28,6 +28,7 @@
 @synthesize group, venue;
 @synthesize yes_rsvp_count, maybe_rsvp_count, headcount;
 @synthesize sortedSocialNetworkTypes;
+@synthesize type;
 
 
 - (id)init

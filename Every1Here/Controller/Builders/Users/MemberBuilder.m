@@ -9,7 +9,7 @@
 #import "MemberBuilder.h"
 #import "User.h"
 #import "UserBuilder.h"
-#import "EventRole.h"
+#import "EventRoleDefault.h"
 #import "Speech.h"
 
 @implementation MemberBuilder
@@ -52,7 +52,7 @@
         user = [UserBuilder userFromDictionary:member forUserType:Member];
         
         [user addRole:@"MemberRole"];
-        [user addRole:@"EventRole"];
+        [user addRole:@"EventRoleDefault" forKey:@"EventRole"];
 
         [results addObject: user];
     }
@@ -67,6 +67,7 @@
 - (NSArray *)usersFromJSON:(NSDictionary *)memberDict
             withAttendance:(NSDictionary *)attendanceDict
                withEventId:(NSString *)eventId
+             withEventCode:(NSNumber *)eventCode
          socialNetworkType:(SocialNetworkType)slType
                      error:(NSError *__autoreleasing *)error
 {
@@ -111,18 +112,29 @@
         // Append the eventId to dictionary values
         memberWithEventId = [member mutableCopy];
         [memberWithEventId setObject:eventId forKey:@"eventId"];
-       
+        [memberWithEventId setObject:eventCode forKey:@"eventCode"];
         
         user = [UserBuilder userFromDictionary:memberWithEventId forUserType:Member];
         
         [user addRole:@"MemberRole"];
-        [user addRole:@"EventRole"];
+        
+        switch ([eventCode intValue]) {
+            case 1000:
+                [user addRole:@"EventRoleDefault" forKey:@"EventRole"];
+                break;
+            case 2000:
+                [user addRole:@"EventRoleSpeechContest" forKey:@"EventRole"];
+                break;
+            default:
+                break;
+        }
+        
         
         if (attendance) {
             
             [attendance enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 NSDictionary *attendanceRow = (NSDictionary *)obj;
-                EventRole *thisEventRole = [user getRole:@"EventRole"];
+                id thisEventRole = [user getRole:@"EventRole"];
                 NSString *attendanceUserId = (NSString *)[attendanceRow valueForKeyPath:@"userId.objectId"];
                 NSString *memberUserId = [user valueForKeyPath:@"userId"];
                 //NSLog(@"userId - attendanceRow : %@ for %@", attendanceUserId, [user displayName]);
@@ -157,6 +169,7 @@
             withAttendance:(NSDictionary *)attendanceDict
             withSpeechDict:(NSDictionary *)speechDict
                withEventId:(NSString *)eventId
+             withEventCode:(NSNumber *)eventCode
          socialNetworkType:(SocialNetworkType)slType
                      error:(NSError *__autoreleasing *)error
 {
@@ -205,18 +218,29 @@
         // Append the eventId to dictionary values
         memberWithEventId = [member mutableCopy];
         [memberWithEventId setObject:eventId forKey:@"eventId"];
+        [memberWithEventId setObject:eventCode forKey:@"eventCode"];
         
         
         user = [UserBuilder userFromDictionary:memberWithEventId forUserType:Member];
         
         [user addRole:@"MemberRole"];
-        [user addRole:@"EventRole"];
+        switch ([eventCode intValue]) {
+            case 1000:
+                [user addRole:@"EventRoleDefault" forKey:@"EventRole"];
+                break;
+            case 2000:
+                [user addRole:@"EventRoleSpeechContest" forKey:@"EventRole"];
+                break;
+            default:
+                break;
+        }
+        
         
         if (attendance) {
             
             [attendance enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 NSDictionary *attendanceRow = (NSDictionary *)obj;
-                EventRole *thisEventRole = [user getRole:@"EventRole"];
+                id thisEventRole = [user getRole:@"EventRole"];
                 NSString *attendanceUserId = (NSString *)[attendanceRow valueForKeyPath:@"userId.objectId"];
                 NSString *memberUserId = [user valueForKeyPath:@"userId"];
                 //NSLog(@"userId - attendanceRow : %@ for %@", attendanceUserId, [user displayName]);
@@ -244,7 +268,7 @@
             
             [speech enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 NSDictionary *speechRow = (NSDictionary *)obj;
-                EventRole *thisEventRole = [user getRole:@"EventRole"];
+                id thisEventRole = [user getRole:@"EventRole"];
                 NSString *speechUserId = (NSString *)[speechRow valueForKeyPath:@"userId.objectId"];
                 NSString *memberUserId = [user valueForKeyPath:@"userId"];
                 //NSLog(@"userId - attendanceRow : %@ for %@", attendanceUserId, [user displayName]);

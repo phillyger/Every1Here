@@ -33,6 +33,11 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
 @property (copy) NSString *eventId;
 
 /**
+ *   Parse eventCode associated with User Table
+ */
+@property NSNumber *eventCode;
+
+/**
  *   Parse ObjectId associated with User Table
  */
 @property (copy) NSString *userId;
@@ -122,6 +127,7 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                objectId:(NSString *)anObjectId
                  userId:(NSString *)aUserId
                 eventId:(NSString *)anEventId
+              eventCode:(NSNumber *)anEventCode
                  slType:(SocialNetworkType)aSlType
                slUserId:(NSString *)aSocialNetworkUserId
                compComm:(NSNumber *)compComm
@@ -136,6 +142,7 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                objectId:(NSString *)anObjectId
                  userId:(NSString *)aUserId
                 eventId:(NSString *)anEventId
+              eventCode:(NSNumber *)anEventCode
                  slType:(SocialNetworkType)aSlType
                slUserId:(NSString *)aSocialNetworkUserId
                compComm:(NSNumber *)compComm
@@ -149,7 +156,8 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
          avatarLocation:(NSString *)anAvatarLocation
                objectId:(NSString *)anObjectId
                  userId:(NSString *)aUserId
-                eventId:(NSString *)anEventId;
+                eventId:(NSString *)anEventId
+              eventCode:(NSNumber *)anEventCode;
 
 - (id)initWithFirstName:(NSString *)aFirstName
                lastName:(NSString *)aLastName;
@@ -160,6 +168,7 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                  objectId:(NSString *)anObjectId
                    userId:(NSString *)aUserId
                   eventId:(NSString *)anEventId
+                eventCode:(NSNumber *)anEventCode
                    slType:(SocialNetworkType)aSlType
                  slUserId:(NSString *)aSocialNetworkUserId;
 
@@ -171,6 +180,7 @@ typedef NS_ENUM(NSUInteger, UserTypes) {
                  objectId:(NSString *)anObjectId
                    userId:(NSString *)aUserId
                   eventId:(NSString *)anEventId
+                eventCode:(NSNumber *)anEventCode
                    slType:(SocialNetworkType)aSlType
                  slUserId:(NSString *)aSocialNetworkUserId
                  compComm:(NSNumber *)compComm

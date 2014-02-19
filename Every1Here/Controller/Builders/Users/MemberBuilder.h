@@ -34,6 +34,7 @@
 - (NSArray *)usersFromJSON: (NSDictionary *)objectNotation
             withAttendance:(NSDictionary *)attendanceDict
                withEventId:(NSString *)eventId
+             withEventCode:(NSNumber *)eventCode
          socialNetworkType:(SocialNetworkType)slType
                      error: (NSError **)error;
 
@@ -41,6 +42,7 @@
             withAttendance:(NSDictionary *)attendanceDict
             withSpeechDict:(NSDictionary *)speechDict
                withEventId:(NSString *)eventId
+             withEventCode:(NSNumber *)eventCode
          socialNetworkType:(SocialNetworkType)slType
                      error: (NSError **)error;
 

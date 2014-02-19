@@ -24,7 +24,12 @@
 }
 
 - (void)addRole:(NSString *)aSpec {
-    return [super addRole:aSpec];
+    return [self addRole:aSpec forKey:aSpec];
+}
+
+- (void)addRole:(NSString *)aSpec forKey:(NSString *)aKey
+{
+    return [super addRole:aSpec forKey:aKey];
 }
 
 - (GuestRole *)getRole:(NSString *)aSpec {

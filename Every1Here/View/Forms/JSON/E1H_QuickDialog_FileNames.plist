@@ -8,8 +8,10 @@
 	<string>guestDetails_EDIT</string>
 	<key>member_details_new</key>
 	<string>memberDetails_NEW</string>
-	<key>member_details_edit</key>
-	<string>memberDetails_EDIT</string>
+	<key>member_details_default_edit</key>
+	<string>memberDetails_Default_EDIT</string>
+	<key>member_details_speech_contest_edit</key>
+	<string>memberDetails_Speech_Contest_EDIT</string>
 	<key>speaker_info</key>
 	<string>speakerInfo</string>
 </dict>

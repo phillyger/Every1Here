@@ -9,12 +9,12 @@
 #import "GuestDetailsDialogController.h"
 #import "QuickDialog.h"
 #import "User.h"
-#import "EventRole.h"
+#import "EventRoleDefault.h"
 
 
 @interface GuestDetailsDialogController ()
 {
-    EventRole *thisEventRole;
+    EventRoleDefault *thisEventRole;
     
     NSNumber *postAttendance;
     NSString *postPrimaryEmailAddr;
@@ -109,7 +109,7 @@
             
         } else {
             [self.userToEdit addRole:@"GuestRole"];
-            [self.userToEdit addRole:@"EventRole"];
+            [self.userToEdit addRole:@"EventRoleDefault" forKey:@"EventRole"];
             [[self userToEdit] setValue:postPrimaryEmailAddr forKeyPath:@"primaryEmailAddr"];
             [self computeDisplayName];
         }

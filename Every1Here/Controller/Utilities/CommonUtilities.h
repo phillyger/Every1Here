@@ -30,4 +30,7 @@
 + (NSDate *)dateAtBeginningOfDayForDate:(NSDate *)inputDate;
 + (NSInteger)numberOfDaysBetweenBaseDate:(NSDate *)baseDate offsetDate:(NSDate *)offsetDate;
 + (NSString*)convertDaysCountToLabelWithBaseDate:(NSDate *)baseDate offsetDate:(NSDate *)offsetDate;
+
++ (NSString *)fetchNamedClassClassFromUriEndPoint:(NSString *)uriEndPoint;
+
 @end

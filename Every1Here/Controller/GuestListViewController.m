@@ -24,7 +24,7 @@
 #import "QuickDialog.h"
 #import "AttendanceReceptionist.h"
 #import "DisplayNameReceptionist.h"
-#import "EventRole.h"
+#import "EventRoleDefault.h"
 #import "ParseDotComManager.h"
 #import "MBProgressHUD.h"
 #import "CommonUtilities.h"
@@ -682,27 +682,50 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
 /*---------------------------------------------------------------------------
  * Delegation callback for inserting attendance record.
  *--------------------------------------------------------------------------*/
-- (void)didInsertAttendanceWithOutput:(NSArray *)objectNotationList {
+//- (void)didInsertAttendanceWithOutput:(NSArray *)objectNotationList {
+//    NSLog(@"Success!! We inserted a new Attendance record into Parse");
+//    
+//    // Expecting a single value returned after new Attendance Record Insert.
+//    // objectNotationList is an array containing a single object.
+//    // Update Member object with Attendance Id value.
+//    
+//    [objectNotationList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//        AFHTTPRequestOperation *ro = obj;
+//        NSData *jsonData = [ro responseData];
+//        NSDictionary *jsonObject=[NSJSONSerialization
+//                                  JSONObjectWithData:jsonData
+//                                  options:NSJSONReadingMutableLeaves
+//                                  error:nil];
+//        
+//        [selectedGuest setAttendanceId:[jsonObject valueForKey:@"objectId"]];
+//    }];
+//    
+//    [self.tableView reloadData];
+//    
+//}
+
+- (void)didInsertAttendanceWithOutput:(AFHTTPRequestOperation *)operation {
     NSLog(@"Success!! We inserted a new Attendance record into Parse");
     
     // Expecting a single value returned after new Attendance Record Insert.
     // objectNotationList is an array containing a single object.
     // Update Member object with Attendance Id value.
     
-    [objectNotationList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        AFHTTPRequestOperation *ro = obj;
-        NSData *jsonData = [ro responseData];
-        NSDictionary *jsonObject=[NSJSONSerialization
-                                  JSONObjectWithData:jsonData
-                                  options:NSJSONReadingMutableLeaves
-                                  error:nil];
-        
-        [selectedGuest setAttendanceId:[jsonObject valueForKey:@"objectId"]];
-    }];
+    
+    AFHTTPRequestOperation *ro = operation;
+    NSData *jsonData = [ro responseData];
+    NSDictionary *jsonObject=[NSJSONSerialization
+                              JSONObjectWithData:jsonData
+                              options:NSJSONReadingMutableLeaves
+                              error:nil];
+    
+    [selectedGuest setAttendanceId:[jsonObject valueForKey:@"objectId"]];
+    
     
     [self.tableView reloadData];
     
 }
+
 
 /*---------------------------------------------------------------------------
  * Delegation callback for updating attendance record.

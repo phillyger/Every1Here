@@ -19,7 +19,7 @@
 #import "CommonUtilities.h"
 #import "AFHTTPRequestOperation.h"
 #import "E1HObjectConfiguration.h"
-#import "EventRole.h"
+#import "EventRoleBase.h"
 
 #import <objc/runtime.h>
 
@@ -244,7 +244,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     // QuickDialog :: Reads the JSON file to structure the
     // member form. The form name is loads from plist.
     //-------------------------------------------------------
-//    QRootElement *root =[[QRootElement alloc] initWithJSONFile:[pListInfoDictForE1HQuickDialog valueForKey:@"member_details_edit"]];
+//    QRootElement *root =[[QRootElement alloc] initWithJSONFile:[pListInfoDictForE1HQuickDialog valueForKey:@"member_details_default_edit"]];
 //    [root bindToObject:(User *)selectedMember];
     
     
@@ -289,7 +289,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 
                                                            }
                                                        
-                                                       if (newEventRole & TM_Speaker) {
+                                                       if (newEventRole & (TM_Speaker | TM_Contest_Speaker)) {
                                                            if (doesSpeechInfoRecordExist) {
 //                                                               [parseDotComMgr updateSpeechForUser:selectedMember];
                                                            } else {

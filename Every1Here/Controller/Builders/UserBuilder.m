@@ -42,6 +42,7 @@
 
     NSString *primaryEmail = [userValues valueForKeyPath:@"primaryEmail"];
     NSString *eventId = [userValues valueForKeyPath:@"eventId"];
+    NSNumber *eventCode = [userValues valueForKeyPath:@"eventCode"];
     NSString *avatarLocation = [userValues valueForKeyPath:@"avatarURL"];
     
     NSNumber *compComm = [userValues valueForKey:@"compComm"];
@@ -83,6 +84,7 @@
                                             objectId:objectId
                                               userId:userId
                                             eventId:eventId
+                                          eventCode:eventCode
                                               slType:NONE
                                             slUserId:nil
                                      compComm:compComm
@@ -118,6 +120,7 @@
                                       objectId:objectId
                                         userId:userId
                                        eventId:eventId
+                                     eventCode:eventCode
                                         slType:slType
                                       slUserId:slUserId
                                       compComm:compComm
@@ -170,8 +173,9 @@
     NSString *displayName = [guestValues valueForKeyPath: @"name"];
     NSString *avatarURL = [guestValues valueForKeyPath:@"profile_background_image_url"];
     NSString *eventId = [guestValues valueForKeyPath:@"eventId"];
+    NSNumber *eventCode = [guestValues valueForKeyPath:@"eventCode"];
     NSString *socialNetworkUserId = [NSString stringWithFormat:@"%lu", [[guestValues valueForKeyPath:@"id"] unsignedLongValue]];
-    User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL objectId:nil userId:nil eventId:eventId slType:Twitter slUserId:socialNetworkUserId];
+    User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL objectId:nil userId:nil eventId:eventId eventCode:eventCode slType:Twitter slUserId:socialNetworkUserId];
     return user;
 }
 
@@ -180,8 +184,9 @@
     NSString *displayName = [guestValues valueForKeyPath: @"name"];
     NSString *avatarURL = [guestValues valueForKeyPath:@"photo.thumb_link"];
     NSString *eventId = [guestValues valueForKeyPath:@"eventId"];
+    NSNumber *eventCode = [guestValues valueForKeyPath:@"eventCode"];
    NSString *socialNetworkUserId = [NSString stringWithFormat:@"%lu", [[guestValues valueForKeyPath:@"id"] unsignedLongValue]];
-    User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL objectId:nil userId:nil eventId:eventId slType:Meetup slUserId:socialNetworkUserId];
+    User *user = [[User alloc] initWithDisplayName:displayName avatarLocation:avatarURL objectId:nil userId:nil eventId:eventId eventCode:eventCode slType:Meetup slUserId:socialNetworkUserId];
     return user;
 }
 

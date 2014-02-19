@@ -119,6 +119,7 @@
         thisEvent.yes_rsvp_count = [NSNumber numberWithInteger:[parsedEvent[@"yes_rsvp_count"] integerValue]];
         thisEvent.maybe_rsvp_count = [NSNumber numberWithInteger:[parsedEvent[@"maybe_rsvp_count"] integerValue]];
         thisEvent.headcount = [NSNumber numberWithInteger:[parsedEvent[@"headcount"] integerValue]];
+        thisEvent.type = parsedEvent[@"type"];
         
         // Meetup.com set duration field to NULL once date has transpired. Need to catch this issue.
         if (parsedEvent[@"duration"]!=[NSNull null]) thisEvent.duration = [NSNumber numberWithInteger:[parsedEvent[@"duration"] integerValue]];

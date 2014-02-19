@@ -20,6 +20,7 @@
 @required
 - (id)getRole:(NSString *)aSpec;
 - (void)addRole:(NSString *)aSpec;
+- (void)addRole:(NSString *)aSpec forKey:(NSString*)aKey;
 - (BOOL)hasRole:(NSString *)aSpec;
 - (void)removeRole:(NSString *)aSpec;
 

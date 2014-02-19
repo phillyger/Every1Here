@@ -9,12 +9,13 @@
 #import "MemberDetailsDialogController.h"
 #import "QuickDialog.h"
 #import "User.h"
-#import "EventRole.h"
+#import "EventRoleDefault.h"
 #import "SpeakerInfoViewController.h"
 #import "MZFormSheetController.h"
 #import "E1HObjectConfiguration.h"
 #import "ParseDotComManager.h"
 #import "CommonUtilities.h"
+#import "Speech.h"
 
 static NSString* kSpeechInfoEvaluatorKeyName = @"speechEvaluator";
 static NSString* kSpeechInfoTMCCIdKeyName = @"speechTMCCId";
@@ -37,7 +38,8 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     NSDictionary *meetingRoleDict;
     NSDictionary *meetingRoleIconDict;
     NSDictionary *meetingRoleCellColorHueDict;
-    EventRole *thisEventRole;
+    
+    id thisEventRole;
     
     NSNumber *postEventRoles;
     NSNumber *postAttendance;
@@ -58,7 +60,7 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
 @property (strong) E1HObjectConfiguration *objectConfiguration;
 @property (strong) ParseDotComManager *parseDotComMgr;
 
-- (void)createSampleFormRoot;
+//- (void)createSampleFormRoot;
 @end
 
 @implementation MemberDetailsDialogController
@@ -93,6 +95,8 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
 //     [self.userToEdit setValue:@"Test Title" forKeyPath:@"roles.EventRole.speech.title"];
 
     thisEventRole = [[self userToEdit] getRole:@"EventRole"];
+    
+    
     TMEventRoles roles = [thisEventRole eventRoles];
     
     if (![self isNewUser]) {
@@ -130,10 +134,14 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     NSString *pathToPList=[[NSBundle mainBundle] pathForResource:@"E1H_QuickDialog_FileNames" ofType:@"plist"];
     NSDictionary *pListInfoDictForE1HQuickDialog = [[NSDictionary alloc] initWithContentsOfFile:pathToPList];
     
+    NSNumber *eventCode = [self.userToEdit eventCode];
+    
     if (self.newUser) {
         self.root =[[QRootElement alloc] initWithJSONFile:[pListInfoDictForE1HQuickDialog valueForKey:@"member_details_new"]];
-    } else {
-        self.root =[[QRootElement alloc] initWithJSONFile:[pListInfoDictForE1HQuickDialog valueForKey:@"member_details_edit"]];
+    } else if ([eventCode isEqualToNumber:@1000]){
+        self.root =[[QRootElement alloc] initWithJSONFile:[pListInfoDictForE1HQuickDialog valueForKey:@"member_details_default_edit"]];
+    } else if ([eventCode isEqualToNumber:@2000]){
+        self.root =[[QRootElement alloc] initWithJSONFile:[pListInfoDictForE1HQuickDialog valueForKey:@"member_details_speech_contest_edit"]];
     }
     
     self.quickDialogTableView = [[QuickDialogTableView alloc] initWithController:self];
@@ -151,7 +159,8 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     
     [self fetchMemberListTableContentWithCompletionBlock:^(NSArray *userList, NSArray *tmCCList, BOOL success) {
         
-        
+        if (!success)
+            return;
         
         NSMutableArray *userNameList = [[NSMutableArray alloc] initWithObjects:@"-Select One-", nil];
         NSMutableArray *userIdList = [[NSMutableArray alloc] initWithObjects:@"", nil];
@@ -171,10 +180,28 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
             
         }];
 
-        NSInteger nextSpeechNumber = [[self.userToEdit valueForKeyPath:@"compComm"] integerValue];
-        if (nextSpeechNumber >= 10) {
-            nextSpeechNumber = 9;
+        /** Calculate the current speech to display **/
+        __block NSInteger nextSpeechNumber;
+        EventRoleBase *eventRole = [self.userToEdit getRole:@"EventRole"];
+        Speech *speech = [eventRole speech];
+        if (speech != nil) {
+            NSString *tmCCId = [speech tmCCId];
+            if (tmCCId!=nil && ![tmCCId isEqualToString:@""]) {
+                [tmCCList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    NSDictionary *tmCCDict = (NSDictionary*)obj;
+                    if ([tmCCId isEqualToString:[tmCCDict valueForKey:@"objectId"]]) {
+                        nextSpeechNumber = ([[tmCCDict valueForKey:@"projectNum"] integerValue] - 1);
+                    }
+                }];
+            } else {
+                nextSpeechNumber = [[self.userToEdit valueForKeyPath:@"compComm"] integerValue];
+                if (nextSpeechNumber >= 10) {
+                    nextSpeechNumber = 9;
+                }
+            }
         }
+
+
         
         
         NSArray *tmCCListSpeechNumber = [tmCCList valueForKey:@"projectNum"];
@@ -324,7 +351,7 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
 //            [self computeDisplayName];
         } else {
             [self.userToEdit addRole:@"MemberRole"];
-            [self.userToEdit addRole:@"EventRole"];
+            [self.userToEdit addRole:@"EventRoleDefault" forKey:@"EventRole"];
             [self computeDisplayName];
         }
    
@@ -383,7 +410,7 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     
     
     if ([element isKindOfClass:[QBooleanElement class]] && [[element key] hasPrefix:@"is"]){
-        NSLog(@"key: %@", [element key]);
+//        NSLog(@"key: %@", [element key]);
         //           cell.backgroundColor = indexPath.row % 2 ? [UIColor colorWithRed:0.9582 green:0.9104 blue:0.7991 alpha:1.0000] : [UIColor whiteColor];
         cell.backgroundColor =  [UIColor colorWithHue:[[meetingRoleCellColorHueDict valueForKey:[element key]] floatValue]
                                            saturation:0.7

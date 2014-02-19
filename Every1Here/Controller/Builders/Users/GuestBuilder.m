@@ -9,13 +9,14 @@
 #import "GuestBuilder.h"
 #import "User.h"
 #import "UserBuilder.h"
-#import "EventRole.h"
+#import "EventRoleDefault.h"
 
 @implementation GuestBuilder
 
 - (NSArray *)usersFromJSON:(NSDictionary *)objectNotation
             withAttendance:(NSDictionary *)attendanceDict
                withEventId:(NSString *)eventId
+             withEventCode:(NSNumber *)eventCode
          socialNetworkType:(SocialNetworkType)slType
                      error:(NSError *__autoreleasing *)error
 {
@@ -70,7 +71,7 @@
         
         user = [UserBuilder userFromDictionary:guest socialNetworkType:slType forUserType:Guest];
         [user addRole:@"GuestRole"];
-        [user addRole:@"EventRole"];
+        [user addRole:@"EventRoleDefault" forKey:@"EventRole"];
         
 //        if (slType == NONE) {
             // Append the eventId to dictionary values
@@ -82,7 +83,7 @@
                 
                 [attendance enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     NSDictionary *attendanceRow = (NSDictionary *)obj;
-                    EventRole *thisEventRole = [user getRole:@"EventRole"];
+                    EventRoleDefault *thisEventRole = [user getRole:@"EventRole"];
                     NSString *attendanceUserId = (NSString *)[attendanceRow valueForKeyPath:@"userId.objectId"];
                     //-------------------------------------------------------
                     // Guests will not implement the _User class.  Hence their

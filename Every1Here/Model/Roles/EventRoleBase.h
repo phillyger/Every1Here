@@ -1,19 +1,17 @@
 //
-//  EventRole.h
+//  EventRoleBase.h
 //  Every1Here
 //
-//  Created by Ger O'Sullivan on 3/13/13.
-//  Copyright (c) 2013 Brilliant Age. All rights reserved.
+//  Created by Ger O'Sullivan on 2/18/14.
+//  Copyright (c) 2014 Brilliant Age. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "UserRole.h"
-//#import "NotPresentState.h"
-//#import "InAttendanceState.h"
 
 @class Speech;
 
 typedef NS_OPTIONS(NSUInteger, TMEventRoles) {
+    /* Regular Meeting */
     TM_None                  = 0,
     TM_Table_Topics_Speaker  = 1<<0,
     TM_Timer                 = 1<<1,
@@ -24,9 +22,31 @@ typedef NS_OPTIONS(NSUInteger, TMEventRoles) {
     TM_Table_Topics_Master   = 1<<6,
     TM_Speaker               = 1<<7,
     TM_Toastmaster           = 1<<8,
+    
+    /* Contest Specific */
+    TM_Contest_Evaluator        = 1<<9,
+    TM_Contest_Speaker          = 1<<10,
+    TM_Contest_Ballot_Counter   = 1<<11,
+    TM_Contest_Timer            = 1<<12,
+    TM_Contest_Judge            = 1<<13,
+    TM_Contest_Chief_Judge      = 1<<14,
+    TM_Contest_Chair            = 1<<15,
 };
 
-@interface EventRole : UserRole
+
+@protocol mappings <NSObject>
+
+@required
+- (NSDictionary *)mapFieldsToIconsSmall;
+- (NSDictionary *)mapFieldsToRoles;
+
+@optional
+- (NSDictionary *)mapFieldsToCellColorHue;
+- (NSDictionary *)mapFieldsToIconsMedium;
+
+@end
+
+@interface EventRoleBase : UserRole
 {
     NSArray *meetingRoleBindToFields;
     NSDictionary *meetingRoleDict;
@@ -35,15 +55,10 @@ typedef NS_OPTIONS(NSUInteger, TMEventRoles) {
     
 }
 
-@property (nonatomic) TMEventRoles eventRoles;
 @property (nonatomic, getter = isAttending) BOOL attendance;
 @property (nonatomic) Speech *speech;
 @property (nonatomic) NSInteger guestCount;
 
-
-- (NSDictionary *)mapFieldsToIconsMedium;
-- (NSDictionary *)mapFieldsToIconsSmall;
-- (NSDictionary *)mapFieldsToRoles;
-- (NSDictionary *)mapFieldsToCellColorHue;
+@property (nonatomic) TMEventRoles eventRoles;
 
 @end

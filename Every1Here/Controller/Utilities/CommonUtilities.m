@@ -14,6 +14,8 @@
 #import "MBProgressHUD.h"
 #import "E1HAppDelegate.h"
 
+
+
 @interface CommonUtilities ()
 
 @end
@@ -229,12 +231,50 @@
 
 + (NSString *)fetchUriEndPointFromPListForNamedClass:(NSString *)namedClass {
     
-    NSString *pathToPList=[[NSBundle mainBundle] pathForResource:@"Classes" ofType:@"plist"];
-    NSDictionary *classPathInfoDict = [[NSDictionary alloc] initWithContentsOfFile:pathToPList];
+    static NSDictionary *classPathInfoDict;
     
-    NSString *uriEndPointForNamedClass = [NSString stringWithFormat:@"%@", [classPathInfoDict objectForKey:namedClass]];
+    if (classPathInfoDict==nil) {
+        NSString *pathToPList=[[NSBundle mainBundle] pathForResource:@"Classes" ofType:@"plist"];
+        classPathInfoDict = [[NSDictionary alloc] initWithContentsOfFile:pathToPList];
+    }
+
+    NSString *uriEndPointForNamedClass = [classPathInfoDict valueForKey:namedClass];
     
     return uriEndPointForNamedClass;
+    
+}
+
+/*---------------------------------------------------------------------------
+ * Using the Named Class paramaters pList,
+ * fetches the uri endpoint from the associated field mapping.
+ *--------------------------------------------------------------------------*/
+
++ (NSString *)fetchNamedClassClassFromUriEndPoint:(NSString *)uriEndPoint {
+
+    static NSDictionary *parseDotComPathInfoDict;
+    
+    if (parseDotComPathInfoDict==nil) {
+        NSString *pathToPList=[[NSBundle mainBundle] pathForResource:@"ParseDotComPaths" ofType:@"plist"];
+        parseDotComPathInfoDict = [[NSDictionary alloc] initWithContentsOfFile:pathToPList];
+    }
+    
+    NSString *parseDotComUriPath;
+    NSString *apiParseUriBase = @"https://api.parse.com/";
+    
+    parseDotComUriPath = [uriEndPoint stringByReplacingOccurrencesOfString:apiParseUriBase withString:@""];
+    
+    NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:@"?"];
+
+    NSRange range = [parseDotComUriPath rangeOfCharacterFromSet:characterSet];
+    
+    if (range.location != NSNotFound) {
+        parseDotComUriPath = [parseDotComUriPath substringToIndex:range.location];
+    }
+    
+    NSString *namedClass = [parseDotComPathInfoDict valueForKey:parseDotComUriPath];
+    
+    return namedClass;
+    
 }
 
 

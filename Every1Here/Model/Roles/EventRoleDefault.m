@@ -6,35 +6,18 @@
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
 //
 
-#import "EventRole.h"
-//#import "InAttendanceState.h"
-//#import "NotPresentState.h"
-#import "AttendanceReceptionist.h"
-#import "Speech.h"
+#import "EventRoleDefault.h"
 
-@interface EventRole ()
-//{
-//    AttendanceState *notPresentState;
-//    AttendanceState *inAttendanceState;
-//}
+@interface EventRoleDefault ()
+
 @end
 
-@implementation EventRole
-@synthesize eventRoles;
-@synthesize attendance;
-@synthesize guestCount;
-@synthesize speech;
+@implementation EventRoleDefault
 
--(id)initWithUser:(User *)aUser effective:(EffectiveDateRange *)anEffectiveDateRange {
+
+-(instancetype)initWithUser:(User *)aUser effective:(EffectiveDateRange *)anEffectiveDateRange {
     if (self = [super initWithUser:aUser effective:anEffectiveDateRange]) {
-        
-        meetingRoleBindToFields = [[NSArray alloc] init];
-        meetingRoleDict = [[NSDictionary alloc] init];
-        meetingRoleIconDict = [[NSDictionary alloc] init];
-        meetingRoleCellColorHueDict = [[NSDictionary alloc] init];
-        
-        speech = [[Speech alloc] init];
-        
+  
         meetingRoleBindToFields = @[@"isSpeaker",
                                     @"isToastmaster",
                                     @"isGeneralEvaluator",
@@ -52,20 +35,25 @@
     return self;
 }
 
-- (id)initWithUser:(User *)aUser {
+- (instancetype)initWithUser:(User *)aUser {
     return  [self initWithUser:aUser effective:nil];
 }
 
-- (id)init {
+- (instancetype)init {
     return [self initWithUser:nil];
 }
 
 
 - (void)addRole:(NSString *)aSpec {
-    return [super addRole:aSpec];
+    return [super addRole:aSpec forKey:aSpec];
 }
 
-- (EventRole *)getRole:(NSString *)aSpec {
+- (void)addRole:(NSString *)aSpec  forKey:(NSString *)aKey
+{
+    return [super addRole:aSpec forKey:aKey];
+}
+
+- (instancetype)getRole:(NSString *)aSpec {
     return [super getRole:aSpec];
 }
 

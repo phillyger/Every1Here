@@ -36,7 +36,12 @@
 }
 
 - (void)addRole:(NSString *)aSpec {
-    return [user addRole:aSpec];
+    return [user addRole:aSpec forKey:aSpec];
+}
+
+- (void)addRole:(NSString *)aSpec forKey:(NSString *)aKey
+{
+    return [user addRole:aSpec forKey:aKey];
 }
 
 - (void)addRoleWithName:(NSString *)aSpec effectiveDateRangeStart:(NSDate *)effectiveStart effectiveDateRangeEnd:(NSDate *)effectiveEnd
@@ -44,7 +49,7 @@
     return [user addRole:aSpec];
 }
 
-- (id)getRole:(NSString *)aSpec {
+- (instancetype)getRole:(NSString *)aSpec {
     return [user getRole:aSpec];
 }
 

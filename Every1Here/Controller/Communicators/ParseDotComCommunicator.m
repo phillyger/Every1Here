@@ -13,7 +13,7 @@
 #import "AFURLConnectionOperation.h"
 #import "User.h"
 #import "Event.h"
-#import "EventRole.h"
+#import "EventRoleDefault.h"
 #import "E1HOperationFactory.h"
 #import "E1HRESTApiOperationFactory.h"
 #import "RESTApiOperation.h"
@@ -108,7 +108,7 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
                        @{@"orgId":orgId},
                        @"className":@"Group"}}} mutableCopy];
     
-    NSArray *includes = @[@"groupId", @"venueId"];
+    NSArray *includes = @[@"groupId", @"venueId", @"type"];
     
     NSLog(@"%@", queryParameters);
     
