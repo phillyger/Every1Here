@@ -7,10 +7,11 @@
 //
 
 #import "AFParseDotComAPIClient.h"
-#import "AFJSONRequestOperation.h"
+
 
 static NSString * const kAFParseDotComAPIBaseURLString = @"https://api.parse.com/";
-
+static NSString * const kAFParseDotComAPICharset = @"utf-8";
+static NSString * const kAFParseDotComJSONMimeType = @"application/json";
 /**
  *   Every1Here - PROD keys
  *
@@ -35,11 +36,12 @@ static NSString * const kAFParseDotComRESTApiKey = @"SyGe3rNcjaXOK8KAtNiXhKGwmPz
 
 
 
-+ (AFParseDotComAPIClient *)sharedClient {
++ (instancetype)sharedClient {
     static AFParseDotComAPIClient *_sharedClient = nil;
      static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _sharedClient = [[AFParseDotComAPIClient alloc] initWithBaseURL:[NSURL URLWithString:kAFParseDotComAPIBaseURLString]];
+//        [_sharedClient setSecurityPolicy:[AFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey]];
     });
     
     return _sharedClient;
@@ -50,18 +52,33 @@ static NSString * const kAFParseDotComRESTApiKey = @"SyGe3rNcjaXOK8KAtNiXhKGwmPz
     if (!self) {
         return nil;
     }
-
-
-    [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
-    [self setParameterEncoding:AFJSONParameterEncoding];
     
-    // Accept HTTP Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1
-	[self setDefaultHeader:@"Accept" value:@"application/json"];
-    [self setDefaultHeader:@"Accept-Charset" value:@"utf-8"];
-    [self setDefaultHeader:@"X-Parse-Application-Id" value:kAFParseDotComAppIDKey];
-    [self setDefaultHeader:@"X-Parse-REST-API-Key" value:kAFParseDotComRESTApiKey];
+//    [self setResponseSerializer:[AFJSONResponseSerializer serializer]];
+    [self setRequestSerializer:[AFJSONRequestSerializer serializer]];
+
     
+    [self.requestSerializer setValue:kAFParseDotComAppIDKey forHTTPHeaderField:@"X-Parse-Application-Id"];
+    [self.requestSerializer setValue:kAFParseDotComRESTApiKey forHTTPHeaderField:@"X-Parse-REST-API-Key"];
+    
+//    [self startReachabilityMonitoring];
+
     return self;
+}
+
+- (void)startReachabilityMonitoring
+{
+    AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager managerForDomain:kAFParseDotComAPIBaseURLString];
+    [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        NSLog(@"Reachability: %@", AFStringFromNetworkReachabilityStatus(status));
+    }];
+    
+    [manager startMonitoring];
+}
+
+- (NSString *)fetchFullEndPointUri:(NSString*)relativeEndPointUri
+{
+    NSString *clientBaseUrl = [[self baseURL] absoluteString];
+    return [clientBaseUrl stringByAppendingString:relativeEndPointUri];
 }
 
 

@@ -18,6 +18,7 @@
 #import "E1HRESTApiOperationFactory.h"
 #import "RESTApiOperation.h"
 #import "CommonUtilities.h"
+#import "AFHTTPRequestOperationManager.h"
 
 @interface ParseDotComCommunicator ()
 
@@ -36,38 +37,66 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     
     //[self cancelAndDiscardURLConnection];
     
-    [[AFParseDotComAPIClient sharedClient] enqueueBatchOfHTTPRequestOperationsWithRequests:fetchingURLRequestList progressBlock:^(NSUInteger numberOfCompletedOperations, NSUInteger totalNumberOfOperations) {
-        NSLog(@"%lu of %lu Completed", (unsigned long)numberOfCompletedOperations, (unsigned long)totalNumberOfOperations);
-    } completionBlock:^(NSArray *operations) {
-        NSLog(@"Completion: %@", operations);
-       [operations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-           AFHTTPRequestOperation *ro = obj;
-            NSLog(@"Operation: %@", [ro responseString]);
-       }];
-        successBatchHandler((NSArray *)operations);
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+
+
+    
+    NSOperationQueue *operationQueue = manager.operationQueue;
+    [manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                [operationQueue setSuspended:NO];
+                break;
+            case AFNetworkReachabilityStatusNotReachable:
+            default:
+                [operationQueue setSuspended:YES];
+                break;
+        }
     }];
     
     
+    NSArray *operations = [AFURLConnectionOperation batchOfRequestOperations:fetchingURLRequestList
+                                         progressBlock:^(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations) {
+                                             NSLog(@"%lu of %lu Completed", (unsigned long)numberOfFinishedOperations, (unsigned long)totalNumberOfOperations);
+                                         } completionBlock:^(NSArray *operations) {
+//                                             NSLog(@"Completion: %@", operations);
+//                                             [operations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//                                                 AFHTTPRequestOperation *ro = obj;
+//                                                 NSLog(@"Operation: %@", [ro responseString]);
+//                                             }];
+                                             successBatchHandler((NSArray *)operations);
+                                         }];
+
+    [[NSOperationQueue mainQueue] addOperations:operations waitUntilFinished:NO];
 }
+
 
 - (void)launchSingleRequestConnection:(RESTApiOperation *)op
                          errorHandler:(void (^)(NSError *))errorBlock
                   successSingleHandler:(void (^)(AFHTTPRequestOperation *))successBlock {
     
     //[self cancelAndDiscardURLConnection];
+    NSError *error=nil;
+
+
+    NSMutableURLRequest *request;
     
+    /** Fix a AFNetworking issue where a partial URI is not appended to baseUrl of shared client **/
+    NSString *fullEndPointUri = [[AFParseDotComAPIClient sharedClient] fetchFullEndPointUri:[op uriPath]];
     
-    NSMutableURLRequest *request = [[AFParseDotComAPIClient sharedClient] requestWithMethod:[op uriMethod] path:[op uriPath] parameters:[op data]];
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    request = [[[AFParseDotComAPIClient sharedClient] requestSerializer] requestWithMethod:[op uriMethod] URLString:fullEndPointUri parameters:[op data] error:&error];
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc]
+                                         initWithRequest:request];
+
     
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        // Print the response body in text
-        NSLog(@"Response: %@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
-        successBlock((AFHTTPRequestOperation *)operation);
-        
+        successBlock(operation);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
+    
     [operation start];
     
     
@@ -92,12 +121,12 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
                     forActionType:(ActionTypes)actionType
                     forNamedClass: (NSString*)namedClass
                       errorHandler:(ParseDotComErrorBlock)errorBlock
-               successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
+               successSingleHandler:(ParseDotComSingleOperationsBlock)successBlock {
 
     
     
     NSMutableDictionary *queryParameters = [[NSMutableDictionary alloc] init];
-    NSMutableArray *operations = [[NSMutableArray alloc] init];
+//    NSMutableArray *operations = [[NSMutableArray alloc] init];
     
     // Fetch operation to return list of Events
     // 'className' is a Parse defined key used in querying class content. Hence E1H variable is namedClass to avoid confusion
@@ -113,12 +142,11 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     NSLog(@"%@", queryParameters);
     
     id fetchMemberOp= [E1HOperationFactory create:actionType];
-    RESTApiOperation *op1 = [fetchMemberOp createOperationWithObj:nil forNamedClass:namedClass withQuery:queryParameters withIncludes:includes];
-    [operations addObject:op1];
+    RESTApiOperation *op = [fetchMemberOp createOperationWithObj:nil forNamedClass:namedClass withQuery:queryParameters withIncludes:includes];
     
+    [self launchSingleRequestConnection:op errorHandler:errorBlock successSingleHandler:successBlock];
     
-    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
-     ];
+
 }
 
 
@@ -132,11 +160,7 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     
     id insertOp= [E1HOperationFactory create:Insert];
     RESTApiOperation *op = [insertOp createOperationWithDict:parameters forNamedClass:namedClass];
-//    [operations addObject:op];
-//    
-//    [self execute:operations errorHandler:(ParseDotComErrorBlock)errorBlock successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock
-//     ];
-    
+
     
     [self launchSingleRequestConnection:op errorHandler:errorBlock successSingleHandler:successBlock];
     
@@ -563,15 +587,29 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
    errorHandler:(ParseDotComErrorBlock)errorBlock
 successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock {
     
-    NSMutableArray *mutableRequests = [NSMutableArray array];
-
+//    NSMutableArray *mutableRequests = [NSMutableArray array];
+    NSMutableArray *mutableOperations = [NSMutableArray array];
+    
+    
+    
     [operations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         RESTApiOperation *op = (RESTApiOperation *)obj;
-        [mutableRequests addObject:[[AFParseDotComAPIClient sharedClient] requestWithMethod:[op uriMethod] path:[op uriPath] parameters:[op data]]];
+        NSError *error = nil;
+        
+        /** Fix a AFNetworking issue where a partial URI is not appended to baseUrl of shared client **/
+        NSString *fullEndPointUri = [[AFParseDotComAPIClient sharedClient] fetchFullEndPointUri:[op uriPath]];
+        
+        NSMutableURLRequest *request= [[[AFParseDotComAPIClient sharedClient] requestSerializer] requestWithMethod:[op uriMethod] URLString:fullEndPointUri parameters:[op data] error:&error];
+        
+        
+        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+
+        [mutableOperations addObject:operation];
+
     }];
 
     
-    [self batchContentForRequests:mutableRequests
+    [self batchContentForRequests:mutableOperations
                      errorHandler:(ParseDotComErrorBlock)errorBlock
               successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock];
 }

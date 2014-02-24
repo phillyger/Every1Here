@@ -6,10 +6,12 @@
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
 //
 
-#import "AFHTTPClient.h"
+#import "AFHTTPSessionManager.h"
 
-@interface AFParseDotComAPIClient : AFHTTPClient
+@interface AFParseDotComAPIClient : AFHTTPSessionManager
 
-+ (AFParseDotComAPIClient *)sharedClient;
++ (instancetype)sharedClient;
+
+- (NSString *)fetchFullEndPointUri:(NSString*)relativeEndPointUri;
 
 @end

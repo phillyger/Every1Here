@@ -7,12 +7,12 @@
 //
 
 #import "AFMeetupDotComAPIClient.h"
-#import "AFJSONRequestOperation.h"
+
 
 //#define kAFMeetupDotComAPIBaseURLString @"https://api.meetup.com/"
 static NSString * const kAFMeetupDotComAPIBaseURLString = @"https://api.meetup.com/";
 static NSString * const kAFMeetupDotComGroupIdKey = @"3169852";
-
+static NSString * const kAFMeetupDotComAPICharset = @"utf-8";
 
 
 @implementation AFMeetupDotComAPIClient
@@ -34,13 +34,17 @@ static NSString * const kAFMeetupDotComGroupIdKey = @"3169852";
         return nil;
     }
     
-    [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
-    [self setParameterEncoding:AFJSONParameterEncoding];
+//    [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
+//    [self setParameterEncoding:AFJSONParameterEncoding];
     
     
     // Accept HTTP Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1
-	[self setDefaultHeader:@"Accept" value:@"application/json"];
-    [self setDefaultHeader:@"Accept-Charset" value:@"utf-8"];
+//	[self setDefaultHeader:@"Accept" value:@"application/json"];
+//    [self setDefaultHeader:@"Accept-Charset" value:@"utf-8"];
+    
+    [self.requestSerializer setValue:kAFMeetupDotComAPICharset forHTTPHeaderField:@"Accept-Charset"];
+    
+
     
     return self;
 }

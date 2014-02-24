@@ -21,6 +21,7 @@
 
 
 static NSString *memberCellReuseIdentifier = @"memberCell";
+static CRNInitialsImageView *placeHolderImageView;
 
 @interface MemberListTableDataSource ()
 {
@@ -125,38 +126,42 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
         __weak UIImageView *imageView = memberCell.avatarView;
         
 
-        // Implementation example of CRNInitialsImageView
-        CRNInitialsImageView *crnImageView = [[CRNInitialsImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
-        crnImageView.initialsBackgroundColor = [self randomColor];
-        crnImageView.initialsTextColor = [UIColor whiteColor];
-        crnImageView.initialsFont = [UIFont fontWithName:@"HelveticaNeue" size:18];
-//        crnImageView.useCircle = _isCircle ? TRUE : FALSE; // setting value based on UISegmentedControl
-        crnImageView.useCircle = YES;
-        crnImageView.firstName = [user firstName];
-        crnImageView.lastName = [user lastName];
-        [crnImageView drawImage];
+        /* Initialize a static variable to hold placeholder image */
+        if (!placeHolderImageView) {
+            placeHolderImageView = fetchPlaceholderImage();
+        }
+        placeHolderImageView.initialsBackgroundColor = [self randomColor];
+        placeHolderImageView.firstName = [user firstName];
+        placeHolderImageView.lastName = [user lastName];
+        [placeHolderImageView drawImage];
         
-        
-        [memberCell.avatarView setImageWithURLRequest:request placeholderImage:crnImageView.image success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-            imageView.image = image;
+        [memberCell.avatarView setImageWithURLRequest:request
+                                     placeholderImage:[placeHolderImageView image]
+                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                  
+                                                    imageView.image = image;
 
-            // use the image's layer to mask the image into a circle
-            imageView.layer.cornerRadius = roundf(imageView.frame.size.width/2.0);
-            imageView.layer.masksToBounds = YES;
+                                                    // use the image's layer to mask the image into a circle
+                                                    imageView.layer.cornerRadius = roundf(imageView.frame.size.width/2.0);
+                                                    imageView.layer.masksToBounds = YES;
 
-            [imageView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
-            [imageView.layer setBorderWidth:1.5f];
-            [imageView.layer setShadowColor:[UIColor blackColor].CGColor];
-            [imageView.layer setShadowOpacity:0.8];
-            [imageView.layer setShadowRadius:3.0];
-            [imageView.layer setShadowOffset:CGSizeMake(2.0, 2.0)];
-            
+                                                    [imageView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+                                                    [imageView.layer setBorderWidth:1.5f];
+                                                    [imageView.layer setShadowColor:[UIColor blackColor].CGColor];
+                                                    [imageView.layer setShadowOpacity:0.8];
+                                                    [imageView.layer setShadowRadius:3.0];
+                                                    [imageView.layer setShadowOffset:CGSizeMake(2.0, 2.0)];
+                                                    
 
-        } failure:NULL];
+                                            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+
+                                                    NSLog(@"Could not find image");
+                                            
+
+                                            }];
+         
 
 
-            
-//        }
         
         cell = memberCell;
         memberCell = nil;
@@ -169,6 +174,19 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
         
     }
     return cell;
+}
+
+static CRNInitialsImageView* fetchPlaceholderImage()
+{
+    CRNInitialsImageView *crnImageView = [[CRNInitialsImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+
+    crnImageView.initialsTextColor = [UIColor whiteColor];
+    crnImageView.initialsFont = [UIFont fontWithName:@"HelveticaNeue" size:18];
+    crnImageView.useCircle = YES;
+
+
+    
+    return crnImageView;
 }
 
 - (void)registerForUpdatesToAvatarStore:(AvatarStore *)store {

@@ -544,7 +544,7 @@
             }
             
         }
-        NSLog(@"jsonObject is %@",jsonObject);
+//        NSLog(@"jsonObject is %@",jsonObject);
     }];
     
     
@@ -593,8 +593,8 @@
                                                         forActionType:actionType
                                                          forNamedClass:namedClass];
                                 }
-                         successBatchHandler:^(NSArray *operations) {
-                             [self receivedEventsFetchOps:operations
+                         successSingleHandler:^(AFHTTPRequestOperation *operation) {
+                             [self receivedEventsFetchOps:operation
                                             forActionType:actionType
                                              forNamedClass:namedClass];
                          }
@@ -602,7 +602,7 @@
 }
 
 
-- (void)receivedEventsFetchOps:(NSArray *)operations
+- (void)receivedEventsFetchOps:(AFHTTPRequestOperation *)operation
              forActionType:(ActionTypes) actionType
               forNamedClass:(NSString *)namedClass{
     
@@ -613,23 +613,21 @@
     NSError *error = nil;
     NSArray *events;
     
-    __block NSDictionary *eventDict;
+    NSDictionary *eventDict;
     
-    [operations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        AFHTTPRequestOperation *ro = obj;
-        NSData *jsonData = [ro responseData];
-        NSDictionary *jsonObject=[NSJSONSerialization
-                                  JSONObjectWithData:jsonData
-                                  options:NSJSONReadingMutableLeaves
-                                  error:nil];
-        
-        NSArray *results = (NSArray*)[jsonObject objectForKey:@"results"];
-        if (results.count > 0) {
-            eventDict = jsonObject;
+    AFHTTPRequestOperation *ro = operation;
+    NSData *jsonData = [ro responseData];
+    NSDictionary *jsonObject=[NSJSONSerialization
+                              JSONObjectWithData:jsonData
+                              options:NSJSONReadingMutableLeaves
+                              error:nil];
+    
 
-        }
-        NSLog(@"jsonObject is %@",jsonObject);
-    }];
+    eventDict = jsonObject;
+
+    
+//    NSLog(@"jsonObject is %@",jsonObject);
+
     
     if (eventDict ) {
         events = [eventBuilder eventsFromJSON:eventDict error: &error];

@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
 //
 
-#import "AFHTTPClient.h"
-#import "AFJSONRequestOperation.h"
+
+#import "AFURLRequestSerialization.h"
 
 //#define kAFMeetupDotComAPIBaseURLString @"https://api.meetup.com/"
 static NSString * const kAFFBDotComAPIBaseURLString = @"https://api.meetup.com/";
 static NSString * const kAFFBDotComGroupIdKey = @"3169852";
 
-@interface AFFBDotComClient : AFHTTPClient
+@interface AFFBDotComClient : AFHTTPRequestSerializer
 
 @end

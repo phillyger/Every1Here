@@ -6,9 +6,6 @@
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-
 
 @protocol TwitterUsersLookupAPIRequestDelegate;
 

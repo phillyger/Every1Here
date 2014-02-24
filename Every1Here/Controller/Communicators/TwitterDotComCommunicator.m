@@ -8,7 +8,6 @@
 
 #import "TwitterDotComCommunicator.h"
 #import "SLAPIClient.h"
-#import "AFJSONRequestOperation.h"
 #import "TwitterFollowersIdsRequest.h"
 #import "TwitterUsersLookupAPIRequest.h"
 #import "TwitterMembersListsRequest.h"

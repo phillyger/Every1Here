@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
 //
 
-#import "AFHTTPClient.h"
+#import "AFHTTPSessionManager.h"
 
-@interface AFMeetupDotComAPIClient : AFHTTPClient
+@interface AFMeetupDotComAPIClient : AFHTTPSessionManager
 
 + (AFMeetupDotComAPIClient *)sharedClient;
 

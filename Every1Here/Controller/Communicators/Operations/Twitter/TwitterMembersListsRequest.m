@@ -7,7 +7,7 @@
 //
 
 #import "TwitterMembersListsRequest.h"
-#import "AFJSONRequestOperation.h"
+#import "AFHTTPRequestOperation.h"
 
 @implementation TwitterMembersListsRequest
 @synthesize delegate = _delegate;
@@ -42,24 +42,41 @@
         
         if (self.isCancelled)
             return;
+
+        NSURLRequest *request = self.request;
+        AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+        op.responseSerializer = [AFJSONResponseSerializer serializer];
+        [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"JSON: %@", responseObject);
+            //The JSON variable will contain the currently logged users information!
+            NSLog(@"Sucess!");
+            self.JSON = responseObject;
+            
+            if ([(NSObject *)self.delegate respondsToSelector:self.action])
+                [(NSObject *)self.delegate performSelectorOnMainThread:self.action withObject:self waitUntilDone:NO];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@", error);
+        }];
+        [[NSOperationQueue mainQueue] addOperation:op];
         
-        AFJSONRequestOperation *datasource_twitter_api_operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:_request
-                                                success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON){
-                     //The JSON variable will contain the currently logged users information!
-                                        NSLog(@"Sucess!");
-                                       self.JSON = JSON;
-                                                                                                                       
-                                      if ([(NSObject *)self.delegate respondsToSelector:self.action])
-                                     [(NSObject *)self.delegate performSelectorOnMainThread:self.action withObject:self waitUntilDone:NO];
-                                                                                                                       
-                                    }
-                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error,id JSON) {
-                                        //Hanlde any request errors
-                                          NSLog(@"Failure!");
-                                   }];
         
-        
-        [datasource_twitter_api_operation start];
+//        AFJSONRequestOperation *datasource_twitter_api_operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:_request
+//                                                success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON){
+//                     //The JSON variable will contain the currently logged users information!
+//                                        NSLog(@"Sucess!");
+//                                       self.JSON = JSON;
+//                                                                                                                       
+//                                      if ([(NSObject *)self.delegate respondsToSelector:self.action])
+//                                     [(NSObject *)self.delegate performSelectorOnMainThread:self.action withObject:self waitUntilDone:NO];
+//                                                                                                                       
+//                                    }
+//                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error,id JSON) {
+//                                        //Hanlde any request errors
+//                                          NSLog(@"Failure!");
+//                                   }];
+//        
+//        
+//        [datasource_twitter_api_operation start];
         
     }
 }

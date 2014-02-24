@@ -6,9 +6,10 @@
 //  Copyright (c) 2013 Brilliant Age. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "AFParseDotComAPIClient.h"
 
 @interface RESTApiOperation : NSObject
+
 
 @property (nonatomic, copy) NSString *uriMethod;
 @property (nonatomic, copy) NSString* uriPath;
@@ -19,6 +20,5 @@
                    data:(NSDictionary *)newData;
 
 - (id)init;
-
 
 @end

@@ -8,7 +8,6 @@
 
 #import "MeetupDotComCommunicator.h"
 #import "AFMeetupDotComAPIClient.h"
-#import "AFJSONRequestOperation.h"
 
 #define kAFMeetupDotComGroupAPIKey @"c45e311a1b4f526d623c5b2f732e3"
 #define kURLToFetchEvents @"2/events?"      
@@ -28,22 +27,17 @@
     [self cancelAndDiscardURLConnection];
     
     
-    [[AFMeetupDotComAPIClient sharedClient] getPath:fetchingURLPath
-                                        parameters:fetchingURLParameters
-                                           success:^(AFHTTPRequestOperation *operation, id objectNotation) {
-                                               if ([objectNotation isKindOfClass:[NSDictionary class]]) {
-                                                   [objectNotation enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-                                                       NSLog(@"The object at key %@ is %@",key,obj);
-                                                   }];
-                                               successHandler((NSDictionary *)objectNotation, (SocialNetworkType) Meetup);
-                                               }
-                                           }
-                                           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                               
-                                               errorHandler(error);
-                                           }];
-    
-    
+    [[AFMeetupDotComAPIClient sharedClient] GET:fetchingURLPath parameters:fetchingURLParameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            [responseObject enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                NSLog(@"The object at key %@ is %@",key,obj);
+            }];
+            successHandler((NSDictionary *)responseObject, (SocialNetworkType) Meetup);
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        errorHandler(error);
+    }];
+        
 }
 
 - (void)fetchContentAtURLPath:(NSString *)urlPath

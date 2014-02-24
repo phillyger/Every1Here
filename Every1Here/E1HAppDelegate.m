@@ -9,6 +9,7 @@
 //
 
 #import "E1HAppDelegate.h"
+#import "AFNetworkActivityLogger.h"
 
 
 #define AccountTwitterSelectedAccountIdentifier @"TwitterAccountSelectedAccountIdentifier"
@@ -34,6 +35,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    [[AFNetworkActivityLogger sharedLogger] startLogging];
     
     // ****************************************************************************
     // Uncomment and fill in with your Parse credentials:

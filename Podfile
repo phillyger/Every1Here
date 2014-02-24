@@ -1,6 +1,7 @@
 platform :ios, :deployment_target => '6.1'
 
-pod 'AFNetworking'
+pod 'AFNetworking', '~>2.1.0'
+pod 'AFNetworkActivityLogger', '~>2.0.1'
 pod 'MBProgressHUD'
 pod 'FPPopover'
 pod 'HMSegmentedControl', '~> 1.2.0'
@@ -13,7 +14,7 @@ pod 'MZFormSheetController'
 
 target :Every1HereTests do
 	pod 'OCMock'
-	pod 'AFNetworking'
+	pod 'AFNetworking', '~>2.1.0'
 	pod 'MBProgressHUD'
 	pod 'FPPopover'
 	pod 'BlockAlertsAnd-ActionSheets'
@@ -24,7 +25,7 @@ target :Every1HereTests do
 end
 
 target :OHHTTPStubsUnitTests do
-  pod 'AFNetworking'
+  pod 'AFNetworking', '~>2.1.0'
   pod 'OHHTTPStubs'
 end
 

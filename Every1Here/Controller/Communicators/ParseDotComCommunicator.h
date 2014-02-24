@@ -55,7 +55,7 @@ typedef void (^ParseDotComErrorBlock)(NSError *);
                      forActionType:(ActionTypes)actionType
                       forNamedClass: (NSString*)namedClass
                       errorHandler:(ParseDotComErrorBlock)errorBlock
-               successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
+               successSingleHandler:(ParseDotComSingleOperationsBlock)successBlock;
 
 
 

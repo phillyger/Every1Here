@@ -1,5 +1,24 @@
 PODS:
-  - AFNetworking (1.2.0)
+  - AFNetworkActivityLogger (2.0.1):
+    - AFNetworking (~> 2.0)
+  - AFNetworking (2.1.0):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+    - AFNetworking/UIKit
+  - AFNetworking/NSURLConnection (2.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.1.0):
+    - AFNetworking/NSURLConnection
+  - AFNetworking/Reachability (2.1.0)
+  - AFNetworking/Security (2.1.0)
+  - AFNetworking/Serialization (2.1.0)
+  - AFNetworking/UIKit (2.1.0):
+    - AFNetworking/NSURLConnection
   - BlockAlertsAnd-ActionSheets (1.0.6):
     - BlockAlertsAnd-ActionSheets/TableAlertView
   - BlockAlertsAnd-ActionSheets/TableAlertView (1.0.6)
@@ -23,7 +42,8 @@ PODS:
   - ReactiveCocoa/no-arc (2.1.8)
 
 DEPENDENCIES:
-  - AFNetworking
+  - AFNetworkActivityLogger (~> 2.0.1)
+  - AFNetworking (~> 2.1.0)
   - BlockAlertsAnd-ActionSheets
   - Facebook-iOS-SDK (~> 3.8.0)
   - FPPopover
@@ -37,7 +57,8 @@ DEPENDENCIES:
   - ReactiveCocoa
 
 SPEC CHECKSUMS:
-  AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
+  AFNetworkActivityLogger: c2e99aec5d965a3ee33f0954a20c5ddab18934fe
+  AFNetworking: c7d7901a83f631414c7eda1737261f696101a5cd
   BlockAlertsAnd-ActionSheets: e1fd0c73fdbc0caad047cd66ffe9a2aaefe991fa
   Facebook-iOS-SDK: 55a22fe8bcaacd638cde9014af6b3ee85f4d71fb
   FPPopover: 0289b796c031d8f27bd221d93d282ffe23619893
