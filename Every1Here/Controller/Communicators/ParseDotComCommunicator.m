@@ -37,7 +37,7 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     
     //[self cancelAndDiscardURLConnection];
 
-    [self checkReachability];
+//    [self checkReachability];
     
     NSArray *operations = [AFURLConnectionOperation batchOfRequestOperations:fetchingURLRequestList
                                          progressBlock:^(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations) {
@@ -61,7 +61,7 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     
     //[self cancelAndDiscardURLConnection];
     
-    [self checkReachability];
+//    [self checkReachability];
     
     NSError *error=nil;
 

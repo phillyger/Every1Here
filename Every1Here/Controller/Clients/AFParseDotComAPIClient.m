@@ -7,6 +7,8 @@
 //
 
 #import "AFParseDotComAPIClient.h"
+#import "BlockAlertView.h"
+#import "CommonUtilities.h"
 
 
 static NSString * const kAFParseDotComAPIBaseURLString = @"https://api.parse.com/";
@@ -67,9 +69,34 @@ static NSString * const kAFParseDotComRESTApiKey = @"SyGe3rNcjaXOK8KAtNiXhKGwmPz
 
 - (void)startReachabilityMonitoring
 {
-    AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager managerForDomain:kAFParseDotComAPIBaseURLString];
+//    AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager managerForDomain:kAFParseDotComAPIBaseURLString];
+  
+    AFNetworkReachabilityManager *manager = [self reachabilityManager];
+    
+//    [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+//        NSLog(@"Reachability: %@", AFStringFromNetworkReachabilityStatus(status));
+//    }];
+    
+    NSOperationQueue *operationQueue = [self operationQueue];
     [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        NSLog(@"Reachability: %@", AFStringFromNetworkReachabilityStatus(status));
+        switch (status) {
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                NSLog(@"Reachability: %@", AFStringFromNetworkReachabilityStatus(status));
+                [operationQueue setSuspended:NO];
+                break;
+            case AFNetworkReachabilityStatusNotReachable:
+            default:
+                NSLog(@"Reachability: %@", AFStringFromNetworkReachabilityStatus(status));
+                BlockAlertView *alert = [[BlockAlertView alloc] initWithTitle:@"No Internet Connection Found"
+                                                      message:@"The application requires an internet connection. Please check your device settings."];
+                [alert setCancelButtonWithTitle:@"Ok" block:nil];
+                [alert show];
+                [CommonUtilities hideProgressHUD:nil];
+                
+                [operationQueue setSuspended:YES];
+                break;
+        }
     }];
     
     [manager startMonitoring];
