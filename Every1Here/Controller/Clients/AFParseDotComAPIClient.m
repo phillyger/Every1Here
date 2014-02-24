@@ -60,7 +60,7 @@ static NSString * const kAFParseDotComRESTApiKey = @"SyGe3rNcjaXOK8KAtNiXhKGwmPz
     [self.requestSerializer setValue:kAFParseDotComAppIDKey forHTTPHeaderField:@"X-Parse-Application-Id"];
     [self.requestSerializer setValue:kAFParseDotComRESTApiKey forHTTPHeaderField:@"X-Parse-REST-API-Key"];
     
-//    [self startReachabilityMonitoring];
+    [self startReachabilityMonitoring];
 
     return self;
 }

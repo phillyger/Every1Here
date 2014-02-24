@@ -36,26 +36,8 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
 - (void)launchBatchConnectionForRequests {
     
     //[self cancelAndDiscardURLConnection];
-    
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 
-
-    
-    NSOperationQueue *operationQueue = manager.operationQueue;
-    [manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        switch (status) {
-            case AFNetworkReachabilityStatusReachableViaWWAN:
-            case AFNetworkReachabilityStatusReachableViaWiFi:
-                [operationQueue setSuspended:NO];
-                break;
-            case AFNetworkReachabilityStatusNotReachable:
-            default:
-                [operationQueue setSuspended:YES];
-                break;
-        }
-    }];
-    
+    [self checkReachability];
     
     NSArray *operations = [AFURLConnectionOperation batchOfRequestOperations:fetchingURLRequestList
                                          progressBlock:^(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations) {
@@ -78,6 +60,9 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
                   successSingleHandler:(void (^)(AFHTTPRequestOperation *))successBlock {
     
     //[self cancelAndDiscardURLConnection];
+    
+    [self checkReachability];
+    
     NSError *error=nil;
 
 
@@ -112,6 +97,27 @@ successBatchHandler:(ParseDotComBatchOperationsBlock)successBlock;
     
     [self launchBatchConnectionForRequests];
     
+    
+}
+
+#pragma mark - Network Reachability
+- (void)checkReachability
+{
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSOperationQueue *operationQueue = manager.operationQueue;
+    [manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                [operationQueue setSuspended:NO];
+                break;
+            case AFNetworkReachabilityStatusNotReachable:
+            default:
+                [operationQueue setSuspended:YES];
+                break;
+        }
+    }];
     
 }
 

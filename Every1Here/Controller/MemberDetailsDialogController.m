@@ -122,11 +122,6 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     meetingRoleIconDict = [[[self userToEdit] getRole:@"EventRole"] mapFieldsToIconsMedium];
     meetingRoleCellColorHueDict= [[[self userToEdit] getRole:@"EventRole"] mapFieldsToCellColorHue];
 
-//    UITabBarController *tabBarController = self.tabBarController;
-//    UITabBar *tabBar = [tabBarController tabBar];
-//    UITabBarItem *tabBarItem = [[tabBar items] objectAtIndex:1];
-//    NSLog(@"%@", [tabBarItem title]);
-//    [tabBarItem setEnabled:NO];
     
     //-------------------------------------------------------
     // Load the Quick Dialog form names mapping.
@@ -147,12 +142,6 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     self.quickDialogTableView = [[QuickDialogTableView alloc] initWithController:self];
     self.view = self.quickDialogTableView;
     
-//    self.view.frame = CGRectMake(0,0,320, 920);
-    
-
- //    [radio setSelectedValue:@"Deborah Wyse"];
-//    [radio setSelectedItem:@"Deborah Wyse"];
-//    [radio setTextValue:@"Deborah Wyse"];
     
     
     [CommonUtilities showProgressHUD:self.view];
@@ -229,15 +218,14 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
         [sectionSpeakerInfo addElement:speechTitle];
         
         
-        QBooleanElement *hasIntro = [[QBooleanElement alloc] initWithTitle:@"Has Intro?" BoolValue:[[self.userToEdit valueForKeyPath:kSpeechInfoHasIntroFieldKeyPath]boolValue]];
-        hasIntro.enabled = [isSpeaker boolValue];
-        hasIntro.key = kSpeechInfoHasIntroKeyName;
-        [sectionSpeakerInfo addElement:hasIntro];
+        QBooleanElement *speechHasIntro = [[QBooleanElement alloc] initWithTitle:@"Has Intro?" BoolValue:[[self.userToEdit valueForKeyPath:kSpeechInfoHasIntroFieldKeyPath]boolValue]];
+        speechHasIntro.enabled = [isSpeaker boolValue];
+        speechHasIntro.key = kSpeechInfoHasIntroKeyName;
+        [sectionSpeakerInfo addElement:speechHasIntro];
 
         
         
-//        QRadioElement *speechNumber = [[QRadioElement alloc] initWithItems:@[@1,@2,@3,@4,@5,@6,@7,@8,@9,@10] selected:currentSpeechNumber title:@"Speech #"];
-//        QRadioElement *speechNumber = [[QRadioElement alloc] initWithDict:tmCCNumberDict selected:currentSpeechNumber title:@"Speech #"];
+
         
         QRadioElement *speechNumber = [[QRadioElement alloc] init];
         speechNumber.selected = nextSpeechNumber;
@@ -250,7 +238,6 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
        
         
         QRadioElement *speechEvaluator = [[QRadioElement alloc] init];
-//                QRadioElement *newRadioElement = [[QRadioElement alloc] initItems:userNameList selected:currentEvaluatorSelected title:@"Evaluator"];
         speechEvaluator.selected = currentEvaluatorSelected;
         speechEvaluator.title = @"Evaluator";
         [speechEvaluator setValues:userIdList];
@@ -272,11 +259,16 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
 //                    NSLog(@"%@", [thisElement numberValue]);
 //                    NSLog(@"%@", [thisElement key]);
                     
+                    if ([self isEventRolesSelected]){
+                        [self markUserInAttendance:YES];
+                        [self.quickDialogTableView reloadData];
+                    }
+
                     
-                    QRadioElement *speechEvaluator = (QRadioElement*)[self.root elementWithKey:kSpeechInfoEvaluatorKeyName];
-                    QRadioElement *speechNumber = (QRadioElement*)[self.root elementWithKey:kSpeechInfoTMCCIdKeyName];
-                    QBooleanElement *speechHasIntro = (QBooleanElement*)[self.root elementWithKey:kSpeechInfoHasIntroKeyName];
-                    QEntryElement *speechTitle = (QEntryElement*)[self.root elementWithKey:kSpeechInfoTitleKeyName];
+//                    QRadioElement *speechEvaluator = (QRadioElement*)[self.root elementWithKey:kSpeechInfoEvaluatorKeyName];
+//                    QRadioElement *speechNumber = (QRadioElement*)[self.root elementWithKey:kSpeechInfoTMCCIdKeyName];
+//                    QBooleanElement *speechHasIntro = (QBooleanElement*)[self.root elementWithKey:kSpeechInfoHasIntroKeyName];
+//                    QEntryElement *speechTitle = (QEntryElement*)[self.root elementWithKey:kSpeechInfoTitleKeyName];
                     speechEvaluator.enabled = [thisElement boolValue];
                     speechNumber.enabled = [thisElement boolValue];
                     speechTitle.enabled = [thisElement boolValue];
@@ -286,6 +278,18 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
                     [self.quickDialogTableView reloadCellForElements:speechEvaluator, speechNumber, speechHasIntro, speechTitle, nil];
                     
                     *stop = YES;
+                };
+            } else if ([key isEqualToString:@"isToastmaster"]) {
+                __weak QBooleanElement *thisElement = (QBooleanElement *)[self.root elementWithKey: key];
+                thisElement.onValueChanged = ^(QRootElement *el){
+                    //                    NSLog(@"Flag changed");
+                    //                    NSLog(@"%@", [thisElement numberValue]);
+                    //                    NSLog(@"%@", [thisElement key]);
+                    
+                    if ([self isEventRolesSelected]){
+                        [self markUserInAttendance:YES];
+                        [self.quickDialogTableView reloadData];
+                    }
                 };
             }
             
@@ -458,6 +462,15 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     
 }
 
+- (BOOL)isEventRolesSelected
+{
+    NSLog(@"Running isEventRolesSelected...");
+    if ([[self computeEventRoleCount] intValue]> 0) {
+        return true;
+    }
+    return false;
+}
+
 
 - (void)markUserInAttendance:(BOOL)isAttending {
     
@@ -471,6 +484,16 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     [meetingRoleDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 //        NSLog(@"key %@: value %d", key, [obj integerValue]);
         __weak QBooleanElement *thisElement = (QBooleanElement *)[self.root elementWithKey: key];
+        
+        thisElement.onValueChanged = ^(QRootElement *el){
+            if ([self isEventRolesSelected]){
+                [self markUserInAttendance:YES];
+                [self.quickDialogTableView reloadData];
+            }
+            
+                
+        };
+
         
         NSString *iconString = meetingRoleIconDict[key];
         [thisElement setImage:[UIImage imageNamed:iconString]];
