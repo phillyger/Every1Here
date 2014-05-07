@@ -129,7 +129,7 @@
 #pragma mark - ParseDotComManager delegate
 -(void)didFetchUsers:(NSArray *)userList forUserType:(UserTypes)userType
 {
-    NSLog(@"Success!! We updated an existing %d record in Parse", userType);
+    NSLog(@"Success!! We updated an existing %d record in Parse", (int)userType);
     NSMutableArray *userNameList = [[NSMutableArray alloc] initWithObjects:@"-Select One-", nil];
     
     
@@ -157,7 +157,9 @@
 
 - (void)didInsertAttendanceWithOutput:(NSArray *)objectNotationList {}
 - (void)didInsertUserForUserType:(UserTypes)userType withOutput:(NSArray *)objectNotationList{}
-- (void)didDeleteAttendance{};
-
+- (void)didDeleteAttendance{}
+- (void)didUpdateAttendance{}
+- (void)didUpdateUserForUserType:(UserTypes)userType {}
+- (void)executedOpsFailedWithError:(id)reportableError forActionType:(ActionTypes)actionType forNamedClass:(NSString *)namedClass {}
 
 @end

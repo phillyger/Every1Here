@@ -67,6 +67,7 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
 }
 
 
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 
@@ -436,6 +437,7 @@ static NSString *eventCellReuseIdentifier = @"eventCell";
 {
     EventHeader * header = [[EventHeader alloc] init];
     header.titleLabel.text = [self tableView: tableView titleForHeaderInSection:section];
+    header.titleLabel.textColor = [UIColor darkGrayColor];
     return header;
 }
 

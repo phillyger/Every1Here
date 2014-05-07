@@ -16,12 +16,14 @@
 @property (nonatomic, strong)NSString *tmCCId;
 @property (nonatomic, strong)NSString *evaluatorId;
 @property (nonatomic, getter = hasIntro)BOOL hasIntro;
+@property (nonatomic, strong)NSString *speakingOrder;
 
 - (id)initWithTitle:(NSString*)aTitle
             eventId:(NSString*)anEventId
             userId:(NSString*)aUserId
            tmCCId:(NSString*)aTMCCId
            evaluatorId:(NSString*)anEvaluatorId
-        hasIntro:(BOOL)aSpeechIntro;
+        hasIntro:(BOOL)aSpeechIntro
+      speakingOrder:(NSString*)aSpeakingOrder;
 
 @end

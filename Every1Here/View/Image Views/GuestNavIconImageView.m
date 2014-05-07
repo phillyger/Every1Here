@@ -45,7 +45,7 @@
 //    GuestNavIconView *delegate = (GuestNavIconView *)[navIconView delegate];
     GuestListViewNavigationItem *delegate = (GuestListViewNavigationItem *)[navIconView delegate];
     
-    NSLog(@"Tag : %d", [self tag]);
+    NSLog(@"Tag : %ld", (long)[self tag]);
     switch ([self tag]) {
         case 0:
             // Meetup image was clicked

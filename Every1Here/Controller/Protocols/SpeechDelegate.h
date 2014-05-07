@@ -15,6 +15,7 @@
  */
 //- (void)didInsertSpeechWithOutput:(NSArray *)objectNotationList;
 - (void)didInsertSpeechWithOutput:(AFHTTPRequestOperation *)operation;
+//- (void)didInsertSpeechWithOutput:(NSArray *)operation;
 
 
 /**

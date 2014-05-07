@@ -33,7 +33,7 @@
     NSString *pathToPList=[[NSBundle mainBundle] pathForResource:namedClass ofType:@"plist"];
     NSDictionary *pListInfoDict = [[NSDictionary alloc] initWithContentsOfFile:pathToPList];
     NSMutableDictionary *dataDict = [[NSMutableDictionary alloc] init];
-    NSString *dataTypeToNamedClassSeparator = @"::";
+//    NSString *dataTypeToNamedClassSeparator = @"::";
     
     //-------------------------------------------------------
     // Enumerate through pList to process field types.
@@ -50,8 +50,8 @@
         
         NSDictionary *dict = (NSDictionary*)obj;
         
-        NSString *thisKey = key;
-        NSString *thisObj = obj;
+//        NSString *thisKey = key;
+//        NSString *thisObj = obj;
         
         NSString* routeName = [dict valueForKeyPath:@"routeName"];
         NSString* dataType = [dict valueForKeyPath:@"dataType"];
@@ -68,7 +68,13 @@
                 BOOL thisBool = [[anObject valueForKeyPath: sourceKeyPath] boolValue];
                 [dataDict setValue:[NSNumber numberWithBool:thisBool] forKey:targetKeyPath];
                 
-            } else if ([dataType isEqualToString:@"@date"]) {
+            } else if ([dataType isEqualToString:@"@numeric"]) {
+                NSNumber *toNumericObj = [NSNumber numberWithInteger:[[anObject valueForKeyPath:sourceKeyPath] integerValue]];
+                
+                [dataDict setValue:toNumericObj forKeyPath:targetKeyPath];
+                
+            }
+            else if ([dataType isEqualToString:@"@date"]) {
                 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
                 [dateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'"];
                 NSString *formattedDate = [dateFormatter stringFromDate:[NSDate date]];
@@ -111,7 +117,7 @@
                 }
                 
                 
-            } else if ([dataType isEqualToString:@"@string"]){
+            } else if ([dataType isEqualToString:@"@url"]){
                 NSURL *toStringObj = [anObject valueForKeyPath:sourceKeyPath];
                 
                 [dataDict setValue:[toStringObj absoluteString] forKeyPath:targetKeyPath];
@@ -207,7 +213,7 @@
                 }
                 
             
-            } else if ([thisObj isEqualToString:@"@string"]){
+            } else if ([thisObj isEqualToString:@"@url"]){
                 NSURL *toStringObj = [anObject valueForKey:thisKey];
 
                 [dataDict setValue:[toStringObj absoluteString] forKeyPath:thisKey];
@@ -453,7 +459,7 @@
             durationLabel = durationPastArray[0];
             break;
         case 1 ... 6:
-            durationLabel = [NSString stringWithFormat:@"%d %@", daysOffset, durationPastArray[1]];
+            durationLabel = [NSString stringWithFormat:@"%ld %@", (long)daysOffset, durationPastArray[1]];
             break;
         case 7 ... 13:
             durationLabel = durationPastArray[2];

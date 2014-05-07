@@ -62,5 +62,14 @@
 		<key>sourceKeyPath</key>
 		<string>roles.EventRole.speech.tmCCId</string>
 	</dict>
+	<key>speakingOrder</key>
+	<dict>
+		<key>dataType</key>
+		<string>@numeric</string>
+		<key>targetKeyPath</key>
+		<string>speakingOrder</string>
+		<key>sourceKeyPath</key>
+		<string>roles.EventRole.speech.speakingOrder</string>
+	</dict>
 </dict>
 </plist>

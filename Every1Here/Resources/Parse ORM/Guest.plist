@@ -13,6 +13,6 @@
 	<key>isActive</key>
 	<string>@boolean</string>
 	<key>avatarURL</key>
-	<string>@string</string>
+	<string>@url</string>
 </dict>
 </plist>

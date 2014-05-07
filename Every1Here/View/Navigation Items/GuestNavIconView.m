@@ -35,7 +35,7 @@
 
 -(IBAction)popover:(id)sender
 {
-    NSLog(@"Clicked on button: %d",[sender tag]);
+    NSLog(@"Clicked on button: %ld",(long)[sender tag]);
 
 }
 

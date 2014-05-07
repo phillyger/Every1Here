@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="nWW-Si-OfB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="nWW-Si-OfB">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
         <!--Event List View Controller - Upcoming Events-->
@@ -14,11 +14,11 @@
                         <viewControllerLayoutGuide type="bottom" id="RXh-RU-nWk"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="3Q4-KE-HiF">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="350"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="437"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="64" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="oiK-05-Dl7">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="350"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="437"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="" selectionStyle="blue" accessoryType="disclosureIndicator" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="eventCell" rowHeight="64" id="Wo2-oE-RGI" customClass="EventCell">
@@ -65,11 +65,11 @@
                         <viewControllerLayoutGuide type="bottom" id="Ggd-J1-EAh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="UR2-gh-U5l">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="437"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="56" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="XdK-hh-dcW">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="437"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="" selectionStyle="blue" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="memberCell" rowHeight="56" id="7Z2-kw-UyL" customClass="MemberSummaryCell">
@@ -116,7 +116,7 @@
                         <viewControllerLayoutGuide type="bottom" id="BHV-85-icI"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="IFv-Pd-jMk">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="437"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -135,7 +135,7 @@
                         <viewControllerLayoutGuide type="bottom" id="yNJ-Di-9Kh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ZhW-lo-2RM">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d8M-Cw-yTu">
@@ -265,11 +265,11 @@
                         <viewControllerLayoutGuide type="bottom" id="gRV-da-Ufi"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="fkG-TX-PxX">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="437"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Cfs-ib-aaL">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="437"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="guestSummaryCell" id="UfA-vH-3mh">
@@ -313,18 +313,18 @@
                         <viewControllerLayoutGuide type="bottom" id="hYo-Y0-e9L"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="esF-wM-WGW">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <containerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WFK-g4-ANl">
-                                <rect key="frame" x="0.0" y="66" width="320" height="66"/>
+                            <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WFK-g4-ANl">
+                                <rect key="frame" x="0.0" y="65" width="320" height="66"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="hOS-yG-5xu" kind="embed" identifier="eventSegmentedControl" id="ljP-YE-mS5"/>
                                 </connections>
                             </containerView>
-                            <containerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="igD-zR-H18">
-                                <rect key="frame" x="0.0" y="130" width="320" height="350"/>
+                            <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="igD-zR-H18">
+                                <rect key="frame" x="0.0" y="131" width="320" height="437"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="RsE-pI-WeK" kind="embed" identifier="eventList" id="abl-xo-2vC"/>
@@ -332,6 +332,16 @@
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="WFK-g4-ANl" firstAttribute="top" secondItem="lkz-Zp-Tck" secondAttribute="bottom" constant="1" id="4AH-jf-l9q"/>
+                            <constraint firstItem="WFK-g4-ANl" firstAttribute="leading" secondItem="igD-zR-H18" secondAttribute="leading" id="CDc-cl-9ns"/>
+                            <constraint firstAttribute="trailing" secondItem="WFK-g4-ANl" secondAttribute="trailing" id="KXM-tJ-ktC"/>
+                            <constraint firstItem="WFK-g4-ANl" firstAttribute="leading" secondItem="esF-wM-WGW" secondAttribute="leading" id="MVK-dN-KL8"/>
+                            <constraint firstItem="WFK-g4-ANl" firstAttribute="trailing" secondItem="igD-zR-H18" secondAttribute="trailing" id="MoH-d6-btd"/>
+                            <constraint firstAttribute="bottom" secondItem="igD-zR-H18" secondAttribute="bottom" id="Sej-NG-RCO"/>
+                            <constraint firstItem="igD-zR-H18" firstAttribute="top" secondItem="esF-wM-WGW" secondAttribute="top" constant="131" id="VpY-CM-8B8"/>
+                            <constraint firstItem="igD-zR-H18" firstAttribute="top" secondItem="WFK-g4-ANl" secondAttribute="bottom" id="fzd-8P-x5e"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Upcoming Events" id="mko-dn-3xB"/>
                 </viewController>
@@ -385,6 +395,6 @@
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
 </document>

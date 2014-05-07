@@ -808,7 +808,7 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
  * Delegation callback for fetching members
  *--------------------------------------------------------------------------*/
 - (void)didFetchUsers:(NSArray *)userList forUserType:(UserTypes)userType  {
-    NSLog(@"Success!! We updated an existing %d record in Parse", userType);
+    NSLog(@"Success!! We updated an existing %d record in Parse", (int)userType);
     
     
     
@@ -860,6 +860,7 @@ static NSString *guestCellReuseIdentifier = @"guestSummaryCell";
     
 }
 
+- (void)executedOpsFailedWithError:(id)reportableError forActionType:(ActionTypes)actionType forNamedClass:(NSString *)namedClass {}
 
 @end
 

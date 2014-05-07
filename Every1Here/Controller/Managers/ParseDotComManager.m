@@ -758,7 +758,7 @@
     
     switch (actionType) {
         case Insert:
-            [speechDelegate didInsertSpeechWithOutput:operations];
+            [speechDelegate didInsertSpeechWithOutput:(AFHTTPRequestOperation *)[operations firstObject]];
             break;
         case Update:
             [speechDelegate didUpdateSpeech];
@@ -791,6 +791,10 @@
     }
     
 }
+
+- (void)fetchingMembersFailedWithError:(NSError *)error {}
+
+- (void)receivedMembersFetchOps:(NSArray *)operations {}
 
 @end
 

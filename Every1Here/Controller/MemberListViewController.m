@@ -51,6 +51,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     Receptionist *speechHasIntroReceptionist;
     Receptionist *speechEvaluatorReceptionist;
     Receptionist *speechTMCCIdReceptionist;
+    Receptionist *speakingOrderReceptionist;
     
     //-------------------------------------------------------
     // Dicitionary for holding the values of Quick Dialog
@@ -475,6 +476,31 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                                                                         }];
     
     
+    
+    //-------------------------------------------------------
+    // KVO Receptionist pattern for handling changes to
+    // Evaluator field.
+    //-------------------------------------------------------
+    speakingOrderReceptionist = [Receptionist receptionistForKeyPath:@"roles.EventRole.speech.speakingOrder"
+                                                                object:selectedMember
+                                                                 queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
+                                                                     
+                                                                     
+                                                                     
+                                                                     NSLog(@"Running speakingOrderReceptionist  ...");
+                                                                     NSString *oldSpeakingOrder = [change objectForKey:NSKeyValueChangeOldKey];
+                                                                     NSString *newSpeakingOrder = [change objectForKey:NSKeyValueChangeNewKey] ;
+                                                                     
+                                                                     if ((![oldSpeakingOrder isKindOfClass:[NSNull class]]) || (![newSpeakingOrder isKindOfClass:[NSNull class]])) {
+                                                                         
+                                                                         
+                                                                         if (![newSpeakingOrder isEqualToString:oldSpeakingOrder]) {
+                                                                             if (doesSpeechInfoRecordExist)
+                                                                                 [parseDotComMgr updateSpeechForUser:selectedMember];
+                                                                         }
+                                                                     }
+                                                                     
+                                                                 }];
     //-------------------------------------------------------
     // On completion, ensure to remove KVO observers.
     //-------------------------------------------------------
@@ -558,6 +584,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                 [selectedMember removeObserver:speechHasIntroReceptionist forKeyPath:@"roles.EventRole.speech.hasIntro"];
                 [selectedMember removeObserver:speechEvaluatorReceptionist forKeyPath:@"roles.EventRole.speech.evaluatorId"];
                 [selectedMember removeObserver:speechTMCCIdReceptionist forKeyPath:@"roles.EventRole.speech.tmCCId"];
+                [selectedMember removeObserver:speakingOrderReceptionist forKeyPath:@"roles.EventRole.speech.speakingOrder"];
                 
                 [self dismissViewControllerAnimated:YES completion:nil];
             };
@@ -681,7 +708,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
  * Delegation callback for fetching members
  *--------------------------------------------------------------------------*/
 - (void)didFetchUsers:(NSArray *)userList forUserType:(UserTypes)userType  {
-    NSLog(@"Success!! We updated an existing %d record in Parse", userType);
+    NSLog(@"Success!! We updated an existing %lu record in Parse", userType);
    
     
     for (User *thisUser in userList) {
@@ -784,23 +811,23 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
 
 - (void)didInsertSpeechWithOutput:(AFHTTPRequestOperation *)operation
 {
-    
-    NSLog(@"Success!! We inserted Speech record in Parse");
-    
 
-    AFHTTPRequestOperation *ro = operation;
-    NSData *jsonData = [ro responseData];
-    NSDictionary *jsonObject=[NSJSONSerialization
-                              JSONObjectWithData:jsonData
-                              options:NSJSONReadingMutableLeaves
-                              error:nil];
     
-    NSLog(@"[jsonObject: objectId]- %@x", [jsonObject valueForKey:@"objectId"]);
-    [selectedMember setSpeechId:[jsonObject valueForKey:@"objectId"]];
-
+        AFHTTPRequestOperation *ro = (AFHTTPRequestOperation*)operation;
+        NSData *jsonData = [ro responseData];
+        NSDictionary *jsonObject=[NSJSONSerialization
+                                  JSONObjectWithData:jsonData
+                                  options:NSJSONReadingMutableLeaves
+                                  error:nil];
+        
+        NSLog(@"[jsonObject: objectId]- %@x", [jsonObject valueForKey:@"objectId"]);
+        [selectedMember setSpeechId:[jsonObject valueForKey:@"objectId"]];
     
     
     [self.tableView reloadData];
+    
+    
+    NSLog(@"Success!! We inserted Speech record in Parse");
 }
 
 - (void)didUpdateSpeech

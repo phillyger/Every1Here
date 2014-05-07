@@ -15,6 +15,7 @@
 @synthesize title;
 @synthesize tmCCId;
 @synthesize hasIntro;
+@synthesize speakingOrder;
 
 - (id)initWithTitle:(NSString *)aTitle
             eventId:(NSString *)anEventId
@@ -22,6 +23,7 @@
              tmCCId:(NSString *)aTMCCId
         evaluatorId:(NSString *)anEvaluatorId
         hasIntro:(BOOL)aSpeechIntro
+        speakingOrder:(NSString *)aSpeakingOrder
 {
     if (self = [super init]) {
         self.eventId = [anEventId copy];
@@ -30,8 +32,9 @@
         self.tmCCId = [aTMCCId copy];
         self.title = [aTitle copy];
         self.hasIntro = aSpeechIntro;
+        self.speakingOrder = [aSpeakingOrder copy];
         
-        anEventId = aUserId = anEvaluatorId= aTitle= aTMCCId = nil;
+        anEventId = aUserId = anEvaluatorId= aTitle= aTMCCId= nil;
         
         
     }
@@ -40,6 +43,6 @@
 
 - (id)init
 {
-    return [self initWithTitle:nil eventId:nil userId:nil tmCCId:nil evaluatorId:nil hasIntro:NO];
+    return [self initWithTitle:nil eventId:nil userId:nil tmCCId:nil evaluatorId:nil hasIntro:NO speakingOrder:@"0"];
 }
 @end

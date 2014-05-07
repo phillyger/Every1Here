@@ -21,8 +21,9 @@ static NSString* kSpeechInfoEvaluatorKeyName = @"speechEvaluator";
 static NSString* kSpeechInfoTMCCIdKeyName = @"speechTMCCId";
 static NSString* kSpeechInfoTitleKeyName = @"speechTitle";
 static NSString* kSpeechInfoHasIntroKeyName = @"speechHasIntro";
-//static NSString* kSpeechInfoNumberKeyName = @"speechNumber";
+static NSString* kSpeechInfoSpeakingOrderKeyName = @"speakingOrder";
 
+static NSString* kSpeechInfoSpeakingOrderFieldKeyPath = @"roles.EventRole.speech.speakingOrder";
 static NSString* kSpeechInfoHasIntroFieldKeyPath = @"roles.EventRole.speech.hasIntro";
 static NSString* kSpeechInfoEvaluatorIdFieldKeyPath = @"roles.EventRole.speech.evaluatorId";
 static NSString* kSpeechInfoTMCCIdFieldKeyPath = @"roles.EventRole.speech.tmCCId";
@@ -45,6 +46,7 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     NSNumber *postAttendance;
     NSNumber *postGuestCount;
     NSString *postDisplayName;
+    NSString *postSpeakingOrder;
     
     NSString *postSpeechTitle;
     NSString *postSpeechEvaluatorId;
@@ -245,6 +247,11 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
         speechEvaluator.key = kSpeechInfoEvaluatorKeyName;
         speechEvaluator.enabled = [isSpeaker boolValue];
         [sectionSpeakerInfo addElement:speechEvaluator];
+        
+        QEntryElement *speakingOrder = [[QEntryElement alloc] initWithTitle:@"Speaking Order" Value:[self.userToEdit valueForKeyPath:kSpeechInfoSpeakingOrderFieldKeyPath] Placeholder:@"Speaking Order"];
+        speakingOrder.enabled= [isSpeaker boolValue];
+        speakingOrder.key = kSpeechInfoSpeakingOrderKeyName;
+        [sectionSpeakerInfo addElement:speakingOrder];
 
         
         [self.root addSection:sectionSpeakerInfo];
@@ -273,10 +280,12 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
                     speechNumber.enabled = [thisElement boolValue];
                     speechTitle.enabled = [thisElement boolValue];
                     speechHasIntro.enabled = [thisElement boolValue];
+                    speakingOrder.enabled = [thisElement boolValue];
                     
                     
-                    [self.quickDialogTableView reloadCellForElements:speechEvaluator, speechNumber, speechHasIntro, speechTitle, nil];
+                    [self.quickDialogTableView reloadCellForElements:speechEvaluator, speechNumber, speechHasIntro, speechTitle, speakingOrder, nil];
                     
+                     [self.quickDialogTableView reloadData];
                     *stop = YES;
                 };
             } else if ([key isEqualToString:@"isToastmaster"]) {
@@ -295,6 +304,7 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
             
         }];
         
+        [self.quickDialogTableView reloadData];
         [CommonUtilities hideProgressHUD:self.view];
         
     }];
@@ -345,6 +355,7 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
 //            NSString* radioValue = [self getSpeechEvaluatorValue];
 //            NSString* radioItem = [self getSpeechEvaluatorItem];
 
+            [[self userToEdit] setValue:postSpeakingOrder forKeyPath:kSpeechInfoSpeakingOrderFieldKeyPath];
             [[self userToEdit] setValue:postSpeechHasIntro forKeyPath:kSpeechInfoHasIntroFieldKeyPath];
             [[self userToEdit] setValue:postSpeechEvaluatorId forKeyPath:kSpeechInfoEvaluatorIdFieldKeyPath];
             [[self userToEdit] setValue:postSpeechTMCCId forKeyPath:kSpeechInfoTMCCIdFieldKeyPath];
@@ -576,6 +587,9 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     // Pre Speech TM CC Id
     NSString *preSpeechTMCCId = [[self userToEdit] valueForKeyPath:kSpeechInfoTMCCIdFieldKeyPath];
     
+    // Pre Speaking Order
+    NSString *preSpeakingOrder = [[self userToEdit] valueForKeyPath:kSpeechInfoSpeakingOrderFieldKeyPath];
+    
     postEventRoles = [self computeEventRoleCount];
     postDisplayName = [self computeDisplayName];
     postAttendance = [NSNumber numberWithInt:[[(QBooleanElement *)[[self root] elementWithKey:@"attendance"] numberValue] intValue]] ;
@@ -585,6 +599,7 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     postSpeechEvaluatorId = [self getRadioElementValue:kSpeechInfoEvaluatorKeyName];
     postSpeechTMCCId = [self getRadioElementValue:kSpeechInfoTMCCIdKeyName];
     postSpeechHasIntro = [self getSpeechHasIntro];
+    postSpeakingOrder = [self getSpeakingOrder];
     
     if (postSpeechTitle == nil )
         [self setSpeechTitle:@"Untitled"];
@@ -598,7 +613,8 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
         || (![preSpeechTitle isEqualToString:postSpeechTitle])
         || (preSpeechHasIntro != postSpeechHasIntro)
         || (![preSpeechEvaluatorId isEqualToString:postSpeechEvaluatorId])
-        || (![preSpeechTMCCId isEqualToString:postSpeechTMCCId]))
+        || (![preSpeechTMCCId isEqualToString:postSpeechTMCCId])
+        || (![preSpeakingOrder isEqualToString:postSpeakingOrder]))
         self.hasFormBeenEdited = TRUE;
     
 }
@@ -630,6 +646,20 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     [speechTitle setTextValue:newTitle];
 }
 
+
+-(NSString *)getSpeakingOrder
+{
+    QEntryElement *speakingOrder = (QEntryElement*)[self.root elementWithKey:kSpeechInfoSpeakingOrderKeyName];
+    return [speakingOrder textValue];
+}
+
+-(void)setSpeakingOrder:(NSNumber*)newSpeakingOrder
+{
+    QEntryElement *speakingOrder = (QEntryElement*)[self.root elementWithKey:kSpeechInfoSpeakingOrderKeyName];
+//    [speakingOrder setValue:[NSNumber numberWithInteger:[[speakingOrder textValue] integerValue]]];
+    [speakingOrder setValue:[speakingOrder textValue]];
+}
+
 - (NSString *)getRadioElementValue:(NSString*)keyPath
 {
     QRadioElement *radio = (QRadioElement*)[self.root elementWithKey:keyPath];
@@ -648,7 +678,7 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
 - (NSNumber*)getSpeechHasIntro
 {
     QBooleanElement *speechHasIntro = (QBooleanElement*)[self.root elementWithKey:kSpeechInfoHasIntroKeyName];
-    NSLog(@"Has Intro: %hhd", [speechHasIntro boolValue]);
+    NSLog(@"Has Intro: %hhd", (char)[speechHasIntro boolValue]);
     return [NSNumber numberWithChar:[speechHasIntro boolValue]];
 }
 

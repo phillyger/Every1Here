@@ -128,7 +128,7 @@
 	{
         // Assume self.view is the table view
         NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-        NSLog(@"On Row : %d", path.row);
+        NSLog(@"On Row : %ld", (long)path.row);
         
         EventMemberGuestTabBarController *tabBarController = (EventMemberGuestTabBarController *)segue.destinationViewController;
         

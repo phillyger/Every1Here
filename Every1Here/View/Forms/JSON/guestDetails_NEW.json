@@ -10,7 +10,7 @@
                                 ]},
                  
                  { "elements":[
-                               { "type":"QEntryElement","title":"Primary Email","placeholder":"primary@example.com", "keyboardType":"EmailAddress", "bind":"textValue:primaryEmailAddr", "key":"primaryEmailAddr"}
+                               { "type":"QEntryElement","title":"Primary Email","placeholder":"primary@example.com", "keyboardType":"EmailAddress", "bind":"textValue:primaryEmailAddr", "key":"primaryEmailAddr", "autocapitalizationType":"None"}
 
                                ]},
                  

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EventListTableDataSource"/>
@@ -24,8 +24,8 @@
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="101" contentMode="left" text="month" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7">
-                        <rect key="frame" x="15" y="21" width="45" height="10"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="101" contentMode="left" misplaced="YES" text="month" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7">
+                        <rect key="frame" x="11" y="21" width="45" height="10"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="10" id="138"/>
@@ -35,23 +35,23 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="102" contentMode="left" text="date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="10">
-                        <rect key="frame" x="20" y="34" width="35" height="15"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="102" contentMode="left" text="date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="10">
+                        <rect key="frame" x="8" y="34" width="47" height="15"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="15" id="87"/>
-                            <constraint firstAttribute="width" constant="35" id="498"/>
+                            <constraint firstAttribute="width" constant="47" id="498"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="103" contentMode="left" text="starttime" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="16">
-                        <rect key="frame" x="13" y="46" width="49" height="20"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="103" contentMode="left" text="starttime" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="16">
+                        <rect key="frame" x="4" y="54" width="59" height="8"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="20" id="99"/>
-                            <constraint firstAttribute="width" constant="49" id="450"/>
+                            <constraint firstAttribute="height" constant="8" id="99"/>
+                            <constraint firstAttribute="width" constant="59" id="450"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -86,13 +86,13 @@
                 <constraint firstItem="28" firstAttribute="top" secondItem="7" secondAttribute="top" id="BKN-lR-tpo"/>
                 <constraint firstItem="25" firstAttribute="top" secondItem="3" secondAttribute="top" constant="7" id="CQr-Dc-vCe"/>
                 <constraint firstItem="4" firstAttribute="top" secondItem="3" secondAttribute="top" constant="1" id="RV2-vr-teX"/>
-                <constraint firstItem="10" firstAttribute="centerX" secondItem="16" secondAttribute="centerX" id="Snf-mx-Gpn"/>
+                <constraint firstItem="10" firstAttribute="centerX" secondItem="16" secondAttribute="centerX" constant="-2" id="Snf-mx-Gpn"/>
                 <constraint firstItem="28" firstAttribute="leading" secondItem="25" secondAttribute="leading" id="ajt-Uj-qSd"/>
                 <constraint firstItem="25" firstAttribute="trailing" secondItem="28" secondAttribute="trailing" id="dHz-b6-BWa"/>
                 <constraint firstItem="4" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="18" id="eSa-U0-UsS"/>
-                <constraint firstItem="10" firstAttribute="centerX" secondItem="7" secondAttribute="centerX" id="glQ-EF-vMI"/>
-                <constraint firstItem="10" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="20" id="psS-DF-Swy"/>
-                <constraint firstItem="16" firstAttribute="top" secondItem="3" secondAttribute="top" constant="46" id="se0-AS-iVz"/>
+                <constraint firstItem="10" firstAttribute="centerX" secondItem="7" secondAttribute="centerX" constant="-6" id="glQ-EF-vMI"/>
+                <constraint firstItem="10" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="8" id="psS-DF-Swy"/>
+                <constraint firstItem="16" firstAttribute="top" secondItem="3" secondAttribute="top" constant="54" id="se0-AS-iVz"/>
                 <constraint firstAttribute="bottom" secondItem="10" secondAttribute="bottom" constant="16" id="yLa-1p-Q86"/>
             </constraints>
             <connections>

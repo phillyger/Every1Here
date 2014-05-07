@@ -10,9 +10,9 @@
                                 ]},
                  
                  { "elements":[
-                               { "type":"QEntryElement","title":"Primary Email","placeholder":"primary@example.com", "keyboardType":"EmailAddress", "bind":"textValue:primaryEmailAddr", "key":"primaryEmailAddr"},
+                               { "type":"QEntryElement","title":"Primary Email","placeholder":"primary@example.com", "keyboardType":"EmailAddress", "bind":"textValue:primaryEmailAddr", "key":"primaryEmailAddr", "autocapitalizationType":"None"},
                                
-                               { "type":"QEntryElement","title":"Secondary Email","placeholder":"secondary@example.com", "keyboardType":"EmailAddress", "bind":"textValue:secondaryEmailAddr", "key":"secondaryEmailAddr"},
+                               { "type":"QEntryElement","title":"Secondary Email","placeholder":"secondary@example.com", "keyboardType":"EmailAddress", "bind":"textValue:secondaryEmailAddr", "key":"secondaryEmailAddr", "autocapitalizationType":"None"},
                                ]}
                  
                  ]

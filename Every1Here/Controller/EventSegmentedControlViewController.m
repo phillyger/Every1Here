@@ -70,7 +70,7 @@
 #pragma mark - Segmented Control
 
 - (void)segmentedControlChangedValue:(HMSegmentedControl *)aSegmentedControl {
-	NSLog(@"Selected index %i (via UIControlEventValueChanged)", aSegmentedControl.selectedSegmentIndex);
+	NSLog(@"Selected index %lii (via UIControlEventValueChanged)", (long)aSegmentedControl.selectedSegmentIndex);
     
     [CommonUtilities showProgressHUD:self.parentViewController.view];
     switch (aSegmentedControl.selectedSegmentIndex) {

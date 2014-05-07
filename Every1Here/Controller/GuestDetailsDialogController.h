@@ -11,13 +11,13 @@
 #import "User.h"
 
 
-typedef void (^DetailViewControllerCompletionBlock)(BOOL success);
+typedef void (^GuestDetailViewControllerCompletionBlock)(BOOL success);
 
 @interface GuestDetailsDialogController : QuickDialogController <QuickDialogEntryElementDelegate>
 
 @property (nonatomic, strong) User *userToEdit;
 @property (nonatomic, assign, getter=isNewUser) BOOL newUser;
-@property (nonatomic, copy) DetailViewControllerCompletionBlock completionBlock;
+@property (nonatomic, copy) GuestDetailViewControllerCompletionBlock completionBlock;
 
 
 @end

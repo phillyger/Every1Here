@@ -52,27 +52,27 @@
 }
 
 // Replace drawRect with the following
--(void) drawRect:(CGRect)rect
-{
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    UIColor * whiteColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
-    UIColor * shadowColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.5];
-    
-    CGContextSetFillColorWithColor(context, whiteColor.CGColor);
-    CGContextFillRect(context, _paperRect);
-    
-    CGContextSaveGState(context);
-    CGContextSetShadowWithColor(context, CGSizeMake(0, 2), 3.0, shadowColor.CGColor);
-    CGContextSetFillColorWithColor(context, self.lightColor.CGColor);
-    CGContextFillRect(context, self.coloredBoxRect);
-    CGContextRestoreGState(context);
-    drawGlossAndGradient(context, self.coloredBoxRect, self.lightColor.CGColor, self.darkColor.CGColor);
-    
-    CGContextSetStrokeColorWithColor(context, self.darkColor.CGColor);
-    CGContextSetLineWidth(context, 1.0);
-    CGContextStrokeRect(context, rectFor1PxStroke(self.coloredBoxRect));
-}
+//-(void) drawRect:(CGRect)rect
+//{
+//    CGContextRef context = UIGraphicsGetCurrentContext();
+//    
+//    UIColor * whiteColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
+//    UIColor * shadowColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.5];
+//    
+//    CGContextSetFillColorWithColor(context, whiteColor.CGColor);
+//    CGContextFillRect(context, _paperRect);
+//    
+//    CGContextSaveGState(context);
+//    CGContextSetShadowWithColor(context, CGSizeMake(0, 2), 3.0, shadowColor.CGColor);
+//    CGContextSetFillColorWithColor(context, self.lightColor.CGColor);
+//    CGContextFillRect(context, self.coloredBoxRect);
+//    CGContextRestoreGState(context);
+//    drawGlossAndGradient(context, self.coloredBoxRect, self.lightColor.CGColor, self.darkColor.CGColor);
+//    
+//    CGContextSetStrokeColorWithColor(context, self.darkColor.CGColor);
+//    CGContextSetLineWidth(context, 1.0);
+//    CGContextStrokeRect(context, rectFor1PxStroke(self.coloredBoxRect));
+//}
 
 
 

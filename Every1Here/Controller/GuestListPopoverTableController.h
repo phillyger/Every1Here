@@ -20,7 +20,7 @@
 @class GuestSelectedCell;
 
 
-@interface GuestListPopoverTableController : UITableViewController <GuestManagerDelegate, ParseDotComManagerDelegate>
+@interface GuestListPopoverTableController : UITableViewController <GuestManagerDelegate>
 
 //@property (weak, nonatomic) id <GuestManagerDelegate> guestDelegate;
 @property (weak) IBOutlet GuestSelectedCell *guestCell;

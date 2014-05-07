@@ -1,31 +1,33 @@
-platform :ios, :deployment_target => '6.1'
+# ignore all warnings from all pods
+inhibit_all_warnings!
+platform :ios, :deployment_target => '7.0'
 
-pod 'AFNetworking', '~>2.1.0'
-pod 'AFNetworkActivityLogger', '~>2.0.1'
+pod 'AFNetworking'
+pod 'AFNetworkActivityLogger'
 pod 'MBProgressHUD'
 pod 'FPPopover'
-pod 'HMSegmentedControl', '~> 1.2.0'
+pod 'HMSegmentedControl'
 pod 'BlockAlertsAnd-ActionSheets'
-pod 'QuickDialog', '~> 0.9'
-pod 'Parse', '~> 1.2.13'
-pod 'Facebook-iOS-SDK', '~>3.8.0'
+pod 'QuickDialog'
+pod 'Parse'
+pod 'Facebook-iOS-SDK'
 pod 'ReactiveCocoa'
 pod 'MZFormSheetController'
 
 target :Every1HereTests do
 	pod 'OCMock'
-	pod 'AFNetworking', '~>2.1.0'
+	pod 'AFNetworking'
 	pod 'MBProgressHUD'
 	pod 'FPPopover'
 	pod 'BlockAlertsAnd-ActionSheets'
-	pod 'QuickDialog', '~> 0.9'
-	pod 'Parse', '~> 1.2.13'
-	pod 'Facebook-iOS-SDK', '~>3.8.0'
+	pod 'QuickDialog'
+	pod 'Parse'
+	pod 'Facebook-iOS-SDK'
 	pod 'MZFormSheetController'
 end
 
 target :OHHTTPStubsUnitTests do
-  pod 'AFNetworking', '~>2.1.0'
+  pod 'AFNetworking'
   pod 'OHHTTPStubs'
 end
 

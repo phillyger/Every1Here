@@ -43,12 +43,12 @@
     
     if (![self isNewUser]) {
         QPickerElement *guestCountElement = (QPickerElement *)[self.root elementWithKey:@"guestCount"];
-        [guestCountElement setValue:[NSString stringWithFormat:@"%d", [thisEventRole guestCount]]];
+        [guestCountElement setValue:[NSString stringWithFormat:@"%ld", (long)[thisEventRole guestCount]]];
         
     }
 
     QImageElement *avatar = (QImageElement *)[self.root elementWithKey:@"avatar"];
-    NSLog(@"sltype : %d", self.userToEdit.slType);
+    NSLog(@"sltype : %d", (int)self.userToEdit.slType);
     
     switch (self.userToEdit.slType) {
         case Meetup:

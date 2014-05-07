@@ -17,8 +17,8 @@
 
 
 
-- (void)didSelectPopoverRow:(NSUInteger)rowNum forSocialNetworkType:(SocialNetworkType)slType;
-- (void)didDeselectPopoverRow:(NSUInteger)rowNum forSocialNetworkType:(SocialNetworkType)slType;
+//- (void)didSelectPopoverRow:(NSUInteger)rowNum forSocialNetworkType:(SocialNetworkType)slType;
+//- (void)didDeselectPopoverRow:(NSUInteger)rowNum forSocialNetworkType:(SocialNetworkType)slType;
 - (void)userDidSelectGuestListNotification: (NSNotification *)note;
 - (void)receivedGuestFullList:(NSArray *)guestFullList forKey:(NSString *)aKey;
 - (void)updateTableContentsWithArray:(NSArray *)newGuestAttendeeList forKey:(NSString *)aKey;

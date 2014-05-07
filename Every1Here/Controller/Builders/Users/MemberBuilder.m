@@ -283,7 +283,7 @@
                     // Set User instance Speech ID
                     [user setSpeechId:[speechRow valueForKeyPath:@"objectId"]];
                     
-                    Speech *newSpeechInfo = [[Speech alloc] initWithTitle:[speechRow valueForKeyPath:@"title"]  eventId:[speechRow valueForKeyPath:@"eventId.objectId"] userId:[speechRow valueForKeyPath:@"userId.objectId"] tmCCId:[speechRow valueForKeyPath:@"tm_ccId.objectId"] evaluatorId:[speechRow valueForKeyPath:@"evaluatorId.objectId"] hasIntro:[[speechRow valueForKey:@"hasIntro"] boolValue]];
+                    Speech *newSpeechInfo = [[Speech alloc] initWithTitle:[speechRow valueForKeyPath:@"title"]  eventId:[speechRow valueForKeyPath:@"eventId.objectId"] userId:[speechRow valueForKeyPath:@"userId.objectId"] tmCCId:[speechRow valueForKeyPath:@"tm_ccId.objectId"] evaluatorId:[speechRow valueForKeyPath:@"evaluatorId.objectId"] hasIntro:[[speechRow valueForKey:@"hasIntro"] boolValue] speakingOrder:[[speechRow valueForKey:@"speakingOrder"] stringValue]];
                     
                     // set User instances' Attendance ID
                     [thisEventRole setSpeech:newSpeechInfo];

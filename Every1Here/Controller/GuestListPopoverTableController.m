@@ -77,7 +77,7 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     self.objectConfiguration = [[E1HObjectConfiguration alloc] init];
     
     self.parseDotComMgr = [objectConfiguration parseDotComManager];
-    self.parseDotComMgr.parseDotComDelegate = self;
+//    self.parseDotComMgr.parseDotComDelegate = self;
     
     appDelegate = (E1HAppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -111,11 +111,11 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     self.removedIndices = [[self selectedIndices] relativeComplementIn:[self onLoadIndices]];
     
     [self.addedIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        NSLog(@"Added Index is %d", idx);
+        NSLog(@"Added Index is %lu", (unsigned long)idx);
     }];
     
     [self.removedIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        NSLog(@"Removed Index is %d", idx);
+        NSLog(@"Removed Index is %lu", (unsigned long)idx);
     }];
     
 }
@@ -129,8 +129,8 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
         User *user = (User *)obj;
         
         
-        NSLog(@"Selected user: %@ at index %d", [user displayName], idx );
-        NSLog(@"Selected user avatar: %@ at index %d", [user avatarURL], idx );
+//        NSLog(@"Selected user: %@ at index %lu", [user displayName], (unsigned long)idx );
+//        NSLog(@"Selected user avatar: %@ at index %lu", [user avatarURL], (unsigned long)idx );
         [newGuestAttendeeList addObject:user];
     }];
     
@@ -138,16 +138,16 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     [[self guestFullListForSlType] enumerateObjectsAtIndexes:[self addedIndices] options:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         User *user = (User *)obj;
         
-        NSLog(@"Selected user: %@ at index %d", [user displayName], idx );
-        NSLog(@"Selected user avatar: %@ at index %d", [user avatarURL], idx );
+//        NSLog(@"Selected user: %@ at index %lu", [user displayName], (unsigned long)idx );
+//        NSLog(@"Selected user avatar: %@ at index %lu", [user avatarURL], (unsigned long)idx );
         [addGuests addObject:user];
     }];
     
     [[self guestFullListForSlType] enumerateObjectsAtIndexes:[self removedIndices] options:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         User *user = (User *)obj;
         
-        NSLog(@"Selected user: %@ at index %d", [user displayName], idx );
-        NSLog(@"Selected user avatar: %@ at index %d", [user avatarURL], idx );
+//        NSLog(@"Selected user: %@ at index %lu", [user displayName], (unsigned long)idx );
+//        NSLog(@"Selected user avatar: %@ at index %lu", [user avatarURL], (unsigned long)idx );
         [removeGuests addObject:user];
     }];
     
@@ -200,10 +200,10 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     
     [childList enumerateObjectsUsingBlock:^(id childListObj, NSUInteger childListIdx, BOOL *stop) {
         [parentList enumerateObjectsAtIndexes:indexes options:NSEnumerationConcurrent usingBlock:^(id parentListObj, NSUInteger parentListIdx, BOOL *stop) {
-            NSLog(@"Child List Index: %d", childListIdx);
-            NSLog(@"Parent List Index: %d", parentListIdx);
-            NSLog(@"SocialNetworkUserId Child: %@", [(User*)childListObj valueForKeyPath:kUserObjFieldToCompare]);
-            NSLog(@"SocialNetworkUserId Parent: %@", [(User*)parentListObj valueForKeyPath:kUserObjFieldToCompare]);
+//            NSLog(@"Child List Index: %lu", (unsigned long)childListIdx);
+//            NSLog(@"Parent List Index: %lu", (unsigned long)parentListIdx);
+//            NSLog(@"SocialNetworkUserId Child: %@", [(User*)childListObj valueForKeyPath:kUserObjFieldToCompare]);
+//            NSLog(@"SocialNetworkUserId Parent: %@", [(User*)parentListObj valueForKeyPath:kUserObjFieldToCompare]);
             if ([[(User*)childListObj valueForKeyPath:kUserObjFieldToCompare] isEqualToString:[(User*)parentListObj valueForKeyPath:kUserObjFieldToCompare]]) {
                 [mergedGuestList replaceObjectAtIndex:parentListIdx withObject:childListObj];
                 *stop = YES;
@@ -271,7 +271,7 @@ static NSString *guestCellReuseIdentifier = @"guestSelectedCell";
     self.selected = NO;
     
     [self.selectedIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        NSLog(@"SelectIndex is %d vs current index is %d", idx, [indexPath row]);
+//        NSLog(@"SelectIndex is %lu vs current index is %d", (unsigned long)idx, [indexPath row]);
         if (idx == [indexPath row]) {
             self.selected = YES;
             *stop = YES;
