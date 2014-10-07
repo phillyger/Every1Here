@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>GuestAttendance</key>
+	<string>1/classes/GuestAttendance</string>
+	<key>Event</key>
+	<string>1/classes/Event</string>
+	<key>Attendance</key>
+	<string>1/classes/Attendance</string>
+	<key>Guest</key>
+	<string>1/classes/Guest</string>
+	<key>Member</key>
+	<string>1/classes/Member</string>
+	<key>User</key>
+	<string>1/users</string>
+	<key>Batch</key>
+	<string>1/batch</string>
+	<key>Speech</key>
+	<string>1/classes/Speech</string>
+	<key>TM_CC</key>
+	<string>1/classes/TM_CC</string>
+</dict>
+</plist>

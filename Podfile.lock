@@ -1,0 +1,75 @@
+PODS:
+  - AFNetworkActivityLogger (2.0.1):
+    - AFNetworking (~> 2.0)
+  - AFNetworking (2.1.0):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+    - AFNetworking/UIKit
+  - AFNetworking/NSURLConnection (2.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.1.0):
+    - AFNetworking/NSURLConnection
+  - AFNetworking/Reachability (2.1.0)
+  - AFNetworking/Security (2.1.0)
+  - AFNetworking/Serialization (2.1.0)
+  - AFNetworking/UIKit (2.1.0):
+    - AFNetworking/NSURLConnection
+  - BlockAlertsAnd-ActionSheets (1.0.6):
+    - BlockAlertsAnd-ActionSheets/TableAlertView
+  - BlockAlertsAnd-ActionSheets/TableAlertView (1.0.6)
+  - Facebook-iOS-SDK (3.8.0)
+  - FPPopover (1.4.1)
+  - HMSegmentedControl (1.2.0)
+  - MBProgressHUD (0.6)
+  - MZAppearance (1.1.3)
+  - MZFormSheetController (2.3.0):
+    - MZAppearance (~> 1.1.1)
+  - OCMock (2.0.1)
+  - OHHTTPStubs (1.1.1)
+  - Parse (1.2.13):
+    - Facebook-iOS-SDK (~> 3.5)
+  - QuickDialog (0.9)
+  - ReactiveCocoa (2.1.8):
+    - ReactiveCocoa/Core
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/Core (2.1.8):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.1.8)
+
+DEPENDENCIES:
+  - AFNetworkActivityLogger
+  - AFNetworking
+  - BlockAlertsAnd-ActionSheets
+  - Facebook-iOS-SDK
+  - FPPopover
+  - HMSegmentedControl
+  - MBProgressHUD
+  - MZFormSheetController
+  - OCMock
+  - OHHTTPStubs
+  - Parse
+  - QuickDialog
+  - ReactiveCocoa
+
+SPEC CHECKSUMS:
+  AFNetworkActivityLogger: c2e99aec5d965a3ee33f0954a20c5ddab18934fe
+  AFNetworking: c7d7901a83f631414c7eda1737261f696101a5cd
+  BlockAlertsAnd-ActionSheets: b29e830615ac53a49adfeb3cad13b5c2a8be5fc3
+  Facebook-iOS-SDK: f060e1e4d00c8efbddf1e56dd5a18126921d9e3f
+  FPPopover: 81920e1aef905c329c62bc48fb5a088d17c6bc7d
+  HMSegmentedControl: 826084e59fce20866aaa23f30ed50677210eb669
+  MBProgressHUD: 9b55a90566fb5d07df0602f6fd9fa04510ad5d52
+  MZAppearance: 490bcde824c00598eb62efe732f2786d9342b907
+  MZFormSheetController: 28c4ec742c7dd8b64fbe400dbd5176bb05aa65c5
+  OCMock: ff5a799e7bc304176229c293f56198f9e9af4f84
+  OHHTTPStubs: 41c382f87edb51e7c7c2553aee06da5a6d318a12
+  Parse: 71038f6c13fef880c628db7a2725bb7138ead81a
+  QuickDialog: aea6a7b1a235ba0439065a45e5b124a8422f4e2c
+  ReactiveCocoa: 0db710a0afa1c627a64470e5c912a3870d4854ae
+
+COCOAPODS: 0.32.1

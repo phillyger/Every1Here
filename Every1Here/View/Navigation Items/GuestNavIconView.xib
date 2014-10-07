@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="3" customClass="GuestNavIconView">
+            <rect key="frame" x="0.0" y="0.0" width="150" height="34"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView contentMode="scaleToFill" image="meetup-32x32.png" id="8" customClass="GuestNavIconImageView">
+                    <rect key="frame" x="6" y="3" width="28" height="28"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                </imageView>
+                <imageView tag="1" contentMode="scaleToFill" image="twitter-32x32.png" id="9" customClass="GuestNavIconImageView">
+                    <rect key="frame" x="42" y="3" width="28" height="28"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                </imageView>
+                <imageView tag="2" contentMode="scaleToFill" image="linkedin-32x32.png" id="10" customClass="GuestNavIconImageView">
+                    <rect key="frame" x="78" y="3" width="28" height="28"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                </imageView>
+                <imageView tag="3" contentMode="scaleToFill" image="facebook-32x32.png" id="11" customClass="GuestNavIconImageView">
+                    <rect key="frame" x="114" y="3" width="28" height="28"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="iconFacebook" destination="11" id="19"/>
+                <outlet property="iconLinkedIn" destination="10" id="18"/>
+                <outlet property="iconMeetup" destination="8" id="16"/>
+                <outlet property="iconTwitter" destination="9" id="17"/>
+            </connections>
+        </view>
+    </objects>
+    <resources>
+        <image name="facebook-32x32.png" width="32" height="32"/>
+        <image name="linkedin-32x32.png" width="32" height="32"/>
+        <image name="meetup-32x32.png" width="32" height="32"/>
+        <image name="twitter-32x32.png" width="32" height="32"/>
+    </resources>
+</document>

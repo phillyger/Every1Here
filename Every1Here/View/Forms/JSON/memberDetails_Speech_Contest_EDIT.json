@@ -1,0 +1,32 @@
+{
+	"grouped": true,
+	"title": "Member Details",
+    "controllerName": "MemberDetailsDialogController",
+	"sections": [
+                 
+                 { "elements": [
+                                {  "type":"QEntryElement", "title":"Name", "placeholder":"Display Name", "key":"displayName", "bind":"textValue:displayName"},
+                                
+                                ]},
+                 
+                 { "title": "Attendance", "elements":[
+                               {"type":"QBooleanElement", "key":"attendance", "title":"In Attendance", "onImageName":"imgOn", "offImageName":"imgOff", "boolValue":0}
+                               
+                               ]},
+                 
+                 { "title": "Meeting Roles", "elements":[
+                               {"type":"QBooleanElement", "key":"isEvaluator", "title":"Evaluation Contestant", "boolValue":0},
+                               {"type":"QBooleanElement", "key":"isSpeaker", "title":"Speech Contestant", "boolValue":0},
+                               {"type":"QBooleanElement", "key":"isContestBallotCounter", "title":"Ballot Counter", "boolValue":0},
+                               {"type":"QBooleanElement", "key":"isContestTimer", "title":"Timer", "boolValue":0},
+                               {"type":"QBooleanElement", "key":"isContestJudge", "title":"Judge", "boolValue":0},
+                               {"type":"QBooleanElement", "key":"isContestChiefJudge", "title":"Chief Judge", "boolValue":0},
+                               {"type":"QBooleanElement", "key":"isContestChair", "title":"Contest Chair", "boolValue":0}
+                               ]},
+                 
+                 { "title": "Attending with Guest(s)", "elements":[
+                               {"type":"QPickerElement", "title":"How many?", "key":"guestCount", "items":[[0, 1, 2, 3]]}
+                               ]}
+                 
+                 ]
+}

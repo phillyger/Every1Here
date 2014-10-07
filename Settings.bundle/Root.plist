@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Social Network Settings</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>Social Networks</string>
+			<key>Key</key>
+			<string>SocialNetworks</string>
+			<key>File</key>
+			<string>SocialNetworks</string>
+		</dict>
+		<dict>
+			<key>Title</key>
+			<string>Parse.com</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>User Password Default</string>
+			<key>Key</key>
+			<string>E1HParseDotComAccountUserAccountPasswordIdentifier</string>
+			<key>DefaultValue</key>
+			<string>WatermARK</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Event Status on Launch</string>
+			<key>Key</key>
+			<string>E1HParseDotComAccountEventStatusOnLaunchIdentifier</string>
+			<key>DefaultValue</key>
+			<string>upcoming</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Org Id</string>
+			<key>Key</key>
+			<string>E1HParseDotComAccountOrgIdentifier</string>
+			<key>DefaultValue</key>
+			<string>6996</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Group Name</string>
+			<key>Key</key>
+			<string>E1HParseDotComAccountGroupNameIdentifier</string>
+			<key>DefaultValue</key>
+			<string>Panorama Toastmasters</string>
+		</dict>
+	</array>
+	<key>StringsTable</key>
+	<string>Root</string>
+</dict>
+</plist>

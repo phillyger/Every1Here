@@ -1,0 +1,12 @@
+{
+	"grouped": true,
+	"title": "Speaker Info",
+    "controllerName": "SpeakerInfoViewController",
+	"sections": [
+                 {  "key": "first",
+                    "elements": [
+                                ]
+                 }
+                ]
+}
+
