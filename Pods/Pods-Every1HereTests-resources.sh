@@ -73,7 +73,6 @@ install_resource "BlockAlertsAnd-ActionSheets/BlockAlertsDemo/images/AlertView/a
 install_resource "BlockAlertsAnd-ActionSheets/BlockAlertsDemo/images/AlertView/alert-window@2x.png"
 install_resource "BlockAlertsAnd-ActionSheets/BlockAlertsDemo/images/AlertView/alert-yellow-button.png"
 install_resource "BlockAlertsAnd-ActionSheets/BlockAlertsDemo/images/AlertView/alert-yellow-button@2x.png"
-install_resource "Facebook-iOS-SDK/src/FBUserSettingsViewResources.bundle"
 
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 if [[ "${ACTION}" == "install" ]]; then

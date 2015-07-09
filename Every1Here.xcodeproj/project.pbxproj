@@ -1511,7 +1511,7 @@
 			name = OHHTTPStubsUnitTests;
 			productName = OHHTTPStubsUnitTests;
 			productReference = 28DFD0BF17299D5E007FEBEA /* OHHTTPStubsUnitTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 		28E747D41710831200F97883 /* Every1Here */ = {
 			isa = PBXNativeTarget;
@@ -1549,7 +1549,7 @@
 			name = Every1HereTests;
 			productName = Every1HereTests;
 			productReference = 28E747F51710831200F97883 /* Every1HereTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -1560,6 +1560,11 @@
 				LastTestingUpgradeCheck = 0510;
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Brilliant Age";
+				TargetAttributes = {
+					28E747D41710831200F97883 = {
+						DevelopmentTeam = 62UV28KBXG;
+					};
+				};
 			};
 			buildConfigurationList = 28E747D01710831200F97883 /* Build configuration list for PBXProject "Every1Here" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -2046,6 +2051,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2815F42A02DE46459DCEA97B /* Pods.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -2071,6 +2077,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2815F42A02DE46459DCEA97B /* Pods.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",

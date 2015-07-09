@@ -1,6 +1,6 @@
 # ignore all warnings from all pods
 inhibit_all_warnings!
-platform :ios, :deployment_target => '7.0'
+platform :ios, :deployment_target => '8.0'
 
 pod 'AFNetworking'
 pod 'AFNetworkActivityLogger'
@@ -10,7 +10,7 @@ pod 'HMSegmentedControl'
 pod 'BlockAlertsAnd-ActionSheets'
 pod 'QuickDialog'
 pod 'Parse'
-pod 'Facebook-iOS-SDK'
+#pod 'Facebook-iOS-SDK'
 pod 'ReactiveCocoa'
 pod 'MZFormSheetController'
 
@@ -22,7 +22,7 @@ target :Every1HereTests do
 	pod 'BlockAlertsAnd-ActionSheets'
 	pod 'QuickDialog'
 	pod 'Parse'
-	pod 'Facebook-iOS-SDK'
+#	pod 'Facebook-iOS-SDK'
 	pod 'MZFormSheetController'
 end
 

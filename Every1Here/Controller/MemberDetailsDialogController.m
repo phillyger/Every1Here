@@ -150,169 +150,198 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     
     [self fetchMemberListTableContentWithCompletionBlock:^(NSArray *userList, NSArray *tmCCList, BOOL success) {
         
-        if (!success)
-            return;
-        
-        NSMutableArray *userNameList = [[NSMutableArray alloc] initWithObjects:@"-Select One-", nil];
-        NSMutableArray *userIdList = [[NSMutableArray alloc] initWithObjects:@"", nil];
-        
-        [userNameList addObjectsFromArray:[userList valueForKey:@"displayName"]];
-        [userIdList addObjectsFromArray:[userList valueForKey:@"userId"]];
-        
-        
-         NSString *currentEvaluatorId = [self.userToEdit valueForKeyPath:kSpeechInfoEvaluatorIdFieldKeyPath];
-         __block NSInteger currentEvaluatorSelected = -1;
-        
-        [userIdList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSString *userId= (NSString*)obj;
-            if ([userId isEqualToString:currentEvaluatorId]){
-                currentEvaluatorSelected = idx;
-            }
-            
-        }];
+//        if (!success)
+//            return;
 
-        /** Calculate the current speech to display **/
-        __block NSInteger nextSpeechNumber;
-        EventRoleBase *eventRole = [self.userToEdit getRole:@"EventRole"];
-        Speech *speech = [eventRole speech];
-        if (speech != nil) {
-            NSString *tmCCId = [speech tmCCId];
-            if (tmCCId!=nil && ![tmCCId isEqualToString:@""]) {
-                [tmCCList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                    NSDictionary *tmCCDict = (NSDictionary*)obj;
-                    if ([tmCCId isEqualToString:[tmCCDict valueForKey:@"objectId"]]) {
-                        nextSpeechNumber = ([[tmCCDict valueForKey:@"projectNum"] integerValue] - 1);
-                    }
-                }];
-            } else {
-                nextSpeechNumber = [[self.userToEdit valueForKeyPath:@"compComm"] integerValue];
-                if (nextSpeechNumber >= 10) {
-                    nextSpeechNumber = 9;
-                }
-            }
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self updateSpeakerInfoTableWithUserList:userList withTMCCList:tmCCList];
+//            [self performSelectorOnMainThread:@selector(fetchedData:)
+//                                   withObject:data waitUntilDone:YES];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [CommonUtilities hideProgressHUD:self.view];
+            });
+        });
+    }];
+}
+
+- (void)updateSpeakerInfoTableWithUserList:(NSArray *)userList withTMCCList:(NSArray *)tmCCList
+{
+    
+    NSMutableArray *userNameList = [[NSMutableArray alloc] initWithObjects:@"-Select One-", nil];
+    NSMutableArray *userIdList = [[NSMutableArray alloc] initWithObjects:@"", nil];
+    
+    [userNameList addObjectsFromArray:[userList valueForKey:@"displayName"]];
+    [userIdList addObjectsFromArray:[userList valueForKey:@"userId"]];
+    
+    
+    NSString *currentEvaluatorId = [self.userToEdit valueForKeyPath:kSpeechInfoEvaluatorIdFieldKeyPath];
+    __block NSInteger currentEvaluatorSelected = -1;
+    
+    [userIdList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *userId= (NSString*)obj;
+        if ([userId isEqualToString:currentEvaluatorId]){
+            currentEvaluatorSelected = idx;
         }
-
-
-        
-        
-        NSArray *tmCCListSpeechNumber = [tmCCList valueForKey:@"projectNum"];
-        NSArray *tmCCListSpeechTitle = [tmCCList valueForKey:@"projectTitle"];
-        NSMutableArray *tmCCListSpeechNumberString = [[NSMutableArray alloc] initWithCapacity:[tmCCListSpeechNumber count]];
-        [tmCCListSpeechNumber enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSNumber *speechNumber = (NSNumber*)obj;
-            NSString *speechDisplayItem = [NSString stringWithFormat:@"%@. %@", speechNumber, tmCCListSpeechTitle[idx]];
-            [tmCCListSpeechNumberString addObject:speechDisplayItem];
-        }];
-        NSArray *tmCCListSpeechId = [tmCCList valueForKey:@"objectId"];
-        
-        
-        QSection *sectionSpeakerInfo = [[QSection alloc] init];
-        sectionSpeakerInfo.title = @"Speaker Info";
-
-        sectionSpeakerInfo.key = @"sectionSpeakerInfo";
-
-        
-        QBooleanElement *isSpeaker = (QBooleanElement *)[self.root elementWithKey: @"isSpeaker"];
-        
-        QEntryElement *speechTitle = [[QEntryElement alloc] initWithTitle:@"Title" Value:[self.userToEdit valueForKeyPath:kSpeechInfoTitleFieldKeyPath] Placeholder:@"Speech Title"];
-        speechTitle.enabled= [isSpeaker boolValue];
-        speechTitle.key = kSpeechInfoTitleKeyName;
-        [sectionSpeakerInfo addElement:speechTitle];
-        
-        
-        QBooleanElement *speechHasIntro = [[QBooleanElement alloc] initWithTitle:@"Has Intro?" BoolValue:[[self.userToEdit valueForKeyPath:kSpeechInfoHasIntroFieldKeyPath]boolValue]];
-        speechHasIntro.enabled = [isSpeaker boolValue];
-        speechHasIntro.key = kSpeechInfoHasIntroKeyName;
-        [sectionSpeakerInfo addElement:speechHasIntro];
-
-        
-        
-
-        
-        QRadioElement *speechNumber = [[QRadioElement alloc] init];
-        speechNumber.selected = nextSpeechNumber;
-        [speechNumber setValues:tmCCListSpeechId];
-        [speechNumber setItems:tmCCListSpeechNumberString];
-        speechNumber.title = @"Speech #";
-        speechNumber.enabled= [isSpeaker boolValue];
-        speechNumber.key = kSpeechInfoTMCCIdKeyName;
-        [sectionSpeakerInfo addElement:speechNumber];
-       
-        
-        QRadioElement *speechEvaluator = [[QRadioElement alloc] init];
-        speechEvaluator.selected = currentEvaluatorSelected;
-        speechEvaluator.title = @"Evaluator";
-        [speechEvaluator setValues:userIdList];
-        [speechEvaluator setItems:userNameList];
-        speechEvaluator.key = kSpeechInfoEvaluatorKeyName;
-        speechEvaluator.enabled = [isSpeaker boolValue];
-        [sectionSpeakerInfo addElement:speechEvaluator];
-        
-        QEntryElement *speakingOrder = [[QEntryElement alloc] initWithTitle:@"Speaking Order" Value:[self.userToEdit valueForKeyPath:kSpeechInfoSpeakingOrderFieldKeyPath] Placeholder:@"Speaking Order"];
-        speakingOrder.enabled= [isSpeaker boolValue];
-        speakingOrder.key = kSpeechInfoSpeakingOrderKeyName;
-        [sectionSpeakerInfo addElement:speakingOrder];
-
-        
-        [self.root addSection:sectionSpeakerInfo];
-        
-        [meetingRoleDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            //        NSLog(@"key %@: value %d", key, [obj integerValue]);
-
-            if ([key isEqualToString:@"isSpeaker"]) {
-                __weak QBooleanElement *thisElement = (QBooleanElement *)[self.root elementWithKey: key];
-                thisElement.onValueChanged = ^(QRootElement *el){
-//                    NSLog(@"Flag changed");
-//                    NSLog(@"%@", [thisElement numberValue]);
-//                    NSLog(@"%@", [thisElement key]);
-                    
-                    if ([self isEventRolesSelected]){
-                        [self markUserInAttendance:YES];
-                        [self.quickDialogTableView reloadData];
-                    }
-
-                    
-//                    QRadioElement *speechEvaluator = (QRadioElement*)[self.root elementWithKey:kSpeechInfoEvaluatorKeyName];
-//                    QRadioElement *speechNumber = (QRadioElement*)[self.root elementWithKey:kSpeechInfoTMCCIdKeyName];
-//                    QBooleanElement *speechHasIntro = (QBooleanElement*)[self.root elementWithKey:kSpeechInfoHasIntroKeyName];
-//                    QEntryElement *speechTitle = (QEntryElement*)[self.root elementWithKey:kSpeechInfoTitleKeyName];
-                    speechEvaluator.enabled = [thisElement boolValue];
-                    speechNumber.enabled = [thisElement boolValue];
-                    speechTitle.enabled = [thisElement boolValue];
-                    speechHasIntro.enabled = [thisElement boolValue];
-                    speakingOrder.enabled = [thisElement boolValue];
-                    
-                    
-                    [self.quickDialogTableView reloadCellForElements:speechEvaluator, speechNumber, speechHasIntro, speechTitle, speakingOrder, nil];
-                    
-                     [self.quickDialogTableView reloadData];
-                    *stop = YES;
-                };
-            } else if ([key isEqualToString:@"isToastmaster"]) {
-                __weak QBooleanElement *thisElement = (QBooleanElement *)[self.root elementWithKey: key];
-                thisElement.onValueChanged = ^(QRootElement *el){
-                    //                    NSLog(@"Flag changed");
-                    //                    NSLog(@"%@", [thisElement numberValue]);
-                    //                    NSLog(@"%@", [thisElement key]);
-                    
-                    if ([self isEventRolesSelected]){
-                        [self markUserInAttendance:YES];
-                        [self.quickDialogTableView reloadData];
-                    }
-                };
-            }
-            
-        }];
-        
-        [self.quickDialogTableView reloadData];
-        [CommonUtilities hideProgressHUD:self.view];
         
     }];
     
-
+    /** Calculate the current speech to display **/
+    __block NSInteger nextSpeechNumber;
+    EventRoleBase *eventRole = [self.userToEdit getRole:@"EventRole"];
+    Speech *speech = [eventRole speech];
+    if (speech != nil) {
+        NSString *tmCCId = [speech tmCCId];
+        if (tmCCId!=nil && ![tmCCId isEqualToString:@""]) {
+            [tmCCList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                NSDictionary *tmCCDict = (NSDictionary*)obj;
+                if ([tmCCId isEqualToString:[tmCCDict valueForKey:@"objectId"]]) {
+                    nextSpeechNumber = ([[tmCCDict valueForKey:@"projectNum"] integerValue] - 1);
+                }
+            }];
+        } else {
+            nextSpeechNumber = [[self.userToEdit valueForKeyPath:@"compComm"] integerValue];
+            if (nextSpeechNumber >= 10) {
+                nextSpeechNumber = 9;
+            }
+        }
+    }
     
+    
+    
+    
+    NSArray *tmCCListSpeechNumber = [tmCCList valueForKey:@"projectNum"];
+    NSArray *tmCCListSpeechTitle = [tmCCList valueForKey:@"projectTitle"];
+    NSMutableArray *tmCCListSpeechNumberString = [[NSMutableArray alloc] initWithCapacity:[tmCCListSpeechNumber count]];
+    [tmCCListSpeechNumber enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSNumber *speechNumber = (NSNumber*)obj;
+        NSString *speechDisplayItem = [NSString stringWithFormat:@"%@. %@", speechNumber, tmCCListSpeechTitle[idx]];
+        [tmCCListSpeechNumberString addObject:speechDisplayItem];
+    }];
+    NSArray *tmCCListSpeechId = [tmCCList valueForKey:@"objectId"];
+    
+    
+    QSection *sectionSpeakerInfo = [[QSection alloc] init];
+    sectionSpeakerInfo.title = @"Speaker Info";
+    
+    sectionSpeakerInfo.key = @"sectionSpeakerInfo";
+    
+    
+    QBooleanElement *isSpeaker = (QBooleanElement *)[self.root elementWithKey: @"isSpeaker"];
+    
+    QEntryElement *speechTitle = [[QEntryElement alloc] initWithTitle:@"Title" Value:[self.userToEdit valueForKeyPath:kSpeechInfoTitleFieldKeyPath] Placeholder:@"Speech Title"];
+    //        speechTitle.enabled= [isSpeaker boolValue];
+    speechTitle.enabled= YES;
+    speechTitle.key = kSpeechInfoTitleKeyName;
+    [sectionSpeakerInfo addElement:speechTitle];
+    
+    
+    QBooleanElement *speechHasIntro = [[QBooleanElement alloc] initWithTitle:@"Has Intro?" BoolValue:[[self.userToEdit valueForKeyPath:kSpeechInfoHasIntroFieldKeyPath]boolValue]];
+    //        speechHasIntro.enabled = [isSpeaker boolValue];
+    speechHasIntro.enabled = YES;
+    speechHasIntro.key = kSpeechInfoHasIntroKeyName;
+    [sectionSpeakerInfo addElement:speechHasIntro];
+    
+    
+    QRadioElement *speechNumber = [[QRadioElement alloc] init];
+    speechNumber.selected = nextSpeechNumber;
+    [speechNumber setValues:tmCCListSpeechId];
+    [speechNumber setItems:tmCCListSpeechNumberString];
+    speechNumber.title = @"Speech #";
+    //        speechNumber.enabled= [isSpeaker boolValue];
+    speechNumber.enabled= YES;
+    speechNumber.key = kSpeechInfoTMCCIdKeyName;
+    [sectionSpeakerInfo addElement:speechNumber];
+    
+    
+    QRadioElement *speechEvaluator = [[QRadioElement alloc] init];
+    speechEvaluator.selected = currentEvaluatorSelected;
+    speechEvaluator.title = @"Evaluator";
+    [speechEvaluator setValues:userIdList];
+    [speechEvaluator setItems:userNameList];
+    speechEvaluator.key = kSpeechInfoEvaluatorKeyName;
+    //        speechEvaluator.enabled = [isSpeaker boolValue];
+    speechEvaluator.enabled = YES;
+    [sectionSpeakerInfo addElement:speechEvaluator];
+    
+    QEntryElement *speakingOrder = [[QEntryElement alloc] initWithTitle:@"Speaking Order" Value:[self.userToEdit valueForKeyPath:kSpeechInfoSpeakingOrderFieldKeyPath] Placeholder:@"Speaking Order"];
+    //        speakingOrder.enabled= [isSpeaker boolValue];
+    speakingOrder.enabled= YES;
+    speakingOrder.key = kSpeechInfoSpeakingOrderKeyName;
+    [sectionSpeakerInfo addElement:speakingOrder];
+    
+    
+    [self.root addSection:sectionSpeakerInfo];
 
+//    [self.quickDialogTableView layoutIfNeeded];
+//    [self.quickDialogTableView rel];
 
+//        [self.quickDialogTableView setNeedsDisplay];
+//    [self.quickDialogTableView setNeedsLayout];
+//    [self.quickDialogTableView reloadCellForElements:speechTitle, speechHasIntro, speechNumber, speechEvaluator, speakingOrder, nil];
+    
+    //        [self.quickDialogTableView reloadData];
+    
+    //        [meetingRoleDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+    //            //        NSLog(@"key %@: value %d", key, [obj integerValue]);
+    //
+    //            if ([key isEqualToString:@"isSpeaker"]) {
+    //                __weak QBooleanElement *thisElement = (QBooleanElement *)[self.root elementWithKey: key];
+    //                thisElement.onValueChanged = ^(QRootElement *el){
+    ////                    NSLog(@"Flag changed");
+    ////                    NSLog(@"%@", [thisElement numberValue]);
+    ////                    NSLog(@"%@", [thisElement key]);
+    //
+    //                    if ([self isEventRolesSelected]){
+    //                        [self markUserInAttendance:YES];
+    //                        [self.quickDialogTableView reloadData];
+    //                    }
+    //
+    //
+    ////                    QRadioElement *speechEvaluator = (QRadioElement*)[self.root elementWithKey:kSpeechInfoEvaluatorKeyName];
+    ////                    QRadioElement *speechNumber = (QRadioElement*)[self.root elementWithKey:kSpeechInfoTMCCIdKeyName];
+    ////                    QBooleanElement *speechHasIntro = (QBooleanElement*)[self.root elementWithKey:kSpeechInfoHasIntroKeyName];
+    ////                    QEntryElement *speechTitle = (QEntryElement*)[self.root elementWithKey:kSpeechInfoTitleKeyName];
+    ////                    speechEvaluator.enabled = [thisElement boolValue];
+    ////                    speechNumber.enabled = [thisElement boolValue];
+    ////                    speechTitle.enabled = [thisElement boolValue];
+    ////                    speechHasIntro.enabled = [thisElement boolValue];
+    ////                    speakingOrder.enabled = [thisElement boolValue];
+    //
+    //                    speechEvaluator.enabled = YES;
+    //                    speechNumber.enabled = YES;
+    //                    speechTitle.enabled = YES;
+    //                    speechHasIntro.enabled = YES;
+    //                    speakingOrder.enabled = YES;
+    //
+    //
+    //                    [self.quickDialogTableView reloadCellForElements:speechEvaluator, speechNumber, speechHasIntro, speechTitle, speakingOrder, nil];
+    //
+    //                     [self.quickDialogTableView reloadData];
+    //                    *stop = YES;
+    //                };
+    //            } else if ([key isEqualToString:@"isToastmaster"]) {
+    //                __weak QBooleanElement *thisElement = (QBooleanElement *)[self.root elementWithKey: key];
+    //                thisElement.onValueChanged = ^(QRootElement *el){
+    //                    //                    NSLog(@"Flag changed");
+    //                    //                    NSLog(@"%@", [thisElement numberValue]);
+    //                    //                    NSLog(@"%@", [thisElement key]);
+    //
+    //                    if ([self isEventRolesSelected]){
+    //                        [self markUserInAttendance:YES];
+    //                        [self.quickDialogTableView reloadData];
+    //                    }
+    //                };
+    //            }
+    //
+    //        }];
+    
+    [self.quickDialogTableView setNeedsDisplay];
+    [self.quickDialogTableView reloadData];
+    
+    
+    
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
