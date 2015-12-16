@@ -18,11 +18,12 @@
     return self;
 }
 
-- (void)bindToObject:(id)data {
+- (void)bindToObject:(id)data withString:(NSString *)withBindString
+{
 
     [self.elements removeAllObjects];
 
-    [super bindToObject:data];
+    [super bindToObject:data withString:withBindString];
     
     if (self.elements.count>0) //elements exist
         return;
@@ -35,11 +36,10 @@
         NSString *valueName = [((NSString *) [bindingParams objectAtIndex:1]) stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
         if ([propName isEqualToString:@"iterate"]) {
-            collection = [data valueForKey:valueName];
+            collection = [data valueForKeyPath:valueName];
         }
     }
 
-    
     if (collection==nil && showLoading)
         [self addElement:[[QLoadingElement alloc] init]];
     

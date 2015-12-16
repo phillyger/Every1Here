@@ -1,17 +1,22 @@
 # ignore all warnings from all pods
 inhibit_all_warnings!
-platform :ios, :deployment_target => '8.0'
+platform :ios, :deployment_target => '9.0'
 
+pod 'Fabric'
+pod 'Crashlytics'
 pod 'AFNetworking'
 pod 'AFNetworkActivityLogger'
 pod 'MBProgressHUD'
 pod 'FPPopover'
 pod 'HMSegmentedControl'
 pod 'BlockAlertsAnd-ActionSheets'
-pod 'QuickDialog'
-pod 'Parse'
+pod 'QuickDialog/Core', '1.1.0'
+pod 'QuickDialog/Extras', '1.1.0'
+pod 'QuickDialog/QPicker', '1.1.0'
+pod 'QuickDialog/QColor', '1.1.0'
+#pod 'Parse'
 #pod 'Facebook-iOS-SDK'
-pod 'ReactiveCocoa'
+#pod 'ReactiveCocoa'
 pod 'MZFormSheetController'
 
 target :Every1HereTests do
@@ -21,7 +26,7 @@ target :Every1HereTests do
 	pod 'FPPopover'
 	pod 'BlockAlertsAnd-ActionSheets'
 	pod 'QuickDialog'
-	pod 'Parse'
+#	pod 'Parse'
 #	pod 'Facebook-iOS-SDK'
 	pod 'MZFormSheetController'
 end

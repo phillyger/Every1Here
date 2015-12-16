@@ -120,48 +120,47 @@ static CRNInitialsImageView *placeHolderImageView;
 
 //        NSData *avatarData = [avatarStore dataForURL: user.avatarURL];
 //        if (avatarData) {
-//        if (user.avatarURL) {
+
+        
+        NSLog(@"user.avatarURL.absoluteString: %@", user.avatarURL.absoluteString);
+        NSLog(@"user.avatarURL.absoluteString.length: %d", (int)user.avatarURL.absoluteString.length);
+
         
         NSURLRequest *request = [NSURLRequest requestWithURL:user.avatarURL];
         __weak UIImageView *imageView = memberCell.avatarView;
         
+        if (user.avatarURL.absoluteString.length > 0 ) {
+            
+            [memberCell.avatarView setImageWithURLRequest:request
+                                         placeholderImage:[[self showPlaceHolderImageForUser:user] image]
+                                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                      
+                                                        imageView.image = image;
 
-        /* Initialize a static variable to hold placeholder image */
-        if (!placeHolderImageView) {
-            placeHolderImageView = fetchPlaceholderImage();
-        }
-        placeHolderImageView.initialsBackgroundColor = [self randomColor];
-        placeHolderImageView.firstName = [user firstName];
-        placeHolderImageView.lastName = [user lastName];
-        [placeHolderImageView drawImage];
-        
-        [memberCell.avatarView setImageWithURLRequest:request
-                                     placeholderImage:[placeHolderImageView image]
-                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                  
-                                                    imageView.image = image;
+                                                        // use the image's layer to mask the image into a circle
+                                                        imageView.layer.cornerRadius = roundf(imageView.frame.size.width/2.0);
+                                                        imageView.layer.masksToBounds = YES;
 
-                                                    // use the image's layer to mask the image into a circle
-                                                    imageView.layer.cornerRadius = roundf(imageView.frame.size.width/2.0);
-                                                    imageView.layer.masksToBounds = YES;
+                                                        [imageView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+                                                        [imageView.layer setBorderWidth:1.5f];
+                                                        [imageView.layer setShadowColor:[UIColor blackColor].CGColor];
+                                                        [imageView.layer setShadowOpacity:0.8];
+                                                        [imageView.layer setShadowRadius:3.0];
+                                                        [imageView.layer setShadowOffset:CGSizeMake(2.0, 2.0)];
+                                                        
 
-                                                    [imageView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
-                                                    [imageView.layer setBorderWidth:1.5f];
-                                                    [imageView.layer setShadowColor:[UIColor blackColor].CGColor];
-                                                    [imageView.layer setShadowOpacity:0.8];
-                                                    [imageView.layer setShadowRadius:3.0];
-                                                    [imageView.layer setShadowOffset:CGSizeMake(2.0, 2.0)];
-                                                    
+                                                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
 
-                                            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                                        NSLog(@"Could not find image");
+                                                
 
-                                                    NSLog(@"Could not find image");
-                                            
-
-                                            }];
+                                                }];
          
 
-
+        } else {
+            /* Initialize a static variable to hold placeholder image */
+            imageView.image =[[self showPlaceHolderImageForUser:user] image];
+        }
         
         cell = memberCell;
         memberCell = nil;
@@ -174,6 +173,19 @@ static CRNInitialsImageView *placeHolderImageView;
         
     }
     return cell;
+}
+
+- (CRNInitialsImageView*)showPlaceHolderImageForUser:(User*)user
+{
+    /* Initialize a static variable to hold placeholder image */
+    if (!placeHolderImageView) {
+        placeHolderImageView = fetchPlaceholderImage();
+    }
+    placeHolderImageView.initialsBackgroundColor = [self randomColor];
+    placeHolderImageView.firstName = [user firstName];
+    placeHolderImageView.lastName = [user lastName];
+    [placeHolderImageView drawImage];
+    return placeHolderImageView;
 }
 
 static CRNInitialsImageView* fetchPlaceholderImage()

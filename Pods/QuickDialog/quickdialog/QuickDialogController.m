@@ -14,6 +14,8 @@
 
 #import "QuickDialogController.h"
 #import "QRootElement.h"
+#import "QEntryElement.h"
+
 @interface QuickDialogController ()
 
 + (Class)controllerClassForRoot:(QRootElement *)root;
@@ -43,6 +45,8 @@
 
 + (QuickDialogController *)controllerForRoot:(QRootElement *)root {
     Class controllerClass = [self controllerClassForRoot:root];
+    if (controllerClass==nil)
+        NSLog(@"Couldn't find a class for name %@", root.controllerName);
     return [((QuickDialogController *)[controllerClass alloc]) initWithRoot:root];
 }
 
@@ -79,6 +83,15 @@
     return YES;
 }
 
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if(self) {
+        self.resizeWhenKeyboardPresented =YES;
+    }
+    return self;
+}
+
 - (QuickDialogController *)initWithRoot:(QRootElement *)rootElement {
     self = [super init];
     if (self) {
@@ -102,13 +115,15 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     _viewOnScreen = YES;
-    [self.quickDialogTableView viewWillAppear];
+    [self.quickDialogTableView deselectRows];
     [super viewWillAppear:animated];
     if (_root!=nil) {
         self.title = _root.title;
         self.navigationItem.title = _root.title;
+        /*
         if (_root.preselectedElementIndex !=nil)
             [self.quickDialogTableView scrollToRowAtIndexPath:_root.preselectedElementIndex atScrollPosition:UITableViewScrollPositionTop animated:NO];
+         */
 
     }
 }
@@ -146,6 +161,9 @@
     return [QuickDialogController buildControllerWithClass:controllerClass root:root];
 }
 
+- (BOOL)shouldDeleteElement:(QElement *)element{
+    return YES;
+}
 
 - (void) resizeForKeyboard:(NSNotification*)aNotification {
     if (!_viewOnScreen)

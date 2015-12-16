@@ -25,6 +25,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
                         change:(NSDictionary *)change context:(void *)context {
+    NSLog(@"Change: %@", change);
     [queue addOperationWithBlock:^{
         task(keyPath, object, change);
         

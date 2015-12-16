@@ -349,9 +349,9 @@
  * Compares two dates to see if they are within the same week
  *--------------------------------------------------------------------------*/
 + (BOOL) weekIsEqual:(NSDate *)date and:(NSDate *)otherDate {
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     
-    unsigned unitFlags = NSYearForWeekOfYearCalendarUnit | NSWeekOfYearCalendarUnit;
+    unsigned unitFlags = NSCalendarUnitYearForWeekOfYear | NSCalendarUnitWeekOfYear;
     NSDateComponents *dateComponents      = [gregorian components:unitFlags fromDate:date];
     NSDateComponents *otherDateComponents = [gregorian components:unitFlags fromDate:otherDate];
     
@@ -399,7 +399,7 @@
     [calendar setTimeZone:timeZone];
     
     // Selectively convert the date components (year, month, day) of the input date
-    NSDateComponents *dateComps = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:inputDate];
+    NSDateComponents *dateComps = [calendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:inputDate];
     
     // Set the time components manually
     [dateComps setHour:0];
@@ -418,8 +418,8 @@
     
     NSDate *dateBeginningOfEventStartDay = [self dateAtBeginningOfDayForDate:offsetDate];
     
-    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSUInteger unitFlags = NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit;
+    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSUInteger unitFlags = NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitDay;
     NSDateComponents *components = [gregorianCalendar components:unitFlags
                                                         fromDate:baseDate
                                                           toDate:dateBeginningOfEventStartDay

@@ -1,4 +1,6 @@
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import "QuickDialogTableView.h"
 
 
 @interface QAppearance : NSObject<NSCopying>
@@ -31,12 +33,15 @@
 @property(nonatomic) NSTextAlignment buttonAlignment;
 @property(nonatomic, strong) UIView *selectedBackgroundView;
 @property(nonatomic, strong) UIColor *sectionTitleShadowColor;
+@property(nonatomic) BOOL toolbarTranslucent;
+@property(nonatomic) CGFloat cellBorderWidth;
+@property(nonatomic) NSNumber * defaultHeightForHeader;
+@property(nonatomic) NSNumber * defaultHeightForFooter;
 
 @property(nonatomic) UIBarStyle toolbarStyle;
 
-@property(nonatomic) BOOL toolbarTranslucent;
 
-@property(nonatomic) CGFloat cellBorderWidth;
+@property(nonatomic, strong) UIView *tableGroupedBackgroundView;
 
 - (void)setDefaults;
 

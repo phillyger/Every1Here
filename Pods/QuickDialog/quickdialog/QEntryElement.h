@@ -13,8 +13,11 @@
 //
 #import "QLabelElement.h"
 #import "QEntryTableViewCell.h"
-
 @protocol QuickDialogEntryElementDelegate;
+
+/**
+  QEntryElement: input field to allow you to collect values from the user. Automatically resizes so that all entries in the same sections look alike.
+*/
 
 @interface QEntryElement : QLabelElement <UITextInputTraits> {
 
@@ -29,6 +32,7 @@
 @property (nonatomic, strong) NSString *placeholder;
 @property (nonatomic, strong) NSString *prefix;
 @property (nonatomic, strong) NSString *suffix;
+@property (atomic, assign) int maxLength;
 @property (assign) BOOL hiddenToolbar;
 
 @property(nonatomic, unsafe_unretained) id<QuickDialogEntryElementDelegate> delegate;

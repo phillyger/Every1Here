@@ -7,7 +7,8 @@
 //
 
 #import "GuestDetailsDialogController.h"
-#import "QuickDialog.h"
+#import <QuickDialog/QuickDialog.h>
+#import <QuickDialog/QPickerElement.h>
 #import "User.h"
 #import "EventRoleDefault.h"
 

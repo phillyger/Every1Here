@@ -29,7 +29,7 @@ static NSString* kSpeechInfoEvaluatorIdFieldKeyPath = @"roles.EventRole.speech.e
 static NSString* kSpeechInfoTMCCIdFieldKeyPath = @"roles.EventRole.speech.tmCCId";
 static NSString* kSpeechInfoTitleFieldKeyPath = @"roles.EventRole.speech.title";
 static NSString* kAttendanceFieldKeyPath = @"roles.EventRole.attendance";
-static NSString* kGuestCountFieldKeyPath = @"roles.EventRole.guestCount";
+//static NSString* kGuestCountFieldKeyPath = @"roles.EventRole.guestCount";
 static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
 
 
@@ -44,7 +44,7 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     
     NSNumber *postEventRoles;
     NSNumber *postAttendance;
-    NSNumber *postGuestCount;
+//    NSNumber *postGuestCount;
     NSString *postDisplayName;
     NSString *postSpeakingOrder;
     
@@ -105,8 +105,8 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
         // Handle data values within Event Role objec
         [self unmaskEventRoles:roles];
         
-        QPickerElement *guestCountElement = (QPickerElement *)[self.root elementWithKey:@"guestCount"];
-        [guestCountElement setValue:[NSString stringWithFormat:@"%@", [[self userToEdit] valueForKeyPath:kGuestCountFieldKeyPath]]];
+//        QPickerElement *guestCountElement = (QPickerElement *)[self.root elementWithKey:@"guestCount"];
+//        [guestCountElement setValue:[NSString stringWithFormat:@"%@", [[self userToEdit] valueForKeyPath:kGuestCountFieldKeyPath]]];
 
     }
     
@@ -150,8 +150,8 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     
     [self fetchMemberListTableContentWithCompletionBlock:^(NSArray *userList, NSArray *tmCCList, BOOL success) {
         
-//        if (!success)
-//            return;
+        if (!success)
+            return;
 
         dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [self updateSpeakerInfoTableWithUserList:userList withTMCCList:tmCCList];
@@ -187,7 +187,7 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     }];
     
     /** Calculate the current speech to display **/
-    __block NSInteger nextSpeechNumber;
+    __block NSInteger nextSpeechNumber = 0;
     EventRoleBase *eventRole = [self.userToEdit getRole:@"EventRole"];
     Speech *speech = [eventRole speech];
     if (speech != nil) {
@@ -248,7 +248,7 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     [speechNumber setValues:tmCCListSpeechId];
     [speechNumber setItems:tmCCListSpeechNumberString];
     speechNumber.title = @"Speech #";
-    //        speechNumber.enabled= [isSpeaker boolValue];
+    speechNumber.enabled= [isSpeaker boolValue];
     speechNumber.enabled= YES;
     speechNumber.key = kSpeechInfoTMCCIdKeyName;
     [sectionSpeakerInfo addElement:speechNumber];
@@ -390,9 +390,9 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
             [[self userToEdit] setValue:postSpeechTMCCId forKeyPath:kSpeechInfoTMCCIdFieldKeyPath];
             [[self userToEdit] setValue:postSpeechTitle forKeyPath:kSpeechInfoTitleFieldKeyPath];
             [[self userToEdit] setValue:postAttendance forKeyPath:kAttendanceFieldKeyPath];
-            [[self userToEdit] setValue:postGuestCount forKeyPath:kGuestCountFieldKeyPath];
+//            [[self userToEdit] setValue:postGuestCount forKeyPath:kGuestCountFieldKeyPath];
             [[self userToEdit] setValue:postEventRoles forKeyPath:kEventRolesFieldKeyPath];
-//            [self computeDisplayName];
+            [self computeDisplayName];
         } else {
             [self.userToEdit addRole:@"MemberRole"];
             [self.userToEdit addRole:@"EventRoleDefault" forKey:@"EventRole"];
@@ -403,7 +403,8 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     [self.root fetchValueUsingBindingsIntoObject:self.userToEdit];
     }
     
-    [self performSelector:@selector(showDone:) withObject:self.userToEdit];
+    [self performSelectorOnMainThread:@selector(showDone:) withObject:self.userToEdit waitUntilDone:YES];
+
 }
 
 - (void)onCancel {
@@ -553,7 +554,7 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     BOOL isAttending = [[[self userToEdit] valueForKeyPath:kAttendanceFieldKeyPath] boolValue];
     [self markUserInAttendance:isAttending];
 
-//    [self reloadInputViews];
+    [self reloadInputViews];
 }
 
 - (NSString *)computeDisplayName {
@@ -601,7 +602,7 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
 
     NSNumber *preEventRoles = [[self userToEdit] valueForKeyPath:kEventRolesFieldKeyPath];
     NSNumber *preAttendance = [[self userToEdit] valueForKeyPath:kAttendanceFieldKeyPath];
-    NSNumber *preGuestCount = [[self userToEdit] valueForKeyPath:kGuestCountFieldKeyPath];
+//    NSNumber *preGuestCount = [[self userToEdit] valueForKeyPath:kGuestCountFieldKeyPath];
     NSString *preDisplayName = [[self userToEdit] valueForKeyPath:@"displayName"];
     
     // Pre Speech Title
@@ -622,7 +623,7 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
     postEventRoles = [self computeEventRoleCount];
     postDisplayName = [self computeDisplayName];
     postAttendance = [NSNumber numberWithInt:[[(QBooleanElement *)[[self root] elementWithKey:@"attendance"] numberValue] intValue]] ;
-    postGuestCount = [NSNumber numberWithInt:[[(QPickerElement *)[[self root] elementWithKey:@"guestCount"] value] intValue]];
+//    postGuestCount = [NSNumber numberWithInt:[[(QPickerElement *)[[self root] elementWithKey:@"guestCount"] value] intValue]];
     
     postSpeechTitle = [self getSpeechTitle];
     postSpeechEvaluatorId = [self getRadioElementValue:kSpeechInfoEvaluatorKeyName];
@@ -637,7 +638,7 @@ static NSString* kEventRolesFieldKeyPath = @"roles.EventRole.eventRoles";
 //    if ((preEventRoles != postEventRoles) || (preAttendance != postAttendance) || (preGuestCount != postGuestCount))
     if (([preEventRoles intValue] != [postEventRoles intValue])
         || [preAttendance boolValue] != [postAttendance boolValue]
-        || ([preGuestCount intValue] != [postGuestCount intValue])
+//        || ([preGuestCount intValue] != [postGuestCount intValue])
         || (![preDisplayName isEqualToString:postDisplayName])
         || (![preSpeechTitle isEqualToString:postSpeechTitle])
         || (preSpeechHasIntro != postSpeechHasIntro)

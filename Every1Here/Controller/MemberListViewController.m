@@ -46,7 +46,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     Receptionist *attendanceReceptionist;
     Receptionist *eventRoleReceptionist;
     Receptionist *displayNameReceptionist;
-    Receptionist *guestCountReceptionist;
+//    Receptionist *guestCountReceptionist;
     Receptionist *speechTitleReceptionist;
     Receptionist *speechHasIntroReceptionist;
     Receptionist *speechEvaluatorReceptionist;
@@ -347,16 +347,18 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                                                             queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
                                                             
                                                                 
-                                                                NSLog(@"Running speechTitleReceptionist Receptionist ...");
-                                                                NSString *oldSpeechTitle = [change objectForKey:NSKeyValueChangeOldKey];
-                                                                NSString *newSpeechTitle = [change objectForKey:NSKeyValueChangeNewKey] ;
+//                                                                NSLog(@"Running speechTitleReceptionist Receptionist ...");
+//                                                                NSString *oldSpeechTitle = [change objectForKey:NSKeyValueChangeOldKey];
+//                                                                NSString *newSpeechTitle = [change objectForKey:NSKeyValueChangeNewKey] ;
                                                             
-                                                                if ((![oldSpeechTitle isKindOfClass:[NSNull class]]) || (![newSpeechTitle isKindOfClass:[NSNull class]])) {
-                                                                    if (![newSpeechTitle isEqualToString:oldSpeechTitle]) {
+//                                                                NSLog(@"[oldSpeechTitle isEqual:[NSNull null]]: %d", (int)[oldSpeechTitle isEqual:[NSNull null]]);
+//                                                                NSLog(@"[oldSpeechTitle isKindOfClass:[NSNull class]]: %d", (int)[oldSpeechTitle isKindOfClass:[NSNull class]]);
+//                                                                if ((![oldSpeechTitle isEqual:[NSNull null]]) || (![newSpeechTitle isKindOfClass:[NSNull class]])) {
+//                                                                    if (![newSpeechTitle isEqualToString:oldSpeechTitle]) {
                                                                         if (doesSpeechInfoRecordExist)
                                                                             [parseDotComMgr updateSpeechForUser:selectedMember];
-                                                                    }
-                                                                }
+//                                                                    }
+//                                                                }
                                                                 
                                                             }];
     
@@ -457,23 +459,23 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
     // KVO Receptionist pattern for handling changes to
     // guestCount field.
     //-------------------------------------------------------
-    guestCountReceptionist = [Receptionist receptionistForKeyPath:@"roles.EventRole.guestCount"
-                                                                       object:selectedMember
-                                                                        queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
-                                                                            
-                                                                            if (doesAttendanceRecordExist == TRUE) {
-                                                                                
-                                                                                NSLog(@"Running guestCountReceptionist Receptionist ...");
-                                                                                NSUInteger oldGuestCount = [[change objectForKey:NSKeyValueChangeOldKey] intValue];
-                                                                                NSUInteger newGuestCount = [[change objectForKey:NSKeyValueChangeNewKey] intValue];
-                                                                                
-                                                                                if (newGuestCount != oldGuestCount ) {
-                                                                                    [parseDotComMgr updateAttendanceForUser:selectedMember];
-                                                                                }
-                                                                            }
-                                                                            
-                                                                            
-                                                                        }];
+//    guestCountReceptionist = [Receptionist receptionistForKeyPath:@"roles.EventRole.guestCount"
+//                                                                       object:selectedMember
+//                                                                        queue:aQueue task:^(NSString *keyPath, id object, NSDictionary *change) {
+//                                                                            
+//                                                                            if (doesAttendanceRecordExist == TRUE) {
+//                                                                                
+//                                                                                NSLog(@"Running guestCountReceptionist Receptionist ...");
+//                                                                                NSUInteger oldGuestCount = [[change objectForKey:NSKeyValueChangeOldKey] intValue];
+//                                                                                NSUInteger newGuestCount = [[change objectForKey:NSKeyValueChangeNewKey] intValue];
+//                                                                                
+//                                                                                if (newGuestCount != oldGuestCount ) {
+//                                                                                    [parseDotComMgr updateAttendanceForUser:selectedMember];
+//                                                                                }
+//                                                                            }
+//                                                                            
+//                                                                            
+//                                                                        }];
     
     
     
@@ -579,7 +581,7 @@ static NSString *memberCellReuseIdentifier = @"memberCell";
                 [selectedMember removeObserver:attendanceReceptionist forKeyPath:@"roles.EventRole.attendance"];
                 [selectedMember removeObserver:eventRoleReceptionist forKeyPath:@"roles.EventRole.eventRoles"];
                 [selectedMember removeObserver:displayNameReceptionist forKeyPath:@"displayName"];
-                [selectedMember removeObserver:guestCountReceptionist forKeyPath:@"roles.EventRole.guestCount"];
+//                [selectedMember removeObserver:guestCountReceptionist forKeyPath:@"roles.EventRole.guestCount"];
                 [selectedMember removeObserver:speechTitleReceptionist forKeyPath:@"roles.EventRole.speech.title"];
                 [selectedMember removeObserver:speechHasIntroReceptionist forKeyPath:@"roles.EventRole.speech.hasIntro"];
                 [selectedMember removeObserver:speechEvaluatorReceptionist forKeyPath:@"roles.EventRole.speech.evaluatorId"];

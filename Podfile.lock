@@ -1,82 +1,98 @@
 PODS:
-  - AFNetworkActivityLogger (2.0.1):
-    - AFNetworking (~> 2.0)
-  - AFNetworking (2.1.0):
+  - AFNetworkActivityLogger (2.0.4):
+    - AFNetworking/NSURLConnection (~> 2.0)
+    - AFNetworking/NSURLSession (~> 2.0)
+  - AFNetworking (2.6.3):
+    - AFNetworking/NSURLConnection (= 2.6.3)
+    - AFNetworking/NSURLSession (= 2.6.3)
+    - AFNetworking/Reachability (= 2.6.3)
+    - AFNetworking/Security (= 2.6.3)
+    - AFNetworking/Serialization (= 2.6.3)
+    - AFNetworking/UIKit (= 2.6.3)
+  - AFNetworking/NSURLConnection (2.6.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.6.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.6.3)
+  - AFNetworking/Security (2.6.3)
+  - AFNetworking/Serialization (2.6.3)
+  - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-    - AFNetworking/UIKit
-  - AFNetworking/NSURLConnection (2.1.0):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.1.0):
-    - AFNetworking/NSURLConnection
-  - AFNetworking/Reachability (2.1.0)
-  - AFNetworking/Security (2.1.0)
-  - AFNetworking/Serialization (2.1.0)
-  - AFNetworking/UIKit (2.1.0):
-    - AFNetworking/NSURLConnection
   - BlockAlertsAnd-ActionSheets (1.0.6):
-    - BlockAlertsAnd-ActionSheets/TableAlertView
+    - BlockAlertsAnd-ActionSheets/TableAlertView (= 1.0.6)
   - BlockAlertsAnd-ActionSheets/TableAlertView (1.0.6)
-  - Bolts (1.2.0):
-    - Bolts/AppLinks
-    - Bolts/Tasks
-  - Bolts/AppLinks (1.2.0):
-    - Bolts/Tasks
-  - Bolts/Tasks (1.2.0)
-  - Facebook-iOS-SDK (3.23.2):
-    - Bolts (~> 1.0)
+  - Crashlytics (3.4.1):
+    - Fabric (~> 1.6.0)
+  - Fabric (1.6.1)
   - FPPopover (1.4.1)
-  - HMSegmentedControl (1.2.0)
-  - MBProgressHUD (0.6)
-  - MZAppearance (1.1.5)
-  - MZFormSheetController (2.3.0):
-    - MZAppearance (~> 1.1.1)
-  - OCMock (2.0.1)
-  - OHHTTPStubs (1.1.1)
-  - Parse (1.2.13):
-    - Facebook-iOS-SDK (~> 3.5)
-  - QuickDialog (0.9)
-  - ReactiveCocoa (2.1.8):
-    - ReactiveCocoa/Core
-    - ReactiveCocoa/no-arc
-  - ReactiveCocoa/Core (2.1.8):
-    - ReactiveCocoa/no-arc
-  - ReactiveCocoa/no-arc (2.1.8)
+  - HMSegmentedControl (1.5.2)
+  - MBProgressHUD (0.9.1)
+  - MZAppearance (1.1.6)
+  - MZFormSheetController (3.1.3):
+    - MZAppearance
+    - MZFormSheetController/Core (= 3.1.3)
+  - MZFormSheetController/Core (3.1.3):
+    - MZAppearance
+  - OCMock (3.2)
+  - OHHTTPStubs (4.6.0):
+    - OHHTTPStubs/Default (= 4.6.0)
+  - OHHTTPStubs/Core (4.6.0)
+  - OHHTTPStubs/Default (4.6.0):
+    - OHHTTPStubs/Core
+    - OHHTTPStubs/JSON
+    - OHHTTPStubs/NSURLSession
+    - OHHTTPStubs/OHPathHelpers
+  - OHHTTPStubs/JSON (4.6.0):
+    - OHHTTPStubs/Core
+  - OHHTTPStubs/NSURLSession (4.6.0):
+    - OHHTTPStubs/Core
+  - OHHTTPStubs/OHPathHelpers (4.6.0)
+  - QuickDialog (1.1.0):
+    - QuickDialog/Core (= 1.1.0)
+  - QuickDialog/Core (1.1.0)
+  - QuickDialog/Extras (1.1.0):
+    - QuickDialog/Core
+  - QuickDialog/QColor (1.1.0):
+    - QuickDialog/Core
+  - QuickDialog/QPicker (1.1.0):
+    - QuickDialog/Core
 
 DEPENDENCIES:
   - AFNetworkActivityLogger
   - AFNetworking
   - BlockAlertsAnd-ActionSheets
+  - Crashlytics
+  - Fabric
   - FPPopover
   - HMSegmentedControl
   - MBProgressHUD
   - MZFormSheetController
   - OCMock
   - OHHTTPStubs
-  - Parse
   - QuickDialog
-  - ReactiveCocoa
+  - QuickDialog/Core (= 1.1.0)
+  - QuickDialog/Extras (= 1.1.0)
+  - QuickDialog/QColor (= 1.1.0)
+  - QuickDialog/QPicker (= 1.1.0)
 
 SPEC CHECKSUMS:
-  AFNetworkActivityLogger: 916c21ab0f6855f86687eab157eb1f9e19cbcf58
-  AFNetworking: d397c9a76a60c670cbcd33f3ff2c5f961f724cbc
+  AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
+  AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
   BlockAlertsAnd-ActionSheets: 15be37bd381afaae85c2d4229db102c2cac742fa
-  Bolts: d176cb1e0012175589e389a9db49b85e27787576
-  Facebook-iOS-SDK: cd87f0b2f0c1d9574b44e8fa2baacc275524bac3
+  Crashlytics: 41574a245bc6ae10c55d57f385ebd2004e5bee05
+  Fabric: bf0ceb04e7c924090efc5f8c55e4fbcca189e0a0
   FPPopover: aaf34a88cad4113867c5f1d0a4f9b2f1c06e2352
-  HMSegmentedControl: 2923916a7b19bde6dcd73fb1f8a7536d5c262695
-  MBProgressHUD: dcb56a8726492cf4684b24fffa06582c1ebb3f41
-  MZAppearance: 6e9dc64e42074c0a19812a327f590746c3283bab
-  MZFormSheetController: abf9b3c0858904dd6a4fef1f8590923863ef862b
-  OCMock: 7a839b55abfb78e8ec3bf6eaa3cdcc567ac71d2a
-  OHHTTPStubs: ad00ed452d4e3805ffb95977163879bd5bb121ea
-  Parse: ea19104a930163c2359a280728ad4add9099da3b
-  QuickDialog: 9d1354420fb47728c757fb71ffed0a53396d2091
-  ReactiveCocoa: f89f2e009a87951b50321bf9feb958823fcc617e
+  HMSegmentedControl: 83b9686022d2176fb6457d2bdb61e5d6393fed7d
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  MZAppearance: 0c06d3fa9cc55142f1da14bc8631fbe8fd6e19d5
+  MZFormSheetController: da2df509805d757e04b052915057d8e1a338b050
+  OCMock: 28def049ef47f996b515a8eeea958be7ccab2dbb
+  OHHTTPStubs: cb1aefbbeb4de4e741644455d4b945538e5248a2
+  QuickDialog: 6954450c4c2d003a89fbfee48ec8fa4695436b01
 
-COCOAPODS: 0.33.0
+COCOAPODS: 0.39.0
