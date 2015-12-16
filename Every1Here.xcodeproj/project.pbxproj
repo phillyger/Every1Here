@@ -14,6 +14,7 @@
 		282364E31736070800C1E38D /* icon-tts-16x16.png in Resources */ = {isa = PBXBuildFile; fileRef = 282364E21736070800C1E38D /* icon-tts-16x16.png */; };
 		282364E61736076500C1E38D /* icon-ttm-16x16.png in Resources */ = {isa = PBXBuildFile; fileRef = 282364E41736076500C1E38D /* icon-ttm-16x16.png */; };
 		282364E71736076500C1E38D /* icon-ttm-28x28.png in Resources */ = {isa = PBXBuildFile; fileRef = 282364E51736076500C1E38D /* icon-ttm-28x28.png */; };
+		282B8A381C211D910026538B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 282B8A371C211D910026538B /* Images.xcassets */; };
 		282C04E41C1F1845005C239F /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 282C04E31C1F1845005C239F /* libsqlite3.tbd */; };
 		282C04E61C1F1853005C239F /* libz.1.1.3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 282C04E51C1F1853005C239F /* libz.1.1.3.tbd */; };
 		284C6BBF1710F5AE001855B5 /* E1HAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 284C6BBC1710F5AE001855B5 /* E1HAppDelegate.m */; };
@@ -258,6 +259,7 @@
 		282364E41736076500C1E38D /* icon-ttm-16x16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-ttm-16x16.png"; sourceTree = "<group>"; };
 		282364E51736076500C1E38D /* icon-ttm-28x28.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-ttm-28x28.png"; sourceTree = "<group>"; };
 		282364E81736082200C1E38D /* icon-tabletopics-20x20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tabletopics-20x20.png"; sourceTree = "<group>"; };
+		282B8A371C211D910026538B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		282C04E31C1F1845005C239F /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		282C04E51C1F1853005C239F /* libz.1.1.3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.1.3.tbd; path = usr/lib/libz.1.1.3.tbd; sourceTree = SDKROOT; };
 		284C6BBB1710F5AE001855B5 /* E1HAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E1HAppDelegate.h; sourceTree = "<group>"; };
@@ -1432,6 +1434,7 @@
 				28B8E0E61710876A0095BB6F /* Resources */,
 				287DCA3E17F08C05000DF8D3 /* iPad */,
 				28B8E0ED1710876A0095BB6F /* View */,
+				282B8A371C211D910026538B /* Images.xcassets */,
 				28E747DF1710831200F97883 /* Supporting Files */,
 			);
 			path = Every1Here;
@@ -1693,6 +1696,7 @@
 				282364E31736070800C1E38D /* icon-tts-16x16.png in Resources */,
 				282364E61736076500C1E38D /* icon-ttm-16x16.png in Resources */,
 				282364E71736076500C1E38D /* icon-ttm-28x28.png in Resources */,
+				282B8A381C211D910026538B /* Images.xcassets in Resources */,
 				28C7EC7B18BC25E400C47BC3 /* icon-ttm-16x16@2x.png in Resources */,
 				287772BF174BC34E00A0DF19 /* GuestAttendance.plist in Resources */,
 			);
@@ -2060,7 +2064,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Gerard OSULLIVAN (62UV28KBXG)";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2077,6 +2081,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "$(inherited)";
+				PROVISIONING_PROFILE = "df400889-64e3-4ad0-916a-f56ec1ce4e28";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -2093,7 +2098,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Gerard OSULLIVAN (62UV28KBXG)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -2102,6 +2107,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "$(inherited)";
+				PROVISIONING_PROFILE = "df400889-64e3-4ad0-916a-f56ec1ce4e28";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2111,7 +2117,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FCA9E5851CEE220C51247EEF /* Pods.debug.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Gerard OSULLIVAN (62UV28KBXG)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -2123,6 +2131,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.brilliantage.apps.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "df400889-64e3-4ad0-916a-f56ec1ce4e28";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2132,7 +2141,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 803360DE8BFBBE115FA8A661 /* Pods.release.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Gerard OSULLIVAN (62UV28KBXG)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -2144,6 +2155,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.brilliantage.apps.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "df400889-64e3-4ad0-916a-f56ec1ce4e28";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
